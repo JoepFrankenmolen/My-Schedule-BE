@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\joepf\\Documents\\git\\My-Schedule\\My-Schedule-BE\\My-Schedule-BE\\My-Schedule-BE.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\joepf\\Documents\\git\\My-Schedule\\My-Schedule-BE\\My-Schedule-BE\\My-Schedule-BE.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\joepf\\Documents\\git\\My-Schedule\\My-Schedule-BE\\My-Schedule-BE\\My-Schedule-BE.csproj",
+        "projectName": "My-Schedule-BE",
+        "projectPath": "C:\\Users\\joepf\\Documents\\git\\My-Schedule\\My-Schedule-BE\\My-Schedule-BE\\My-Schedule-BE.csproj",
+        "packagesPath": "C:\\Users\\joepf\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joepf\\Documents\\git\\My-Schedule\\My-Schedule-BE\\My-Schedule-BE\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\joepf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://cytosmart.pkgs.visualstudio.com/_packaging/CytoSmartCloudPackages/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
