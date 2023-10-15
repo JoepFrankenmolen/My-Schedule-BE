@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace My_Schedule_BE.Controllers
+namespace My_Schedule.AuthService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -23,7 +23,7 @@ namespace My_Schedule_BE.Controllers
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })

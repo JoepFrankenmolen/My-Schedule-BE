@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "My_Schedule_BE": {
+    "http": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -8,7 +8,17 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7231;http://localhost:5107"
+      "applicationUrl": "http://localhost:5288"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7084;http://localhost:5288"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -31,8 +41,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:19035",
-      "sslPort": 44306
+      "applicationUrl": "http://localhost:11592",
+      "sslPort": 44308
     }
   }
 }
