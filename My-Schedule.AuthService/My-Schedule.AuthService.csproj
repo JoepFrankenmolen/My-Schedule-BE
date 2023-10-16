@@ -19,4 +19,9 @@
     <ProjectReference Include="..\My-Schedule.Shared\My-Schedule.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

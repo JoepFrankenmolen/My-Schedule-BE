@@ -1,10 +1,11 @@
 ﻿using My_Schedule.Shared.Models.Users;
+using My_Schedule.Shared.Models.Users.UserInterfaces;
 
 namespace My_Schedule.Shared.Interfaces
 {
     public interface IUserAuthenticationContext
     {
-        public void Install(HttpContext context, User user);
+        public void Install(HttpContext context, IUserDetails user);
 
         Guid UserId { get; }
         string Email { get; }

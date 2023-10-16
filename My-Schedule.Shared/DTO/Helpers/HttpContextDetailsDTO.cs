@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.Shared.Models.Helpers
+﻿namespace My_Schedule.Shared.DTO.Helpers
 {
     public class HttpContextDetailsDTO
     {
