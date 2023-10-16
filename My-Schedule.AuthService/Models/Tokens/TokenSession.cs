@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using My_Schedule.AuthService.Models.ClientDetail;
 using System.ComponentModel.DataAnnotations;
-using My_Schedule.AuthService.Models.ClientDetail;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.AuthService.Models.Tokens
 {

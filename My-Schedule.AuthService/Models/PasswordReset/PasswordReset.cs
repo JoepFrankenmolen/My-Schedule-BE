@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using My_Schedule.AuthService.Models.Confirmations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using My_Schedule.AuthService.Models.Confirmations;
-using My_Schedule.AuthService.Models.Users;
 
 namespace My_Schedule.AuthService.Models.PasswordReset
 {
@@ -13,6 +12,7 @@ namespace My_Schedule.AuthService.Models.PasswordReset
 
         [Required]
         public Guid ConfirmationId { get; set; }
+
         public virtual Confirmation Confirmation { get; set; }
 
         [Required]

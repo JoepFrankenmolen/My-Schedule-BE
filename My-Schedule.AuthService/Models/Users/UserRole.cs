@@ -1,6 +1,6 @@
 ﻿using My_Schedule.Shared.Models.Users;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.AuthService.Models.Users
 {

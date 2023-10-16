@@ -1,0 +1,5 @@
+todo:
+
+fix auth service
+move authorization to the shared folder
+add controlers

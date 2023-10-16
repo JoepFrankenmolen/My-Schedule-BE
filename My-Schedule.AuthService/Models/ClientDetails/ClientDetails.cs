@@ -1,5 +1,4 @@
-﻿using My_Schedule.Shared.Models;
-using My_Schedule.Shared.Models.ClientDetails;
+﻿using My_Schedule.Shared.Models.ClientDetails;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

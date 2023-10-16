@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 49159
+          "Port": 49153
         }
       ],
       "UpstreamPathTemplate": "/WeatherForecast",
@@ -21,7 +21,7 @@
         {
           "Name": "AuthService",
           "Version": "v1",
-          "Url": "https://localhost:49159/swagger/v1/swagger.json"
+          "Url": "https://localhost:49153/swagger/v1/swagger.json"
         }
       ]
     }
