@@ -86,7 +86,7 @@ namespace My_Schedule.AuthService.Services.Users
                 IsBlocked = false,
                 FailedLoginAttempts = 0,
                 TokenRevocationTimestamp = 0,
-                Roles = new List<IUserRole>()
+                Roles = new List<UserRole>()
             };
 
             // create role

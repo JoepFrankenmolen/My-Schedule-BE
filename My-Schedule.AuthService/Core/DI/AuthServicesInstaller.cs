@@ -51,6 +51,8 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddScoped<IUserHelper, UserHelper>();
 
+            services.AddScoped<UserHelper>();
+
             services.AddScoped<ClientDetailService>();
 
             services.AddScoped<HashService>();
@@ -60,6 +62,8 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<ConfirmationLogService>();
 
             services.AddScoped<ITokenSessionValidator, TokenSessionService>();
+
+            services.AddScoped<TokenSessionService>();
 
             services.AddScoped<NotificationTriggerService>();
 

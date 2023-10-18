@@ -20,6 +20,6 @@ namespace My_Schedule.AuthService.DTO.Users
 
         public long LastLoggedInTimeStamp { get; set; }
 
-        public List<IUserRole> Roles { get; set; }
+        public List<UserRole> Roles { get; set; }
     }
 }

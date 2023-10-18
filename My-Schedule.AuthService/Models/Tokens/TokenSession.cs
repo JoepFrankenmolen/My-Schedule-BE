@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.AuthService.Models.Tokens
 {
-    public class TokenSession : ITokenSession
+    public class TokenSession : ITokenStatus
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,7 +20,7 @@ namespace My_Schedule.AuthService.Models.Tokens
 
         [Required]
         public Guid ClientDetailsId { get; set; }
-        public virtual IClientDetails ClientDetails { get; set; }
+        public virtual ClientDetails ClientDetails { get; set; }
 
         [Required]
         public bool IsBlocked { get; set; }

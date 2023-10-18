@@ -2,7 +2,7 @@
 using My_Schedule.AuthService.Models;
 using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Interfaces.AppSettings;
-using My_Schedule.Shared.Services.Tokens;
+using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
@@ -10,10 +10,10 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
     {
         private readonly IAuthenticationSettings _appSettings;
         private readonly TokenGenerator _tokenGenerator;
-        private readonly TokenValidator _tokenValidator;
+        private readonly ITokenValidator _tokenValidator;
         private readonly TokenSessionService _tokenSessionService;
 
-        public TokenService(IAuthenticationSettings appSettings, TokenValidator tokenValidator, TokenGenerator tokenGenerator, TokenSessionService tokenSessionService)
+        public TokenService(IAuthenticationSettings appSettings, ITokenValidator tokenValidator, TokenGenerator tokenGenerator, TokenSessionService tokenSessionService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _tokenValidator = tokenValidator ?? throw new ArgumentNullException(nameof(tokenValidator));

@@ -29,7 +29,7 @@ namespace My_Schedule.AuthService.Core
         public Guid UserId { get; internal set; }
         public string UserIp { get; internal set; }
         public string UserAgent { get; internal set; }
-        public List<IUserRole> Roles { get; internal set; }
+        public List<UserRole> Roles { get; internal set; }
         public bool IsAdmin { get; internal set; }
         public bool IsMasterAdmin { get; internal set; }
     }

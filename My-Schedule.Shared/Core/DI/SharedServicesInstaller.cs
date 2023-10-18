@@ -11,7 +11,7 @@ namespace My_Schedule.Shared.Core.DI
         public static void Install(IServiceCollection services, IConfiguration configuration)
         {
             /// Does not initialize:
-            /// IServicesAppSettings
+            /// IServicesAppSettings-
             /// DBContext
             /// UserHelper
             /// TokenSesionValidator

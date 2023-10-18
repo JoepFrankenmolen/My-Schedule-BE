@@ -10,7 +10,7 @@ namespace My_Schedule.Shared.Interfaces
         Guid UserId { get; }
         string UserIp { get; }
         string UserAgent { get; }
-        List<IUserRole> Roles { get; }
+        List<UserRole> Roles { get; }
         bool IsAdmin { get; }
         bool IsMasterAdmin { get; }
     }
