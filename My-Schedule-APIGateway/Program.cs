@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Values;
 
 namespace My_Schedule_APIGateway
 {
@@ -19,6 +20,18 @@ namespace My_Schedule_APIGateway
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerForOcelot(builder.Configuration);
+
+/*            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowVueApp",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:8080")
+                               .AllowAnyMethod()
+                               .AllowAnyHeader()
+                               .AllowCredentials();
+                    });
+            });*/
 
             var app = builder.Build();
 

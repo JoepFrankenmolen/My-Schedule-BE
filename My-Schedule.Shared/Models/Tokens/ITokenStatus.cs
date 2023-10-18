@@ -1,8 +1,9 @@
-﻿namespace SecureLogin.Data.Models.Tokens
+﻿using My_Schedule.Shared.Models;
+
+namespace SecureLogin.Data.Models.Tokens
 {
-    public interface ITokenStatus
+    public interface ITokenStatus : IEntityWithGuidKey
     {
-        Guid Id { get; set; }
         Guid SessionId { get; set; }
         long CreationTimestamp { get; set; }
         bool IsBlocked { get; set; }

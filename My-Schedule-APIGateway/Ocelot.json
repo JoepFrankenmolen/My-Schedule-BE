@@ -1,15 +1,15 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/WeatherForecast",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 49153
+          "Port": 49157
         }
       ],
-      "UpstreamPathTemplate": "/WeatherForecast",
+      "UpstreamPathTemplate": "/api/{everything}",
       "UpstreamHttpMethod": [],
       "SwaggerKey": "My-Schedule-AuthService"
     }
@@ -19,9 +19,9 @@
       "Key": "My-Schedule-AuthService",
       "Config": [
         {
-          "Name": "AuthService",
+          "Name": "AuthService API",
           "Version": "v1",
-          "Url": "https://localhost:49153/swagger/v1/swagger.json"
+          "Url": "https://localhost:49157/swagger/v1/swagger.json"
         }
       ]
     }

@@ -26,7 +26,7 @@ namespace My_Schedule.Shared.Helpers
 
             return new HttpContextDetailsDTO
             {
-                IPAddress = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+                IPAddress = request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "undefined",
                 UserAgent = request.Headers["User-Agent"].ToString()
             };
         }

@@ -3,6 +3,7 @@ using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
+using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace My_Schedule.Shared.Services.Tokens
 {
-    public class TokenValidator
+    public class TokenValidator : ITokenValidator
     {
         private readonly IAuthenticationSettings _appSettings;
         private readonly IUserHelper _userHelper;
@@ -86,7 +87,7 @@ namespace My_Schedule.Shared.Services.Tokens
         {
             long tokenValidFromUnixTimestamp = ConvertDateTimeToUnixTimestamp(token.ValidFrom);
 
-            if (user.RevocationTimestamp >= tokenValidFromUnixTimestamp || !await _tokenSessionValidator.isValidSession(sessionId))
+            if (user.TokenRevocationTimestamp >= tokenValidFromUnixTimestamp || !await _tokenSessionValidator.isValidSession(sessionId))
             {
                 return true; // Token is revoked
             }

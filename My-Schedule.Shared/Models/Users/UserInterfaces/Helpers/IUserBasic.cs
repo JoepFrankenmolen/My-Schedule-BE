@@ -1,7 +1,6 @@
 ﻿namespace My_Schedule.Shared.Models.Users.UserInterfaces.Helpers
 {
-    public interface IUserBasic : IUserStatus, IUserRoles
+    public interface IUserBasic : IEntityWithGuidKey, IUserStatus, IUserRoles
     {
-        Guid Id { get; set; }
     }
 }
