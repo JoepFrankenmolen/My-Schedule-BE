@@ -1,11 +1,11 @@
-﻿using SecureLogin.Data.Context;
-using SecureLogin.Services.Helpers;
+﻿using SecureLogin.Services.Helpers;
 using SecureLogin.Services.Common.Helpers;
 using Microsoft.EntityFrameworkCore;
 using SecureLogin.Data.DTO.Auth.Authentication;
 using SecureLogin.Data.Enums;
 using SecureLogin.Services.Services.Loging;
 using SecureLogin.Data.Models.Confirmations;
+using My_Schedule.AuthService.Context;
 
 namespace My_Schedule.AuthService.Services.Auth.Confirmation
 {

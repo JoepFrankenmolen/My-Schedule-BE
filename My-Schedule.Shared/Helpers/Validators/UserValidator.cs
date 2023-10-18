@@ -7,7 +7,7 @@ namespace My_Schedule.Shared.Helpers.Validators
         // Use on Authentication.
         public static bool IsValidUser(IUserStatus user, bool mustEmailBeConfirmed = true)
         {
-            // If user is null or blocked/banned, return false.
+            // If user is null or has too many access failed attempts, or is blocked/banned, return false.
             if (user == null || user.IsBlocked || user.IsBanned)
             {
                 return false;

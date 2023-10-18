@@ -1,11 +1,7 @@
-﻿using My_Schedule.AuthService.Services.Auth.Tokens;
-using SecureLogin.Data.Context;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.DTO.Auth.Tokens;
-using SecureLogin.Data.Enums;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Data.Models.Confirmations;
-using SecureLogin.Services.Services.Notifications;
+﻿using My_Schedule.AuthService.DTO.Auth.Authentication;
+using My_Schedule.AuthService.DTO.Auth.Tokens;
+using My_Schedule.AuthService.Models;
+using My_Schedule.AuthService.Services.Auth.Tokens;
 
 namespace My_Schedule.AuthService.Services.Auth.Confirmation
 {

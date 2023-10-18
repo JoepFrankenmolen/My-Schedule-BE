@@ -1,17 +1,18 @@
-﻿using SecureLogin.Data.DTO.Auth.Tokens;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Services.Helpers;
+﻿using My_Schedule.AuthService.DTO.Auth.Tokens;
+using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
+using My_Schedule.Shared.Services.Tokens;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
     public class TokenService
     {
-        private readonly IServicesAppSettings _appSettings;
+        private readonly IAuthenticationSettings _appSettings;
         private readonly TokenGenerator _tokenGenerator;
         private readonly TokenValidator _tokenValidator;
         private readonly TokenSessionService _tokenSessionService;
 
-        public TokenService(IServicesAppSettings appSettings, TokenValidator tokenValidator, TokenGenerator tokenGenerator, TokenSessionService tokenSessionService)
+        public TokenService(IAuthenticationSettings appSettings, TokenValidator tokenValidator, TokenGenerator tokenGenerator, TokenSessionService tokenSessionService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _tokenValidator = tokenValidator ?? throw new ArgumentNullException(nameof(tokenValidator));
@@ -32,7 +33,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             throw new UnauthorizedAccessException();
         }
 
-        public async Task<TokenDTO> CreateTokenDTO(User user)
+        public async Task<TokenDTO> CreateTokenDTO(IUserBasic user)
         {
             var sessionId = await _tokenSessionService.GenerateSession();
 

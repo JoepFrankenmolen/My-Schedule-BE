@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SecureLogin.Data.Context;
+using My_Schedule.AuthService.Context;
 using SecureLogin.Data.DTO.Auth.Authentication;
 using SecureLogin.Data.Enums;
 using SecureLogin.Data.Models.Confirmations;

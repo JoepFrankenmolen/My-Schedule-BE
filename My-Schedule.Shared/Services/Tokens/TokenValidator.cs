@@ -1,26 +1,26 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using SecureLogin.Data.DTO.Auth.Tokens;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Services.Common.Validators;
-using SecureLogin.Services.Helpers;
-using SecureLogin.Services.Services.ApplicationUsers.Helpers;
+using My_Schedule.Shared.DTO.Tokens;
+using My_Schedule.Shared.Helpers.Validators;
+using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Models.Users.UserInterfaces;
+using My_Schedule.Shared.Services.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace My_Schedule.AuthService.Services.Auth.Tokens
+namespace My_Schedule.Shared.Services.Tokens
 {
     public class TokenValidator
     {
-        private readonly IServicesAppSettings _appSettings;
-        private readonly UserHelper _userHelper;
-        private readonly TokenSessionService _tokenSessionService;
+        private readonly IAuthenticationSettings _appSettings;
+        private readonly IUserHelper _userHelper;
+        private readonly ITokenSessionValidator _tokenSessionValidator;
 
-        public TokenValidator(IServicesAppSettings appSettings, UserHelper userHelper, TokenSessionService tokenSessionService)
+        public TokenValidator(IAuthenticationSettings appSettings, IUserHelper userHelper, ITokenSessionValidator tokenSessionService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
-            _tokenSessionService = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
+            _tokenSessionValidator = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
         }
 
         public async Task<ValidatedTokenUserDTO> ValidateToken(string token, TokenType type)
@@ -38,10 +38,10 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
                 var sessionId = ExtractGuidFromToken(securityToken, CustomClaimTypes.SessionId);
 
                 // get user;
-                var user = await _userHelper.GetUserById(userId);
+                var user = await _userHelper.GetUserBasicById(userId);
 
                 // check if the user is blocked or token is revoked.
-                if (user == null || !UserValidator.IsValidUser(user, _appSettings.MaxLoginAttempts) || await IsTokenRevoked(user, securityToken, sessionId))
+                if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))
                 {
                     return null;
                 }
@@ -81,12 +81,12 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             return null;
         }
 
-        // alter this to check the session revoced section
-        private async Task<bool> IsTokenRevoked(User user, SecurityToken token, Guid sessionId)
+        // Alter this to check the session revoced section
+        private async Task<bool> IsTokenRevoked(IUserStatus user, SecurityToken token, Guid sessionId)
         {
             long tokenValidFromUnixTimestamp = ConvertDateTimeToUnixTimestamp(token.ValidFrom);
 
-            if (user.RevocationTimeStamp >= tokenValidFromUnixTimestamp || !await _tokenSessionService.isValidSession(sessionId))
+            if (user.RevocationTimestamp >= tokenValidFromUnixTimestamp || !await _tokenSessionValidator.isValidSession(sessionId))
             {
                 return true; // Token is revoked
             }

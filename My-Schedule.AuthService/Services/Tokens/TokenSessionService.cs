@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using SecureLogin.Data.Context;
-using SecureLogin.Data.Models.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Context;
+using My_Schedule.AuthService.Models.Tokens;
+using My_Schedule.Shared.Services.Tokens;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
-    public class TokenSessionService
+    public class TokenSessionService: ITokenSessionValidator
     {
         private readonly SecureLoginContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,12 +24,12 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
 
             var tokenSession = new TokenSession
             {
-                CreationTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 SessionId = Guid.NewGuid(),
                 IPAddress = ipAddress,
                 UserAgent = userAgent,
                 IsBlocked = false,
-                BlockedTimeStamp = null
+                BlockedTimestamp = null
             };
 
             await _dbContext.AddAsync(tokenSession);
@@ -52,7 +52,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             if (session != null)
             {
                 session.IsBlocked = true;
-                session.BlockedTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                session.BlockedTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 await _dbContext.SaveChangesAsync();
 

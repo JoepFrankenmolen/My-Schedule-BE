@@ -1,12 +1,5 @@
-﻿using My_Schedule.AuthService.Services.Auth.Confirmation;
-using SecureLogin.Data.Context;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Services.Common.Validators;
-using SecureLogin.Services.Helpers;
-using SecureLogin.Services.Services.ApplicationUsers;
-using SecureLogin.Services.Services.ApplicationUsers.Helpers;
-using SecureLogin.Services.Services.Logs;
+﻿using My_Schedule.AuthService.Context;
+using My_Schedule.AuthService.Services.Auth.Confirmation;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication
 {
