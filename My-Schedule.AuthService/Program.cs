@@ -1,5 +1,3 @@
-using Microsoft.OpenApi.Models;
-
 namespace My_Schedule.AuthService
 {
     public class Program

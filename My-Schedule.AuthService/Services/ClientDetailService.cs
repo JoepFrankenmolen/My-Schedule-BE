@@ -1,5 +1,5 @@
-﻿using My_Schedule.AuthService.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.Models.ClientDetail;
 
 namespace My_Schedule.AuthService.Services
@@ -10,7 +10,6 @@ namespace My_Schedule.AuthService.Services
 
         public ClientDetailService(AuthServiceContext dbContext)
         {
-           
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 

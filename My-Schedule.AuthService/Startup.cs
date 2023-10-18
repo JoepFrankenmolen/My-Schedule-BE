@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using My_Schedule.AuthService.Core.DI;
 using My_Schedule.Shared.Core.DI;
+using My_Schedule.Shared.Middleware;
 
 namespace My_Schedule.AuthService
 {
@@ -31,7 +32,6 @@ namespace My_Schedule.AuthService
                 });
             });
 
-
             services.AddMvc();
 
             services.AddHttpContextAccessor();
@@ -56,7 +56,9 @@ namespace My_Schedule.AuthService
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseMiddleware<AuthorizationMiddleware>();
+
+            app.UseMiddleware<Shared.Middleware.AuthorizationMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

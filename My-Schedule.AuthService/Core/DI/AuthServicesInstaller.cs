@@ -1,6 +1,8 @@
-﻿using My_Schedule.AuthService.Services.Auth.Authentication;
-using My_Schedule.AuthService.Services.Auth.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Services;
 using My_Schedule.AuthService.Services.Auth;
+using My_Schedule.AuthService.Services.Auth.Authentication;
+using My_Schedule.AuthService.Services.Auth.Tokens;
 using My_Schedule.AuthService.Services.Authentication;
 using My_Schedule.AuthService.Services.Confirmations;
 using My_Schedule.AuthService.Services.Logs;
@@ -9,10 +11,8 @@ using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces;
 using My_Schedule.Shared.Interfaces.AppSettings;
-using Microsoft.EntityFrameworkCore;
-using My_Schedule.AuthService.Services;
-using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
+using My_Schedule.Shared.Services.Users;
 
 namespace My_Schedule.AuthService.Core.DI
 {

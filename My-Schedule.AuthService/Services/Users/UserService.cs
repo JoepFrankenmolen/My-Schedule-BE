@@ -1,13 +1,11 @@
-﻿using My_Schedule.AuthService.DTO.Authentication;
-using My_Schedule.AuthService.DTO.Users;
+﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.DTO;
-using My_Schedule.AuthService.Models.Users;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Users;
 using My_Schedule.AuthService.Models;
 using My_Schedule.Shared.Interfaces;
 using My_Schedule.Shared.Models.Users;
-using My_Schedule.AuthService.Core;
-using Microsoft.EntityFrameworkCore;
-using My_Schedule.Shared.Models.Users.UserInterfaces;
 
 namespace My_Schedule.AuthService.Services.Users
 {

@@ -1,6 +1,6 @@
-﻿using System.Net.Mail;
+﻿using My_Schedule.Shared.Interfaces.AppSettings;
 using System.Net;
-using My_Schedule.Shared.Interfaces.AppSettings;
+using System.Net.Mail;
 
 namespace My_Schedule.AuthService.Services.Notifications
 {

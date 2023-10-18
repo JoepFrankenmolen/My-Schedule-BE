@@ -1,5 +1,4 @@
-﻿using My_Schedule.AuthService.Models.Users;
-using My_Schedule.Shared.Models.Users;
+﻿using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

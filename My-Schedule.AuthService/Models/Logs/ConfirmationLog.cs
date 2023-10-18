@@ -18,6 +18,7 @@ namespace My_Schedule.AuthService.Models.Logs
 
         [Required]
         public Guid ClientDetailsId { get; set; }
+
         public virtual ClientDetails ClientDetails { get; set; }
 
         [Required]
