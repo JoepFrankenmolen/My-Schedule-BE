@@ -2,6 +2,8 @@
 using My_Schedule.AuthService.DTO.Authentication;
 using My_Schedule.AuthService.Models;
 using My_Schedule.AuthService.Services.Confirmations;
+using My_Schedule.AuthService.Services.Logs;
+using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 
@@ -56,10 +58,10 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                     else
                     {
                         // reset AccesFailedCount becuase successfull login attempt
-                        if (user.AccessFailedCount != 0)
+                        if (user.FailedLoginAttempts != 0)
                         {
-                            user.AccessFailedCount = 0;
-                            user.LastLoggedInTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                            user.FailedLoginAttempts = 0;
+                            user.LastLoginTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                         }
 
                         // Set isValid to true.
@@ -72,12 +74,12 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                 }
                 else
                 {
-                    if (user.AccessFailedCount >= maxAttempts && user.IsBlocked == false)
+                    if (user.FailedLoginAttempts >= maxAttempts && user.IsBlocked == false)
                     {
                         user.IsBlocked = true;
                     }
 
-                    user.AccessFailedCount++;
+                    user.FailedLoginAttempts++;
                 }
 
                 await _dbContext.SaveChangesAsync();

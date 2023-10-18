@@ -1,5 +1,6 @@
 ﻿using My_Schedule.AuthService.DTO.Authentication;
 using My_Schedule.AuthService.Services.Confirmations;
+using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication

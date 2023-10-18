@@ -17,7 +17,8 @@ namespace My_Schedule.AuthService.Models.Logs
         public Guid confirmationId { get; set; }
 
         [Required]
-        public ClientDetails clientDetails { get; set; }
+        public Guid ClientDetailsId { get; set; }
+        public virtual ClientDetails ClientDetails { get; set; }
 
         [Required]
         public bool AttemptFailed { get; set; }

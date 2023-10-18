@@ -2,7 +2,7 @@
 {
     public interface IUserDetails
     {
-        long CreationTimeStamp { get; set; }
+        long CreationTimestamp { get; set; }
         string UserName { get; set; }
         string Email { get; set; }
     }

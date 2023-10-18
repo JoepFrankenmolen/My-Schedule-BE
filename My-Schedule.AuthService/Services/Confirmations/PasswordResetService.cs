@@ -5,6 +5,8 @@ using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Models.PasswordReset;
 using My_Schedule.AuthService.Services.Auth;
+using My_Schedule.AuthService.Services.Notifications;
+using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 
@@ -55,7 +57,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
                             Salt = hashDTO.Salt,
                         };
 
-                        await _dbContext.passwordResets.AddAsync(passwordReset);
+                        await _dbContext.PasswordResets.AddAsync(passwordReset);
                         await _dbContext.SaveChangesAsync();
                     }
                 }
@@ -86,7 +88,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
 
         private async Task<PasswordReset> GetPasswordReset(Guid userId, Guid confirmationId)
         {
-            return await _dbContext.passwordResets
+            return await _dbContext.PasswordResets
                 .Include(r => r.User)
                 .Where(c => c.User.Id == userId && c.ConfirmationId == confirmationId)
                 .FirstOrDefaultAsync();

@@ -3,6 +3,7 @@ using My_Schedule.AuthService.DTO.Authentication;
 using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models;
 using My_Schedule.AuthService.Models.Confirmations;
+using My_Schedule.AuthService.Services.Notifications;
 
 namespace My_Schedule.AuthService.Services.Confirmations
 {

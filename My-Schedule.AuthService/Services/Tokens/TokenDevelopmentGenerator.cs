@@ -2,7 +2,7 @@
 {
     public class TokenDevelopmentGenerator
     {
-        private readonly IServicesAppSettings _servicesAppSettings;
+/*        private readonly IServicesAppSettings _servicesAppSettings;
         private readonly TokenService _tokenService;
         private readonly UserHelper _userHelper;
 
@@ -33,6 +33,6 @@
             {
                 throw new ArgumentException("Invalid GUID format.", nameof(input));
             }
-        }
+        }*/
     }
 }

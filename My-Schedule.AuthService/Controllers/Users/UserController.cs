@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Attributes;
 using My_Schedule.Shared.Models.Users;
 

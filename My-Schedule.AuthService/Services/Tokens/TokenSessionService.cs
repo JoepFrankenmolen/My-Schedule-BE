@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.Models.Tokens;
+using My_Schedule.Shared.Helpers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
@@ -9,25 +10,29 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
     {
         private readonly AuthServiceContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ClientDetailService _clientDetailService;
 
-        public TokenSessionService(AuthServiceContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public TokenSessionService(AuthServiceContext dbContext, IHttpContextAccessor httpContextAccessor, ClientDetailService clientDetailService)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _clientDetailService = clientDetailService ?? throw new ArgumentNullException(nameof(clientDetailService));
         }
 
         public async Task<Guid> GenerateSession()
         {
-            var request = _httpContextAccessor.HttpContext.Request;
-            var ipAddress = request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            var userAgent = request.Headers["User-Agent"].ToString();
+            var httpContextDTO = HttpContextHelper.GetContextDetails(_httpContextAccessor.HttpContext);
+
+            var ipAddress = httpContextDTO.IPAddress;
+            var userAgent = httpContextDTO.UserAgent;
+
+            var clientDetailsId = await _clientDetailService.AddOrCreateClientDetails(ipAddress, userAgent);
 
             var tokenSession = new TokenSession
             {
                 CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 SessionId = Guid.NewGuid(),
-                IPAddress = ipAddress,
-                UserAgent = userAgent,
+                ClientDetailsId = clientDetailsId,
                 IsBlocked = false,
                 BlockedTimestamp = null
             };

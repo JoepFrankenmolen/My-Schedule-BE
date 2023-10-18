@@ -13,7 +13,7 @@ namespace My_Schedule.AuthService.Models
         public Guid Id { get; set; }
 
         [Required]
-        public long CreationTimeStamp { get; set; }
+        public long CreationTimestamp { get; set; }
 
         [Required]
         public string UserName { get; set; }
