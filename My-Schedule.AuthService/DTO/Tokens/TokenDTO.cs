@@ -2,10 +2,10 @@
 {
     public class TokenDTO
     {
-        public int AccessTokenExpirationTimestamp { get; set; }
+        public long AccessTokenExpirationTimestamp { get; set; }
         public string AccessToken { get; set; }
 
-        public int RefreshTokenExpirationTimestamp { get; set; }
+        public long RefreshTokenExpirationTimestamp { get; set; }
         public string RefreshToken { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
 
         public async Task<object> DispatchConfirmation(ConfirmDTO confirmDTO)
         {
-            // depending on type decides which kind of confirmation it is.
+            // Depending on type decides which kind of confirmation it is.
             switch (confirmDTO.ConfirmationType)
             {
                 case ConfirmationType.EmailConfirmation:

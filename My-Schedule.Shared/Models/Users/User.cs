@@ -3,7 +3,7 @@ using My_Schedule.Shared.Models.Users.UserInterfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace My_Schedule.AuthService.Models
+namespace My_Schedule.Shared.Models.Users
 {
     public class User : IUserDetails, IUserActivity, IUserSecurity, IUserRoles
     {

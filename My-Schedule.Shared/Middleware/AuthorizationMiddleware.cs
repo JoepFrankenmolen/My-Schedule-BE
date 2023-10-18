@@ -1,5 +1,5 @@
 ﻿using My_Schedule.Shared.Attributes;
-using My_Schedule.Shared.Interfaces;
+using My_Schedule.Shared.Core.Interfaces;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 
@@ -18,39 +18,43 @@ namespace My_Schedule.Shared.Middleware
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            try
+            // Get attribute that determines if autherization is needed or not.
+            var authorizedRolesAttribute = GetAuthorizedRolesAttribute(context);
+
+            // If no AuthorizedRolesAttribute found it means no authorization is needed.
+            if (authorizedRolesAttribute != null)
             {
-                var user = await _authorizationService.AuthorizeRequest(context.Request);
-
-                if (user == null)
+                try
                 {
-                    throw new ArgumentNullException();
+                    var user = await _authorizationService.AuthorizeRequest(context.Request);
+
+                    if (user == null)
+                    {
+                        throw new ArgumentNullException();
+                    }
+
+                    _userAuthenticationContext.Install(context, user);
+
+                    if (!CheckRolesAuthorization(authorizedRolesAttribute, user))
+                    {
+                        context.Response.StatusCode = 401; // Unauthorized
+                        return;
+                    }
                 }
-
-                _userAuthenticationContext.Install(context, user);
-
-                if (!CheckRolesAuthorization(context, user))
+                catch
                 {
                     context.Response.StatusCode = 401; // Unauthorized
                     return;
                 }
             }
-            catch
-            {
-                context.Response.StatusCode = 401; // Unauthorized
-                return;
-            }
+            
             await next.Invoke(context);
         }
 
-        private bool CheckRolesAuthorization(HttpContext context, IUserRoles user)
+        private bool CheckRolesAuthorization(AuthorizedRolesAttribute authorizedRolesAttribute, IUserRoles user)
         {
-            var rolesRequiredAttribute = GetAuthorizedRolesAttribute(context);
-            if (rolesRequiredAttribute == null)
-                return true; // No AuthorizedRolesAttribute found which means no authorization is needed.
-
             // Get the required roles from the attribute
-            var requiredRoles = rolesRequiredAttribute.Roles;
+            var requiredRoles = authorizedRolesAttribute.Roles;
 
             // Check if the user has any of the required roles
             bool hasRequiredRole = user.Roles.Any(role => requiredRoles.Contains(role.Role));

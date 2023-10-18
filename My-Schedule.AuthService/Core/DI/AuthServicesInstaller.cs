@@ -9,7 +9,7 @@ using My_Schedule.AuthService.Services.Logs;
 using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
-using My_Schedule.Shared.Interfaces;
+using My_Schedule.Shared.Core.Interfaces;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users;
@@ -20,9 +20,6 @@ namespace My_Schedule.AuthService.Core.DI
     {
         public static void Install(IServiceCollection services, IConfiguration configuration)
         {
-            // Register AppSettings as a service and pass the IConfiguration instance
-            services.AddSingleton<AppSettings>(new AppSettings(configuration));
-
             // Done like this to make sure there is only one place the DatabaseConnection gets called.
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
@@ -51,7 +48,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddScoped<IUserHelper, UserHelper>();
 
-            services.AddScoped<UserHelper>();
+            services.AddScoped<UserHelper>(); // why
 
             services.AddScoped<ClientDetailService>();
 
@@ -63,7 +60,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddScoped<ITokenSessionValidator, TokenSessionService>();
 
-            services.AddScoped<TokenSessionService>();
+            services.AddScoped<TokenSessionService>(); // why
 
             services.AddScoped<NotificationTriggerService>();
 
@@ -80,8 +77,6 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<LoginVerificationService>();
 
             services.AddScoped<EmailConfirmationService>();
-
-            services.AddScoped<IUserAuthenticationContext, UserAuthenticationContext>();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Confirmations;
+using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Confirmations;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
@@ -20,7 +22,7 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
             _emailConfirmationService = emailConfirmationService ?? throw new ArgumentNullException(nameof(emailConfirmationService));
         }
 
-        public async Task<string> register(RegisterDTO registerDTO)
+        public async Task<ConfirmationCodeResponse> register(RegisterDTO registerDTO)
         {
             if (InputValidator.IsValidInput(registerDTO.Username) && EmailValidator.IsValidEmail(registerDTO.Email) && PasswordValidator.IsValidPassword(registerDTO.Password))
             {
@@ -31,7 +33,13 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                     var user = await _userService.CreateUser(registerDTO, hashDTO);
 
                     var confirmationId = await _emailConfirmationService.CreateEmailConfirmation(user);
-                    return confirmationId.ToString();
+
+                    return new ConfirmationCodeResponse
+                    {
+                        ConfirmationId = confirmationId.ToString(),
+                        CharachterType = ConfirmationCodeType.INT,
+                        Type = ConfirmationType.EmailConfirmation
+                    };
                 }
             }
 

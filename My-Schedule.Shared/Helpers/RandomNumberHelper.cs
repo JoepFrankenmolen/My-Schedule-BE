@@ -8,7 +8,7 @@ namespace My_Schedule.Shared.Helpers
         {
             if (length <= 0)
             {
-                throw new ArgumentException("Length must be a positive integer.", nameof(length));
+                throw new ArgumentException("Length must be more than 0.");
             }
 
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
@@ -16,19 +16,13 @@ namespace My_Schedule.Shared.Helpers
                 byte[] randomBytes = new byte[length];
                 rng.GetBytes(randomBytes);
 
-                int secureInt = 0;
+                int randomInt = 0;
                 for (int i = 0; i < length; i++)
                 {
-                    secureInt = secureInt * 256 + randomBytes[i];
+                    randomInt = randomInt * 10 + randomBytes[i] % 10;
                 }
 
-                // Ensure the generated number is positive
-                secureInt = Math.Abs(secureInt);
-
-                // Trim the number to the desired length
-                secureInt %= (int)Math.Pow(10, length);
-
-                return secureInt;
+                return randomInt;
             }
         }
     }

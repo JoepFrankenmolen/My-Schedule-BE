@@ -1,4 +1,6 @@
-﻿using My_Schedule.Shared.Middleware;
+﻿using Microsoft.AspNetCore.Components.Web;
+using My_Schedule.Shared.Core.Interfaces;
+using My_Schedule.Shared.Middleware;
 using My_Schedule.Shared.Services.Authorization;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens;
@@ -23,6 +25,8 @@ namespace My_Schedule.Shared.Core.DI
             services.AddScoped<AuthorizationMiddleware>();
 
             //services.AddScoped<DevelopmentMiddleware>();
+
+            services.AddScoped<IUserAuthenticationContext, UserAuthenticationContext>();
 
             services.AddScoped<IAuthorizationService, AuthorizationService>();
 

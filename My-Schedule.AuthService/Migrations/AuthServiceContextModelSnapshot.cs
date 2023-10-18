@@ -38,7 +38,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientDetails");
+                    b.ToTable("ClientDetails", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Confirmations.Confirmation", b =>
@@ -76,7 +76,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Confirmations");
+                    b.ToTable("Confirmations", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.ConfirmationLog", b =>
@@ -104,7 +104,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("ConfirmationLogs");
+                    b.ToTable("ConfirmationLogs", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.LoginLog", b =>
@@ -130,7 +130,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("LoginLogs");
+                    b.ToTable("LoginLogs", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.PasswordReset.PasswordReset", b =>
@@ -159,7 +159,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PasswordResets");
+                    b.ToTable("PasswordResets", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Tokens.TokenSession", b =>
@@ -187,7 +187,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("TokenSessions");
+                    b.ToTable("TokenSessions", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.User", b =>
@@ -241,7 +241,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -260,7 +260,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Confirmations.Confirmation", b =>

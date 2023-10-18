@@ -5,7 +5,6 @@ namespace SecureLogin.Data.Models.Tokens
     public interface ITokenStatus : IEntityWithGuidKey
     {
         Guid SessionId { get; set; }
-        long CreationTimestamp { get; set; }
         bool IsBlocked { get; set; }
         long? BlockedTimestamp { get; set; }
     }

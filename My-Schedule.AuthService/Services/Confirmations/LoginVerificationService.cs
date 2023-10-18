@@ -5,6 +5,7 @@ using My_Schedule.AuthService.Models;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Auth.Tokens;
 using My_Schedule.AuthService.Services.Notifications;
+using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Services.Confirmations
 {

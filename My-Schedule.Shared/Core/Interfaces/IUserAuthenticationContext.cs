@@ -1,7 +1,7 @@
 ﻿using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 
-namespace My_Schedule.Shared.Interfaces
+namespace My_Schedule.Shared.Core.Interfaces
 {
     public interface IUserAuthenticationContext
     {

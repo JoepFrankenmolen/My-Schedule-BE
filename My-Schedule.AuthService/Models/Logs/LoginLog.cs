@@ -1,4 +1,4 @@
-﻿using My_Schedule.AuthService.Models.ClientDetail;
+﻿using My_Schedule.Shared.Models.ClientDetails;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

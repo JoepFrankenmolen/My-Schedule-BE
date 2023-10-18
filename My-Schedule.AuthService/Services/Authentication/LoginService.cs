@@ -1,11 +1,14 @@
 ﻿using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models;
+using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Confirmations;
 using My_Schedule.AuthService.Services.Logs;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication
 {
@@ -17,47 +20,45 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
         private readonly HashService _hashService;
         private readonly UserHelper _userHelper;
         private readonly AuthServiceContext _dbContext;
-        private readonly UserService _userService;
         private readonly LoginLogService _loginLogService;
 
-        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IUserSettings appSettings, UserHelper userHelper, HashService hashService, UserService userservice, LoginLogService loginLogService)
+        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IUserSettings appSettings, UserHelper userHelper, HashService hashService, LoginLogService loginLogService)
         {
             _loginVerificationService = loginVerificationService ?? throw new ArgumentNullException(nameof(loginVerificationService));
             _emailConfirmationService = emailConfirmationService ?? throw new ArgumentNullException(nameof(emailConfirmationService));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
             _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
-            _userService = userservice ?? throw new ArgumentNullException(nameof(userservice));
             _loginLogService = loginLogService ?? throw new ArgumentNullException(nameof(loginLogService));
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<LoginDTO> Login(CredentialsDTO credentialsDTO)
+        public async Task<ConfirmationCodeResponse> Login(CredentialsDTO credentialsDTO)
         {
-            // get a user can be null
+            // Get the user. Can be null.
             var user = await _userHelper.GetUserByEmail(credentialsDTO.Email);
-            var loginDTO = new LoginDTO();
+            var response = new ConfirmationCodeResponse();
             var maxAttempts = _appSettings.MaxLoginAttempts;
             var isValid = false;
 
             // checks if the user exists.
             if (user != null)
             {
-                // temporary here bc no clear way yet to communicate the email is not confirmed yet!!!!!!!!!!!!!!!!!
-
                 // validate the user and if correct generate a token
                 if (UserValidator.IsValidUser(user, maxAttempts, false) && await ValidatePasswordHash(user, credentialsDTO))
                 {
+                    // temporary here bc no clear way yet to communicate the email is not confirmed yet!!!!!!!!!!!!!!!!!
                     if (user.IsEmailConfirmed == false)
                     {
                         var id = await _emailConfirmationService.CreateEmailConfirmation(user);
 
-                        loginDTO.confirmationId = id.ToString();
-                        loginDTO.type = "email";
+                        response.ConfirmationId = id.ToString();
+                        response.CharachterType = ConfirmationCodeType.INT;
+                        response.Type = ConfirmationType.EmailConfirmation;
                     }
                     else
                     {
-                        // reset AccesFailedCount becuase successfull login attempt
+                        // reset AccesFailedCount because successfull login attempt
                         if (user.FailedLoginAttempts != 0)
                         {
                             user.FailedLoginAttempts = 0;
@@ -67,8 +68,9 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                         // Set isValid to true.
                         var id = await _loginVerificationService.CreateLoginVerification(user);
 
-                        loginDTO.confirmationId = id.ToString();
-                        loginDTO.type = "login";
+                        response.ConfirmationId = id.ToString();
+                        response.CharachterType = ConfirmationCodeType.INT;
+                        response.Type = ConfirmationType.LoginVerification;
                     }
                     isValid = true;
                 }
@@ -91,7 +93,7 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
             // If the user is valid than send an email with a confirmation code.
             if (isValid)
             {
-                return loginDTO;
+                return response;
             }
 
             throw new UnauthorizedAccessException();
