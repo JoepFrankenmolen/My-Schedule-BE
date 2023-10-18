@@ -5,11 +5,11 @@ using My_Schedule.AuthService.Models.Logs;
 using My_Schedule.AuthService.Models.PasswordReset;
 using My_Schedule.AuthService.Models.Tokens;
 
-namespace My_Schedule.AuthService.Context
+namespace My_Schedule.AuthService.Core
 {
-    public class SecureLoginContext : DbContext
+    public class AuthServiceContext : DbContext
     {
-        public SecureLoginContext(DbContextOptions<SecureLoginContext> options) : base(options)
+        public AuthServiceContext(DbContextOptions<AuthServiceContext> options) : base(options)
         {
         }
 

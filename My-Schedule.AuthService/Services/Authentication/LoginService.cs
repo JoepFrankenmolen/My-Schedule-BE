@@ -10,11 +10,11 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
         private readonly IServicesAppSettings _appSettings;
         private readonly HashService _hashService;
         private readonly UserHelper _userHelper;
-        private readonly SecureLoginContext _dbContext;
+        private readonly AuthServiceContext _dbContext;
         private readonly UserService _userService;
         private readonly LoginLogService _loginLogService;
 
-        public LoginService(SecureLoginContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IServicesAppSettings appSettings, UserHelper userHelper, HashService hashService, UserService userservice, LoginLogService loginLogService)
+        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IServicesAppSettings appSettings, UserHelper userHelper, HashService hashService, UserService userservice, LoginLogService loginLogService)
         {
             _loginVerificationService = loginVerificationService ?? throw new ArgumentNullException(nameof(loginVerificationService));
             _emailConfirmationService = emailConfirmationService ?? throw new ArgumentNullException(nameof(emailConfirmationService));

@@ -1,5 +1,5 @@
-﻿using My_Schedule.AuthService.DTO.Auth.Authentication;
-using My_Schedule.AuthService.DTO.Auth.Tokens;
+﻿using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Tokens;
 using My_Schedule.AuthService.Models;
 using My_Schedule.AuthService.Services.Auth.Tokens;
 

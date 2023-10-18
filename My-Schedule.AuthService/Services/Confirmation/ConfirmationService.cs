@@ -13,10 +13,10 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
     {
         private readonly IServicesAppSettings _appSettings;
         private readonly HashService _hashService;
-        private readonly SecureLoginContext _dbContext;
+        private readonly AuthServiceContext _dbContext;
         private readonly ConfirmationLogService _confirmationLogService;
 
-        public ConfirmationService(IServicesAppSettings appSettings, HashService hashService, SecureLoginContext dbContext, ConfirmationLogService confirmationLogService)
+        public ConfirmationService(IServicesAppSettings appSettings, HashService hashService, AuthServiceContext dbContext, ConfirmationLogService confirmationLogService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));

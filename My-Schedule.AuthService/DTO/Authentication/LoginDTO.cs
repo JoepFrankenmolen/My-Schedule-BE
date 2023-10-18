@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.AuthService.DTO.Auth.Authentication
+﻿namespace My_Schedule.AuthService.DTO.Authentication
 {
     public class LoginDTO
     {

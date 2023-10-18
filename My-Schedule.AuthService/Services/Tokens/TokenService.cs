@@ -1,4 +1,5 @@
-﻿using My_Schedule.AuthService.DTO.Auth.Tokens;
+﻿using My_Schedule.AuthService.DTO.Tokens;
+using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using My_Schedule.Shared.Services.Tokens;
@@ -46,7 +47,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             return tokenDTO;
         }
 
-        public async Task<string> GenerateToken(User user, TokenType type, Guid sessionId)
+        public async Task<string> GenerateToken(IUserBasic user, TokenType type, Guid sessionId)
         {
             int expirationtime = 0;
 

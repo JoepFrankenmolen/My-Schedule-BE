@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.AuthService.DTO.Auth
+﻿namespace My_Schedule.AuthService.DTO
 {
     public class HashDTO
     {

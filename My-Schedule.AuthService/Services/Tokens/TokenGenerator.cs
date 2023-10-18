@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using SecureLogin.Data.DTO.Auth.Tokens;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Services.Helpers;
+using My_Schedule.AuthService.DTO.Tokens;
+using My_Schedule.Shared.DTO.Tokens;
+using My_Schedule.Shared.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,7 +17,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
         }
 
-        public async Task<string> GenerateToken(User user, int tokenExpirationTime, TokenType type, Guid sessionId)
+        public async Task<string> GenerateToken(IEntityWithGuidKey user, int tokenExpirationTime, TokenType type, Guid sessionId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_appSettings.JWTSigningKey);

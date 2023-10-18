@@ -1,15 +1,16 @@
 ﻿using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
-using My_Schedule.Shared.Services.Tokens;
+using My_Schedule.Shared.Services.Authorization.Interfaces;
+using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.Shared.Services.Authorization
 {
-    public class AuthorizationService
+    public class AuthorizationService : IAuthorizationService
     {
-        private readonly TokenValidator _tokenValidator;
+        private readonly ITokenValidator _tokenValidator;
 
-        public AuthorizationService(TokenValidator tokenValidator)
+        public AuthorizationService(ITokenValidator tokenValidator)
         {
             _tokenValidator = tokenValidator ?? throw new ArgumentNullException(nameof(tokenValidator));
         }

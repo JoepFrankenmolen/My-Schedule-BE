@@ -11,9 +11,9 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
     {
         private readonly ConfirmationService _confirmationService;
         private readonly NotificationTriggerService _notificationTriggerService;
-        private readonly SecureLoginContext _dbContext;
+        private readonly AuthServiceContext _dbContext;
 
-        public EmailConfirmationService(ConfirmationService confirmationService, SecureLoginContext dbContext, NotificationTriggerService notificationTriggerService)
+        public EmailConfirmationService(ConfirmationService confirmationService, AuthServiceContext dbContext, NotificationTriggerService notificationTriggerService)
         {
             _confirmationService = confirmationService ?? throw new ArgumentNullException(nameof(confirmationService));
             _notificationTriggerService = notificationTriggerService ?? throw new ArgumentNullException(nameof(notificationTriggerService));

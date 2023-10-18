@@ -19,9 +19,9 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
         private readonly UserHelper _userHelper;
         private readonly HashService _hashService;
         private readonly NotificationTriggerService _notificationTriggerService;
-        private readonly SecureLoginContext _dbContext;
+        private readonly AuthServiceContext _dbContext;
 
-        public PasswordResetService(ConfirmationService confirmationService, IServicesAppSettings appSettings, UserHelper userHelper, SecureLoginContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
+        public PasswordResetService(ConfirmationService confirmationService, IServicesAppSettings appSettings, UserHelper userHelper, AuthServiceContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
         {
             _confirmationService = confirmationService ?? throw new ArgumentNullException(nameof(confirmationService));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));

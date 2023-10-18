@@ -1,16 +1,16 @@
 ﻿using My_Schedule.Shared.Attributes;
 using My_Schedule.Shared.Interfaces;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
-using My_Schedule.Shared.Services.Authorization;
+using My_Schedule.Shared.Services.Authorization.Interfaces;
 
 namespace My_Schedule.Shared.Middleware
 {
     public class AuthorizationMiddleware : IMiddleware
     {
-        private readonly AuthorizationService _authorizationService;
+        private readonly IAuthorizationService _authorizationService;
         private readonly IUserAuthenticationContext _userAuthenticationContext;
 
-        public AuthorizationMiddleware(AuthorizationService authorizationService, IUserAuthenticationContext userAuthenticationContext)
+        public AuthorizationMiddleware(IAuthorizationService authorizationService, IUserAuthenticationContext userAuthenticationContext)
         {
             _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
             _userAuthenticationContext = userAuthenticationContext ?? throw new ArgumentNullException(nameof(userAuthenticationContext));

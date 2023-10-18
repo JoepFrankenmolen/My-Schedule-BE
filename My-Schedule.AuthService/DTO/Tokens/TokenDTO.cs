@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.AuthService.DTO.Auth.Tokens
+﻿namespace My_Schedule.AuthService.DTO.Tokens
 {
     public class TokenDTO
     {

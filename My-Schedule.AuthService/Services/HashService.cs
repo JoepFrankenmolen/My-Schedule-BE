@@ -1,4 +1,4 @@
-﻿using My_Schedule.AuthService.DTO.Auth;
+﻿using My_Schedule.AuthService.DTO;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using System.Security.Cryptography;
 using System.Text;

@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.Shared.Services.Tokens
+﻿namespace My_Schedule.Shared.Services.Tokens.Interfaces
 {
     public interface ITokenSessionValidator
     {
