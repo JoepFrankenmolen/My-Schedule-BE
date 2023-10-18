@@ -1,7 +1,7 @@
 ﻿using My_Schedule.AuthService.DTO.Tokens;
+using My_Schedule.AuthService.Models;
 using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Interfaces.AppSettings;
-using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using My_Schedule.Shared.Services.Tokens;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
@@ -21,33 +21,32 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             _tokenSessionService = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
         }
 
-
         public async Task<string> RefreshAccessToken(string refreshToken)
         {
             var validatedTokenUserDTO = await ValidateToken(refreshToken, TokenType.Refresh);
 
             if (validatedTokenUserDTO != null && validatedTokenUserDTO.user != null)
             {
-                return await GenerateToken(validatedTokenUserDTO.user, TokenType.Access, validatedTokenUserDTO.SessionId);
+                return await GenerateToken(validatedTokenUserDTO.user.Id, TokenType.Access, validatedTokenUserDTO.SessionId);
             }
 
             throw new UnauthorizedAccessException();
         }
 
-        public async Task<TokenDTO> CreateTokenDTO(IUserBasic user)
+        public async Task<TokenDTO> CreateTokenDTO(User user)
         {
             var sessionId = await _tokenSessionService.GenerateSession();
 
             var tokenDTO = new TokenDTO
             {
-                AccessToken = await GenerateToken(user, TokenType.Access, sessionId),
-                RefreshToken = await GenerateToken(user, TokenType.Refresh, sessionId),
+                AccessToken = await GenerateToken(user.Id, TokenType.Access, sessionId),
+                RefreshToken = await GenerateToken(user.Id, TokenType.Refresh, sessionId),
             };
 
             return tokenDTO;
         }
 
-        public async Task<string> GenerateToken(IUserBasic user, TokenType type, Guid sessionId)
+        public async Task<string> GenerateToken(Guid userId, TokenType type, Guid sessionId)
         {
             int expirationtime = 0;
 
@@ -60,7 +59,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
                 expirationtime = _appSettings.RefreshTokenExpirationTime;
             }
 
-            return await _tokenGenerator.GenerateToken(user, expirationtime, type, sessionId);
+            return await _tokenGenerator.GenerateToken(userId, expirationtime, type, sessionId);
         }
 
         public async Task<ValidatedTokenUserDTO> ValidateToken(string token, TokenType type)

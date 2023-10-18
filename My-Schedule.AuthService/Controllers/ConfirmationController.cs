@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Services.Services.Auth.Confirmations;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.Services.Confirmations;
 
 namespace My_Schedule.AuthService.Controllers
 {

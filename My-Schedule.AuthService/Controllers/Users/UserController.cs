@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SecureLogin.Attributes;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Services.Services.ApplicationUsers;
+using My_Schedule.Shared.Attributes;
+using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Controllers.Users
 {

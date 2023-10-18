@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SecureLogin.Data.DTO.Auth.Tokens;
-using SecureLogin.Services.Services.Auth.Tokens;
+using My_Schedule.AuthService.DTO.Tokens;
+using My_Schedule.AuthService.Services.Auth.Tokens;
 
 namespace My_Schedule.AuthService.Controllers
 {
@@ -16,7 +16,6 @@ namespace My_Schedule.AuthService.Controllers
         }
 
         [HttpPost("refresh")]
-        //        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RefreshAccessToken([FromBody] AccessTokenDTO accessTokenDTO)
         {
             _ = accessTokenDTO ?? throw new ArgumentNullException(nameof(accessTokenDTO));

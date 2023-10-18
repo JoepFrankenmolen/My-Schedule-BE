@@ -1,9 +1,6 @@
-﻿using SecureLogin.Services.Helpers.Validators;
-using SecureLogin.Services.Services.ApplicationUsers.Helpers;
-using SecureLogin.Services.Services.ApplicationUsers;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Services.Common.Validators;
-using My_Schedule.AuthService.Services.Auth.Confirmation;
+﻿using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.Services.Confirmations;
+using My_Schedule.Shared.Helpers.Validators;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication
 {

@@ -46,7 +46,7 @@ namespace My_Schedule.AuthService.Models
         public bool IsEmailConfirmed { get; set; }
 
         [Required]
-        public long RevocationTimestamp { get; set; }
+        public long TokenRevocationTimestamp { get; set; }
 
         // IUserActivity
         [Required]

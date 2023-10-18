@@ -3,5 +3,6 @@
     public interface IConfirmationSettings
     {
         int ConfirmationExpirationTime { get; }
+        int MaxConfirmationAttempts { get; }
     }
 }

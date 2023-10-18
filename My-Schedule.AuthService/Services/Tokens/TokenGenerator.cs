@@ -1,7 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using My_Schedule.AuthService.DTO.Tokens;
 using My_Schedule.Shared.DTO.Tokens;
-using My_Schedule.Shared.Models;
+using My_Schedule.Shared.Interfaces.AppSettings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,14 +9,14 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
     public class TokenGenerator
     {
-        private readonly IServicesAppSettings _appSettings;
+        private readonly IAuthenticationSettings _appSettings;
 
-        public TokenGenerator(IServicesAppSettings appSettings)
+        public TokenGenerator(IAuthenticationSettings appSettings)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
         }
 
-        public async Task<string> GenerateToken(IEntityWithGuidKey user, int tokenExpirationTime, TokenType type, Guid sessionId)
+        public async Task<string> GenerateToken(Guid userId, int tokenExpirationTime, TokenType type, Guid sessionId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_appSettings.JWTSigningKey);
@@ -27,7 +26,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
                     new[]
                     {
                         // add more claims here is you want to increase the jwt tokens information
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                         new Claim(CustomClaimTypes.SessionId, sessionId.ToString()),
                         new Claim(CustomClaimTypes.TokenType, type.ToString()),
                     }),

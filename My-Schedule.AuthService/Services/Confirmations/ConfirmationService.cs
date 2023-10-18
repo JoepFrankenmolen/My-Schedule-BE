@@ -1,22 +1,22 @@
-﻿using SecureLogin.Services.Helpers;
-using SecureLogin.Services.Common.Helpers;
-using Microsoft.EntityFrameworkCore;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.Enums;
-using SecureLogin.Services.Services.Loging;
-using SecureLogin.Data.Models.Confirmations;
-using My_Schedule.AuthService.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Core;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Confirmations;
+using My_Schedule.AuthService.Models.Confirmations;
+using My_Schedule.AuthService.Services.Auth;
+using My_Schedule.Shared.Helpers;
+using My_Schedule.Shared.Interfaces.AppSettings;
 
-namespace My_Schedule.AuthService.Services.Auth.Confirmation
+namespace My_Schedule.AuthService.Services.Confirmations
 {
     public class ConfirmationService
     {
-        private readonly IServicesAppSettings _appSettings;
+        private readonly IConfirmationSettings _appSettings;
         private readonly HashService _hashService;
         private readonly AuthServiceContext _dbContext;
         private readonly ConfirmationLogService _confirmationLogService;
 
-        public ConfirmationService(IServicesAppSettings appSettings, HashService hashService, AuthServiceContext dbContext, ConfirmationLogService confirmationLogService)
+        public ConfirmationService(IConfirmationSettings appSettings, HashService hashService, AuthServiceContext dbContext, ConfirmationLogService confirmationLogService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
@@ -31,8 +31,8 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
 
             var confirmation = new Confirmation
             {
-                CreationTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                ExpirationTimeStamp = DateTimeOffset.UtcNow.AddSeconds(_appSettings.ConfirmationExpirationTime).ToUnixTimeSeconds(),
+                CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                ExpirationTimestamp = DateTimeOffset.UtcNow.AddSeconds(_appSettings.ConfirmationExpirationTime).ToUnixTimeSeconds(),
                 UserId = userId,
                 ConfirmationType = confirmationType,
                 Code = codeHash,
@@ -104,14 +104,13 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
             {
                 return null;
             }
-
         }
 
         private async Task<bool> ValidateConfirmation(Confirmation confirmation, string codeHash, ConfirmationType confirmationType)
         {
             var maxAttempts = _appSettings.MaxConfirmationAttempts;
 
-            if (confirmation.IsBlocked || confirmation.IsConfirmed || confirmationType != confirmation.ConfirmationType || confirmation.ExpirationTimeStamp < DateTimeOffset.UtcNow.ToUnixTimeSeconds() || confirmation.Attempts >= maxAttempts)
+            if (confirmation.IsBlocked || confirmation.IsConfirmed || confirmationType != confirmation.ConfirmationType || confirmation.ExpirationTimestamp < DateTimeOffset.UtcNow.ToUnixTimeSeconds() || confirmation.Attempts >= maxAttempts)
             {
                 return false;
             }
@@ -145,8 +144,9 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
             switch (type)
             {
                 case ConfirmationCodeType.INT:
-                    code = RandomNumberGenerator.GenerateRandomNumbers(6).ToString();
+                    code = RandomNumberHelper.GenerateRandomNumbers(6).ToString();
                     break;
+
                 case ConfirmationCodeType.GUID:
                     code = Guid.NewGuid() + Guid.NewGuid().ToString();
                     break;

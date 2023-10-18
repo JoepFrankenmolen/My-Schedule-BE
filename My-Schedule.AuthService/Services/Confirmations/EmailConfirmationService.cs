@@ -1,11 +1,10 @@
-﻿using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.Enums;
-using SecureLogin.Services.Services.Notifications;
-using SecureLogin.Data.Models.ApplicationUser;
-using SecureLogin.Data.Models.Confirmations;
-using My_Schedule.AuthService.Context;
+﻿using My_Schedule.AuthService.Core;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Confirmations;
+using My_Schedule.AuthService.Models;
+using My_Schedule.AuthService.Models.Confirmations;
 
-namespace My_Schedule.AuthService.Services.Auth.Confirmation
+namespace My_Schedule.AuthService.Services.Confirmations
 {
     public class EmailConfirmationService
     {
@@ -35,7 +34,7 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
             if (confirmation != null)
             {
                 confirmation.User.IsEmailConfirmed = true;
-                confirmation.User.RevocationTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                confirmation.User.TokenRevocationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 await _dbContext.SaveChangesAsync();
                 return;

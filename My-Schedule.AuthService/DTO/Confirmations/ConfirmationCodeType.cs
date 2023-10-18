@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.AuthService.DTO.Confirmation
+﻿namespace My_Schedule.AuthService.DTO.Confirmations
 {
     public enum ConfirmationCodeType
     {

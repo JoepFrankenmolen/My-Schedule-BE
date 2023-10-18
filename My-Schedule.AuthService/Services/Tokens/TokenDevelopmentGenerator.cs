@@ -1,7 +1,4 @@
-﻿using SecureLogin.Services.Helpers;
-using SecureLogin.Services.Services.ApplicationUsers.Helpers;
-
-namespace My_Schedule.AuthService.Services.Auth.Tokens
+﻿namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
     public class TokenDevelopmentGenerator
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.AuthService.Context;
+using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.Models.Tokens;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
 {
-    public class TokenSessionService: ITokenSessionValidator
+    public class TokenSessionService : ITokenSessionValidator
     {
         private readonly AuthServiceContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;

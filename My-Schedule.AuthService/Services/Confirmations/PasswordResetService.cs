@@ -1,27 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.AuthService.Context;
-using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.Enums;
-using SecureLogin.Data.Models.Confirmations;
-using SecureLogin.Data.Models.PasswordReset;
-using SecureLogin.Services.Common.Validators;
-using SecureLogin.Services.Helpers;
-using SecureLogin.Services.Helpers.Validators;
-using SecureLogin.Services.Services.ApplicationUsers.Helpers;
-using SecureLogin.Services.Services.Notifications;
+using My_Schedule.AuthService.Core;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.DTO.Confirmations;
+using My_Schedule.AuthService.Models.Confirmations;
+using My_Schedule.AuthService.Models.PasswordReset;
+using My_Schedule.AuthService.Services.Auth;
+using My_Schedule.Shared.Helpers.Validators;
+using My_Schedule.Shared.Interfaces.AppSettings;
 
-namespace My_Schedule.AuthService.Services.Auth.Confirmation
+namespace My_Schedule.AuthService.Services.Confirmations
 {
     public class PasswordResetService
     {
-        private readonly IServicesAppSettings _appSettings;
+        private readonly IUserSettings _appSettings;
         private readonly ConfirmationService _confirmationService;
         private readonly UserHelper _userHelper;
         private readonly HashService _hashService;
         private readonly NotificationTriggerService _notificationTriggerService;
         private readonly AuthServiceContext _dbContext;
 
-        public PasswordResetService(ConfirmationService confirmationService, IServicesAppSettings appSettings, UserHelper userHelper, AuthServiceContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
+        public PasswordResetService(ConfirmationService confirmationService, IUserSettings appSettings, UserHelper userHelper, AuthServiceContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
         {
             _confirmationService = confirmationService ?? throw new ArgumentNullException(nameof(confirmationService));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
@@ -62,7 +60,6 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
                     }
                 }
             }
-
         }
 
         public async Task ConfirmPasswordReset(ConfirmDTO confirmDTO)
@@ -78,7 +75,7 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
 
                     user.PasswordHash = passwordReset.PasswordHash;
                     user.Salt = passwordReset.Salt;
-                    user.RevocationTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                    user.TokenRevocationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 }
 
                 await _dbContext.SaveChangesAsync();

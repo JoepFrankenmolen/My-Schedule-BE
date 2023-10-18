@@ -1,5 +1,9 @@
-﻿using My_Schedule.AuthService.Context;
-using My_Schedule.AuthService.Services.Auth.Confirmation;
+﻿using My_Schedule.AuthService.Core;
+using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.Models;
+using My_Schedule.AuthService.Services.Confirmations;
+using My_Schedule.Shared.Helpers.Validators;
+using My_Schedule.Shared.Interfaces.AppSettings;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication
 {
@@ -7,14 +11,14 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
     {
         private readonly LoginVerificationService _loginVerificationService;
         private readonly EmailConfirmationService _emailConfirmationService;
-        private readonly IServicesAppSettings _appSettings;
+        private readonly IUserSettings _appSettings;
         private readonly HashService _hashService;
         private readonly UserHelper _userHelper;
         private readonly AuthServiceContext _dbContext;
         private readonly UserService _userService;
         private readonly LoginLogService _loginLogService;
 
-        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IServicesAppSettings appSettings, UserHelper userHelper, HashService hashService, UserService userservice, LoginLogService loginLogService)
+        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IUserSettings appSettings, UserHelper userHelper, HashService hashService, UserService userservice, LoginLogService loginLogService)
         {
             _loginVerificationService = loginVerificationService ?? throw new ArgumentNullException(nameof(loginVerificationService));
             _emailConfirmationService = emailConfirmationService ?? throw new ArgumentNullException(nameof(emailConfirmationService));

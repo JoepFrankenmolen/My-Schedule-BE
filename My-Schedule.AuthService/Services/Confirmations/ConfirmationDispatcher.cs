@@ -1,7 +1,7 @@
-﻿using SecureLogin.Data.DTO.Auth.Authentication;
-using SecureLogin.Data.Models.Confirmations;
+﻿using My_Schedule.AuthService.DTO.Authentication;
+using My_Schedule.AuthService.Models.Confirmations;
 
-namespace My_Schedule.AuthService.Services.Auth.Confirmation
+namespace My_Schedule.AuthService.Services.Confirmations
 {
     public class ConfirmationDispatcher
     {
@@ -18,6 +18,7 @@ namespace My_Schedule.AuthService.Services.Auth.Confirmation
 
         public async Task<object> DispatchConfirmation(ConfirmDTO confirmDTO)
         {
+            // depending on type decides which kind of confirmation it is.
             switch (confirmDTO.ConfirmationType)
             {
                 case ConfirmationType.EmailConfirmation:
