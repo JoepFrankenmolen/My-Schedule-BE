@@ -1,11 +1,13 @@
-﻿namespace My_Schedule.Shared.Helpers.Validators
+﻿using My_Schedule.Shared.Models.Users.UserInterfaces;
+
+namespace My_Schedule.Shared.Helpers.Validators
 {
     public static class UserValidator
     {
-        public static bool IsValidUser(IUserValidationFields user, int maxAttempts, bool mustEmailBeConfirmed = true)
+        public static bool IsValidUser(IUserStatus user, bool mustEmailBeConfirmed = true)
         {
             // If user is null or has too many access failed attempts, or is blocked/banned, return false.
-            if (user == null || user.AccessFailedCount >= maxAttempts || user.IsBlocked || user.IsBanned)
+            if (user == null || user.IsBlocked || user.IsBanned)
             {
                 return false;
             }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
-using My_Schedule.Shared.Models.Helpers;
+using My_Schedule.Shared.DTO.Helpers;
 
 namespace My_Schedule.Shared.Helpers
 {

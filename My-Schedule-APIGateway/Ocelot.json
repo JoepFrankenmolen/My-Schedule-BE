@@ -6,25 +6,12 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 49159
+          "Port": 49153
         }
       ],
       "UpstreamPathTemplate": "/WeatherForecast",
       "UpstreamHttpMethod": [],
       "SwaggerKey": "My-Schedule-AuthService"
-    },
-    {
-      "DownstreamPathTemplate": "/api/WeatherForecast",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7231
-        }
-      ],
-      "UpstreamPathTemplate": "/v2/WeatherForecast",
-      "UpstreamHttpMethod": [ "Get" ],
-      "SwaggerKey": "My-Schedule-BE"
     }
   ],
   "SwaggerEndPoints": [
@@ -34,17 +21,7 @@
         {
           "Name": "AuthService",
           "Version": "v1",
-          "Url": "https://localhost:49159/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "My-Schedule-BE",
-      "Config": [
-        {
-          "Name": "test",
-          "Version": "v1",
-          "Url": "https://localhost:7231/swagger/v1/swagger.json"
+          "Url": "https://localhost:49153/swagger/v1/swagger.json"
         }
       ]
     }
