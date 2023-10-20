@@ -22,7 +22,9 @@ namespace My_Schedule.Shared.Helpers
                     randomInt = randomInt * 10 + randomBytes[i] % 10;
                 }
 
-                return randomInt;
+                // Ensure that the generated number has the specified length
+                int minLength = (int)Math.Pow(10, length - 1);
+                return randomInt < minLength ? randomInt + minLength : randomInt;
             }
         }
     }
