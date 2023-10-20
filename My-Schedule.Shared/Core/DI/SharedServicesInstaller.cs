@@ -1,6 +1,8 @@
-﻿using My_Schedule.Shared.Core.Interfaces;
-using My_Schedule.Shared.DTO.Context;
+﻿using My_Schedule.Shared.DTO.Context;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Middleware;
+using My_Schedule.Shared.RabbitMQ;
+using My_Schedule.Shared.RabbitMQ.Producers;
 using My_Schedule.Shared.Services.Authorization;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens;
@@ -39,6 +41,11 @@ namespace My_Schedule.Shared.Core.DI
             services.AddScoped<IAuthorizationService, AuthorizationService>();
 
             services.AddScoped<ITokenValidator, TokenValidator>();
+
+            // service bus
+            services.AddScoped<IMessageProducer, MessageProducer>();
+
+            services.AddScoped<UserProducer>();
 
             if (!contextConfig.CustomTokenSessionValidator)
             {

@@ -1,7 +1,7 @@
 ﻿using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.DTO;
 using My_Schedule.AuthService.DTO.Authentication;
-using My_Schedule.Shared.Core.Interfaces;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Services.Users

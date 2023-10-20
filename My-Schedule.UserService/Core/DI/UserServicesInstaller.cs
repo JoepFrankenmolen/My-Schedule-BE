@@ -33,6 +33,8 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<UserRoleService>();
 
             services.AddScoped<UserFetchingService>();
+
+            services.AddScoped<UserAdminService>();
         }
     }
 }

@@ -1,22 +1,45 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using My_Schedule.Shared.DTO.Users;
 using My_Schedule.Shared.Interfaces.Interfaces;
+using My_Schedule.Shared.RabbitMQ.Producers;
 using My_Schedule.UserService.Core;
 using My_Schedule.UserService.Services.Users.Helpers;
 
 namespace My_Schedule.UserService.Services.Users
 {
-    public class UserFetchingService
+    public class UserAdminService
     {
         private readonly UserServiceContext _dbContext;
         private readonly UserHelper _userHelper;
+        private readonly UserProducer _userProducer;
         private readonly IUserAuthenticationContext _userAuthenticationContext;
 
-        public UserFetchingService(UserServiceContext dbContext, UserHelper userHelper, IUserAuthenticationContext userAuthenticationContext)
+        public UserAdminService(UserServiceContext dbContext, UserHelper userHelper, UserProducer userProducer, IUserAuthenticationContext userAuthenticationContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userProducer = userProducer ?? throw new ArgumentNullException(nameof(userProducer));
             _userAuthenticationContext = userAuthenticationContext ?? throw new ArgumentNullException(nameof(_userAuthenticationContext));
+        }
+
+        public async Task BanUser(string userId, bool sendMessage = true)
+        {
+            var user = await _userHelper.GetUserById(Guid.Parse(userId));
+
+            if (user == null)
+            {
+                throw new ArgumentNullException("userId failed to fetch");
+            }
+
+            user.IsBanned = true;
+
+            if (sendMessage)
+            {
+                await _userProducer.SendUserBannedMessage(user.Id, true);
+            }
+
+            _dbContext.Update(user);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<UserDTO>> GetAllUsers()
