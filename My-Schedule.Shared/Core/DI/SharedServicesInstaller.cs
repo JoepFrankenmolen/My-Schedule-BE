@@ -40,7 +40,7 @@ namespace My_Schedule.Shared.Core.DI
 
             services.AddScoped<ITokenValidator, TokenValidator>();
 
-            if(!contextConfig.CustomTokenSessionValidator)
+            if (!contextConfig.CustomTokenSessionValidator)
             {
                 services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
             }

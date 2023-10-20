@@ -51,25 +51,17 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                     {
                         var id = await _emailConfirmationService.CreateEmailConfirmation(user);
 
-                        response.ConfirmationId = id.ToString();
-                        response.CharachterType = ConfirmationCodeType.INT;
-                        response.Type = ConfirmationType.EmailConfirmation;
+                        response = CreateResponse(response, id, ConfirmationType.EmailConfirmation);
                     }
                     else
                     {
-                        // reset AccesFailedCount because successfull login attempt
-                        if (user.FailedLoginAttempts != 0)
-                        {
-                            user.FailedLoginAttempts = 0;
-                            user.LastLoginTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                        }
+                        // Update user fields due to SuccessFullLogin.
+                        user = SuccessFullLogin(user);
 
                         // Set isValid to true.
                         var id = await _loginVerificationService.CreateLoginVerification(user);
 
-                        response.ConfirmationId = id.ToString();
-                        response.CharachterType = ConfirmationCodeType.INT;
-                        response.Type = ConfirmationType.LoginVerification;
+                        response = CreateResponse(response, id, ConfirmationType.LoginVerification);
                     }
                     isValid = true;
                 }
@@ -107,6 +99,29 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                 return true;
             }
             return false;
+        }
+
+        private User SuccessFullLogin(User user)
+        {
+            // reset AccesFailedCount because successfull login attempt
+            if (user.FailedLoginAttempts != 0)
+            {
+                user.FailedLoginAttempts = 0;
+            }
+
+            user.LastLoginTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            user.LoginCount++;
+
+            return user;
+        }
+
+        private ConfirmationCodeResponse CreateResponse(ConfirmationCodeResponse response, Guid confirmationId, ConfirmationType type)
+        {
+            response.ConfirmationId = confirmationId.ToString();
+            response.CharachterType = ConfirmationCodeType.INT;
+            response.Type = type;
+
+            return response;
         }
     }
 }

@@ -2,8 +2,6 @@
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
-using My_Schedule.Shared.Services.Tokens;
-using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Services.Users;
 using My_Schedule.UserService.Services.Users.Helpers;

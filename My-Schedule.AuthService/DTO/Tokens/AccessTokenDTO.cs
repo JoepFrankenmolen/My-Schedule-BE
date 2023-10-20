@@ -4,6 +4,7 @@
     {
         // rename
         public long AccessTokenExpirationTimestamp { get; set; }
+
         public string AccessToken { get; set; }
     }
 }
