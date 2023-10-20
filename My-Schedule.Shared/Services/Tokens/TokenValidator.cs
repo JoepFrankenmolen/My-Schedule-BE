@@ -4,7 +4,7 @@ using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
-using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,13 +14,13 @@ namespace My_Schedule.Shared.Services.Tokens
     public class TokenValidator : ITokenValidator
     {
         private readonly IAuthenticationSettings _appSettings;
-        private readonly IUserHelper _userHelper;
+        private readonly IUserBasicHelper _userBasicHelper;
         private readonly ITokenSessionValidator _tokenSessionValidator;
 
-        public TokenValidator(IAuthenticationSettings appSettings, IUserHelper userHelper, ITokenSessionValidator tokenSessionService)
+        public TokenValidator(IAuthenticationSettings appSettings, IUserBasicHelper userHelper, ITokenSessionValidator tokenSessionService)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-            _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userBasicHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
             _tokenSessionValidator = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
         }
 
@@ -39,7 +39,7 @@ namespace My_Schedule.Shared.Services.Tokens
                 var sessionId = ExtractGuidFromToken(securityToken, CustomClaimTypes.SessionId);
 
                 // get user;
-                var user = await _userHelper.GetUserBasicById(userId);
+                var user = await _userBasicHelper.GetUserBasicById(userId); // broken here
 
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))

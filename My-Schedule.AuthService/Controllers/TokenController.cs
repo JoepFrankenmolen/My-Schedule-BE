@@ -16,7 +16,7 @@ namespace My_Schedule.AuthService.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshAccessToken([FromBody] AccessTokenDTO accessTokenDTO)
+        public async Task<IActionResult> RefreshAccessToken([FromBody] ExpiredAccessTokenDTO accessTokenDTO)
         {
             _ = accessTokenDTO ?? throw new ArgumentNullException(nameof(accessTokenDTO));
 

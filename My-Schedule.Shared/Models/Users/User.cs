@@ -1,11 +1,11 @@
-﻿using My_Schedule.Shared.Models.Users;
-using My_Schedule.Shared.Models.Users.UserInterfaces;
+﻿using My_Schedule.Shared.Models.Users.UserInterfaces;
+using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace My_Schedule.AuthService.Models
+namespace My_Schedule.Shared.Models.Users
 {
-    public class User : IUserDetails, IUserActivity, IUserSecurity, IUserRoles
+    public class User : IUserDetails, IUserActivity, IUserSecurity, IUserRoles, IUserBasic
     {
         // IUserDetails
         [Key]

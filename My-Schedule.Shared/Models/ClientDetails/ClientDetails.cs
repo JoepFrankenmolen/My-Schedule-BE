@@ -1,8 +1,7 @@
-﻿using My_Schedule.Shared.Models.ClientDetails;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace My_Schedule.AuthService.Models.ClientDetail
+namespace My_Schedule.Shared.Models.ClientDetails
 {
     public class ClientDetails : IClientDetails
     {

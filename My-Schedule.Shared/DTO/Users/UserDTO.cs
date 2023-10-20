@@ -2,7 +2,7 @@
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using System.ComponentModel.DataAnnotations;
 
-namespace My_Schedule.AuthService.DTO.Users
+namespace My_Schedule.Shared.DTO.Users
 {
     public class UserDTO : IUserPublic
     {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using My_Schedule.AuthService.Core;
-using My_Schedule.AuthService.Models;
+using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
-using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Users
 {
-    public class UserHelper : IUserHelper
+    public class UserHelper : IUserBasicHelper
     {
         private readonly AuthServiceContext _dbContext;
 
@@ -32,17 +32,9 @@ namespace My_Schedule.AuthService.Services.Users
             return await _dbContext.Users.AnyAsync(n => n.Email == email);
         }
 
-        public async Task<User> GetUserForAuthorization(Guid id)
-        {
-            return await _dbContext.Users
-                .Include(n => n.Roles)
-                .Where(n => n.IsBlocked == false)
-                .FirstOrDefaultAsync(n => n.Id == id);
-        }
-
         public async Task<IUserBasic> GetUserBasicById(Guid id)
         {
-            return (IUserBasic)await GetUserById(id);
+            return await GetUserById(id);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using My_Schedule.Shared.Interfaces;
+﻿using My_Schedule.Shared.Core.Interfaces;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 
-namespace My_Schedule.AuthService.Core
+namespace My_Schedule.UserService.Core
 {
     public class UserAuthenticationContext : IUserAuthenticationContext
     {

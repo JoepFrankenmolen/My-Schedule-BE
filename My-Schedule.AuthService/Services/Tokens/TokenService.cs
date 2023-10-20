@@ -1,7 +1,7 @@
 ﻿using My_Schedule.AuthService.DTO.Tokens;
-using My_Schedule.AuthService.Models;
 using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
@@ -21,13 +21,19 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
             _tokenSessionService = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
         }
 
-        public async Task<string> RefreshAccessToken(string refreshToken)
+        public async Task<AccessTokenDTO> RefreshAccessToken(string refreshToken)
         {
             var validatedTokenUserDTO = await ValidateToken(refreshToken, TokenType.Refresh);
 
+            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
             if (validatedTokenUserDTO != null && validatedTokenUserDTO.user != null)
             {
-                return await GenerateToken(validatedTokenUserDTO.user.Id, TokenType.Access, validatedTokenUserDTO.SessionId);
+                return new AccessTokenDTO
+                {
+                    AccessTokenExpirationTimestamp = currentTime + _appSettings.RefreshTokenExpirationTime,
+                    AccessToken = await GenerateToken(validatedTokenUserDTO.user.Id, TokenType.Access, validatedTokenUserDTO.SessionId)
+                };
             }
 
             throw new UnauthorizedAccessException();
@@ -37,9 +43,13 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
         {
             var sessionId = await _tokenSessionService.GenerateSession();
 
+            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
             var tokenDTO = new TokenDTO
             {
+                AccessTokenExpirationTimestamp = currentTime + _appSettings.AccessTokenExpirationTime,
                 AccessToken = await GenerateToken(user.Id, TokenType.Access, sessionId),
+                RefreshTokenExpirationTimestamp = currentTime + _appSettings.RefreshTokenExpirationTime,
                 RefreshToken = await GenerateToken(user.Id, TokenType.Refresh, sessionId),
             };
 

@@ -1,4 +1,5 @@
 ﻿using My_Schedule.AuthService.Models.Confirmations;
+using My_Schedule.Shared.Models.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -15,6 +15,15 @@ namespace My_Schedule.AuthService.Controllers
             _confirmationDispatcher = confirmationDispatcher ?? throw new ArgumentNullException(nameof(confirmationDispatcher));
         }
 
+        /// <summary>
+        /// EmailConfirmation = 0,
+        /// LoginVerification = 1,
+        /// PasswordReset = 2,
+        /// UnBlock = 3,
+        /// </summary>
+        /// <param name="confirmDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         [HttpPost("confirm")]
         public async Task<IActionResult> Confirmation([FromBody] ConfirmDTO confirmDTO)
         {

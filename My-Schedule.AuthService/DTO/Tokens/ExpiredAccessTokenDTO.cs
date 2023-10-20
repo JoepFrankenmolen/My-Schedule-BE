@@ -1,6 +1,6 @@
 ﻿namespace My_Schedule.AuthService.DTO.Tokens
 {
-    public class AccessTokenDTO
+    public class ExpiredAccessTokenDTO
     {
         public string RefreshToken { get; set; }
     }

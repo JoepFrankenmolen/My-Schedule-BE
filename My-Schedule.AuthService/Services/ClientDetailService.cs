@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using My_Schedule.AuthService.Core;
-using My_Schedule.AuthService.Models.ClientDetail;
+using My_Schedule.Shared.Models.ClientDetails;
 
 namespace My_Schedule.AuthService.Services
 {
