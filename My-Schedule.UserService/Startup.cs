@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using My_Schedule.Shared.Core.DI;
+using My_Schedule.Shared.DTO.Context;
 using My_Schedule.UserService.Core.DI;
 
 namespace My_Schedule.UserService
@@ -15,7 +16,11 @@ namespace My_Schedule.UserService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            SharedServicesInstaller.Install(services, _configuration);
+            // Set config settings
+            var contextConfig = new ContextConfig();
+            contextConfig.CustomUserBasicHelper = true;
+
+            SharedServicesInstaller.Install(services, _configuration, contextConfig);
             UserServicesInstaller.Install(services, _configuration);
 
             services.AddControllers();

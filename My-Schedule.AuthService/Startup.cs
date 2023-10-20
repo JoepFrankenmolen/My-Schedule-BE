@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using My_Schedule.AuthService.Core.DI;
 using My_Schedule.Shared.Core.DI;
-using My_Schedule.Shared.Middleware;
+using My_Schedule.Shared.DTO.Context;
 
 namespace My_Schedule.AuthService
 {
@@ -17,7 +16,12 @@ namespace My_Schedule.AuthService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            SharedServicesInstaller.Install(services, _configuration);
+            // Set config settings
+            var contextConfig = new ContextConfig();
+            contextConfig.CustomTokenSessionValidator = true;
+            contextConfig.CustomUserBasicHelper = true;
+
+            SharedServicesInstaller.Install(services, _configuration, contextConfig);
             AuthServicesInstaller.Install(services, _configuration);
 
             services.AddControllers();

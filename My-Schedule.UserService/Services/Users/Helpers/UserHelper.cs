@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
-using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Core;
 
 namespace My_Schedule.UserService.Services.Users.Helpers
 {
-    public class UserHelper : IUserHelper
+    public class UserHelper : IUserBasicHelper
     {
         private readonly UserServiceContext _dbContext;
 
@@ -34,7 +34,7 @@ namespace My_Schedule.UserService.Services.Users.Helpers
 
         public async Task<IUserBasic> GetUserBasicById(Guid id)
         {
-            return (IUserBasic)await GetUserById(id);
+            return await GetUserById(id);
         }
     }
 }

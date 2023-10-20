@@ -1,5 +1,5 @@
-﻿using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
-using My_Schedule.Shared.Models.Users;
+﻿using My_Schedule.Shared.Models.Users;
+using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace My_Schedule.Shared.DTO.Users

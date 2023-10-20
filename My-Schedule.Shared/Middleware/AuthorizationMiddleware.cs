@@ -47,7 +47,7 @@ namespace My_Schedule.Shared.Middleware
                     return;
                 }
             }
-            
+
             await next.Invoke(context);
         }
 

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SecureLogin.Data.Models.Tokens;
 using System.ComponentModel.DataAnnotations;
-using SecureLogin.Data.Models.Tokens;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.Shared.Models.Tokens
 {

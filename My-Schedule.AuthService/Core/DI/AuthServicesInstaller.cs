@@ -9,10 +9,9 @@ using My_Schedule.AuthService.Services.Logs;
 using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
-using My_Schedule.Shared.Core.Interfaces;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
-using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Core.DI
 {
@@ -46,7 +45,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddScoped<UserService>();
 
-            services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IUserBasicHelper, UserHelper>();
 
             services.AddScoped<UserHelper>(); // why
 

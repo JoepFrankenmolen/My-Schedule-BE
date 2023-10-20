@@ -4,7 +4,7 @@ using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Services.Tokens;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
-using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Services.Users;
 using My_Schedule.UserService.Services.Users.Helpers;
 
@@ -24,11 +24,9 @@ namespace My_Schedule.UserService.Core.DI
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
             services.AddDbContext<ITokenStatusContext, UserServiceContext>(options =>
-                options.UseSqlServer(appSettings.DatabaseConnection), ServiceLifetime.Scoped);
+                options.UseSqlServer(appSettings.DatabaseConnection), ServiceLifetime.Scoped); // check of dit werkt
 
-            services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
-
-            services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IUserBasicHelper, UserHelper>();
 
             services.AddScoped<UserHelper>();
 
