@@ -1,5 +1,6 @@
 ﻿using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Messages;
+using SecureLogin.Data.Models.Tokens;
 
 namespace My_Schedule.Shared.RabbitMQ.Producers
 {
@@ -12,14 +13,14 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
             _messageProducer = messageProducer ?? throw new ArgumentNullException(nameof(messageProducer));
         }
 
-        public async Task SendTokenStatusCreatedMessage(Guid tokenId, Guid sessionId, bool isBlocked, long blockedTimestamp)
+        public async Task SendTokenStatusCreatedMessage(ITokenStatus tokenStatus)
         {
             var message = new TokenStatusCreateMessage
             {
-                TokenId = tokenId,
-                SessionId = sessionId,
-                IsBlocked = isBlocked,
-                BlockedTimestamp = blockedTimestamp,
+                TokenId = tokenStatus.Id,
+                SessionId = tokenStatus.SessionId,
+                IsBlocked = tokenStatus.IsBlocked,
+                BlockedTimestamp = tokenStatus.BlockedTimestamp.Value,
             };
 
             await _messageProducer.SendMessage(message, QueueNames.Tokens.TokenStatusCreated);

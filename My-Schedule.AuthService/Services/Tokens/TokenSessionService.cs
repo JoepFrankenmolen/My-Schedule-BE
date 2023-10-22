@@ -12,12 +12,18 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
         private readonly AuthServiceContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ClientDetailService _clientDetailService;
+        private readonly TokenProducer _producer;
 
-        public TokenSessionService(AuthServiceContext dbContext, IHttpContextAccessor httpContextAccessor, ClientDetailService clientDetailService)
+        public TokenSessionService(
+            AuthServiceContext dbContext,
+            IHttpContextAccessor httpContextAccessor,
+            ClientDetailService clientDetailService,
+            TokenProducer tokenProducer)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _clientDetailService = clientDetailService ?? throw new ArgumentNullException(nameof(clientDetailService));
+            _producer = tokenProducer ?? throw new ArgumentNullException(nameof(tokenProducer));
         }
 
         public async Task<Guid> GenerateSession()
@@ -45,7 +51,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
         }
 
         // return true if valid
-        public async Task<bool> isValidSession(Guid sessionId)
+        public async Task<bool> IsValidSession(Guid sessionId)
         {
             return await _dbContext.TokenSessions
                 .AnyAsync(ts => ts.SessionId == sessionId && !ts.IsBlocked);
@@ -62,7 +68,7 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
 
                 await _dbContext.SaveChangesAsync();
 
-
+                await _producer.SendTokenStatusCreatedMessage(session);
 
                 return true;
             }

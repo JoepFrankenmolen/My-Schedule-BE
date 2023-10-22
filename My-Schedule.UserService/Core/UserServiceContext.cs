@@ -13,8 +13,23 @@ namespace My_Schedule.UserService.Core
         }
 
         public DbSet<User> Users { get; set; }
+     //   public DbSet<UserBasic> UserBasics { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<TokenStatus> TokenStatus { get; set; }
         public DbSet<ClientDetails> ClientDetails { get; set; }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await base.SaveChangesAsync();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure both User and UserBasic to use the same table
+   /*         modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<UserBasic>().ToTable("User");*/
+        }
     }
 }

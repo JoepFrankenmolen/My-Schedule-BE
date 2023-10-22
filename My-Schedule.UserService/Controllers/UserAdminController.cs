@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using My_Schedule.Shared.Attributes;
-using My_Schedule.Shared.Models.Users;
 using My_Schedule.UserService.Services.Users;
 
 namespace My_Schedule.UserService.Controllers
@@ -20,7 +18,7 @@ namespace My_Schedule.UserService.Controllers
             _userAdminService = userAdminService ?? throw new ArgumentNullException( nameof(userAdminService));
         }
 
-        [HttpPut]
+        [HttpPut("Create")]
         public async Task<IActionResult> CreateUser(string userId, bool state)
         {
             try
@@ -34,7 +32,7 @@ namespace My_Schedule.UserService.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Ban")]
         public async Task<IActionResult> BanUser(string userId, bool state)
         {
             try
@@ -48,7 +46,7 @@ namespace My_Schedule.UserService.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Block")]
         public async Task<IActionResult> BLockUser(string userId, bool state)
         {
             try
@@ -62,7 +60,7 @@ namespace My_Schedule.UserService.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("Get/All")]
         public async Task<IActionResult> GetAllUsers()
         {
             try

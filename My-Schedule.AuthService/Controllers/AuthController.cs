@@ -82,7 +82,6 @@ namespace My_Schedule.AuthService.Controllers
 
             try
             {
-                /*var result =*/
                 await _passwordResetService.CreatePasswordReset(credentialsDTO);
                 return Ok();
             }

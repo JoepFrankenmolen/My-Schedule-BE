@@ -14,7 +14,7 @@ namespace My_Schedule.Shared.Services.Tokens
         }
 
         // return true if valid
-        public async Task<bool> isValidSession(Guid sessionId)
+        public async Task<bool> IsValidSession(Guid sessionId)
         {
             // If session not found return true and if session found and blocked return false else true
             var session = await _dbContext.TokenStatus

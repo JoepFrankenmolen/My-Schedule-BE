@@ -25,6 +25,11 @@ namespace My_Schedule.Shared.RabbitMQ.Messages
         public long TokenRevocationTimestamp;
     }
 
+    public class UserTokenRevokedMessage : UserMessages
+    {
+        public long TokenRevocationTimestamp;
+    }
+
     // should be thought out how the connection between user service and auth service goes with this
     public class UserBasicCreatedMessage : UserMessages
     {

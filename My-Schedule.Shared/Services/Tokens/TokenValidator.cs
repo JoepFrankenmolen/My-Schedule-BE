@@ -87,7 +87,7 @@ namespace My_Schedule.Shared.Services.Tokens
         {
             long tokenValidFromUnixTimestamp = ConvertDateTimeToUnixTimestamp(token.ValidFrom);
 
-            if (user.TokenRevocationTimestamp >= tokenValidFromUnixTimestamp || !await _tokenSessionValidator.isValidSession(sessionId))
+            if (user.TokenRevocationTimestamp >= tokenValidFromUnixTimestamp || !await _tokenSessionValidator.IsValidSession(sessionId))
             {
                 return true; // Token is revoked
             }

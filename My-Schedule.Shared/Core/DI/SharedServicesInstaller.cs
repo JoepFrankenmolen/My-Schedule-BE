@@ -45,11 +45,23 @@ namespace My_Schedule.Shared.Core.DI
             // service bus
             services.AddScoped<IMessageProducer, MessageProducer>();
 
-            services.AddScoped<UserProducer>();
+            services.AddTransient<MessageConsumer>();
+
+            // producers
+            services.AddTransient<UserProducer>();
+
+            services.AddTransient<TokenProducer>();
+
+            services.AddSingleton<TokenStatusService>();
 
             if (!contextConfig.CustomTokenSessionValidator)
             {
                 services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
+
+                services.AddTransient<ITokenStatusService, TokenStatusService>();
+
+
+                // for now specify which consumers to use in the specific installers not the shared.
             }
 
             if (!contextConfig.CustomUserBasicHelper)
