@@ -11,21 +11,49 @@ namespace My_Schedule.UserService.Controllers
     public class UserAdminController : ControllerBase
     {
         private readonly UserFetchingService _userFetchingService;
-        private readonly UserAdminService _userUpdateService;
+        private readonly UserAdminService _userAdminService;
 
 
-        public UserAdminController(UserFetchingService userFetchingService, UserAdminService userUpdateService)
+        public UserAdminController(UserFetchingService userFetchingService, UserAdminService userAdminService)
         {
             _userFetchingService = userFetchingService ?? throw new ArgumentNullException(nameof(userFetchingService));
-            _userUpdateService = userUpdateService ?? throw new ArgumentNullException( nameof(userUpdateService));
+            _userAdminService = userAdminService ?? throw new ArgumentNullException( nameof(userAdminService));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> BanUser(string userId)
+        [HttpPut]
+        public async Task<IActionResult> CreateUser(string userId, bool state)
         {
             try
             {
-                await _userUpdateService.BanUser(userId);
+                await _userAdminService.BanUser(userId, state);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BanUser(string userId, bool state)
+        {
+            try
+            {
+                await _userAdminService.BanUser(userId, state);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BLockUser(string userId, bool state)
+        {
+            try
+            {
+                await _userAdminService.BlockUser(userId, state);
                 return Ok();
             }
             catch (Exception ex)

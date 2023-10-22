@@ -2,6 +2,7 @@
 using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.Models.Tokens;
 using My_Schedule.Shared.Helpers;
+using My_Schedule.Shared.RabbitMQ.Producers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Tokens
@@ -60,6 +61,8 @@ namespace My_Schedule.AuthService.Services.Auth.Tokens
                 session.BlockedTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 await _dbContext.SaveChangesAsync();
+
+
 
                 return true;
             }

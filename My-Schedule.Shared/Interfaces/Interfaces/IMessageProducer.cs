@@ -1,4 +1,4 @@
-﻿namespace My_Schedule.Shared.RabbitMQ
+﻿namespace My_Schedule.Shared.Interfaces.Interfaces
 {
     public interface IMessageProducer
     {

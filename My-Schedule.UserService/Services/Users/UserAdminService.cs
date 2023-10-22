@@ -22,7 +22,7 @@ namespace My_Schedule.UserService.Services.Users
             _userAuthenticationContext = userAuthenticationContext ?? throw new ArgumentNullException(nameof(_userAuthenticationContext));
         }
 
-        public async Task BanUser(string userId, bool sendMessage = true)
+        public async Task BanUser(string userId, bool state, bool sendMessage = true)
         {
             var user = await _userHelper.GetUserById(Guid.Parse(userId));
 
@@ -31,11 +31,31 @@ namespace My_Schedule.UserService.Services.Users
                 throw new ArgumentNullException("userId failed to fetch");
             }
 
-            user.IsBanned = true;
+            user.IsBanned = state;
 
             if (sendMessage)
             {
-                await _userProducer.SendUserBannedMessage(user.Id, true);
+                await _userProducer.SendUserBannedMessage(user.Id, state);
+            }
+
+            _dbContext.Update(user);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task BlockUser(string userId, bool state, bool sendMessage = true)
+        {
+            var user = await _userHelper.GetUserById(Guid.Parse(userId));
+
+            if (user == null)
+            {
+                throw new ArgumentNullException("userId failed to fetch");
+            }
+
+            user.IsBlocked = true;
+
+            if (sendMessage)
+            {
+                await _userProducer.SendUserBlockedMessage(user.Id, state);
             }
 
             _dbContext.Update(user);

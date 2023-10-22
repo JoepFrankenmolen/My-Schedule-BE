@@ -28,8 +28,6 @@ namespace My_Schedule.UserService.Core.DI
 
             services.AddScoped<UserHelper>();
 
-            services.AddScoped<UserCreationService>();
-
             services.AddScoped<UserRoleService>();
 
             services.AddScoped<UserFetchingService>();

@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ClientDetails\**" />
+    <Content Remove="Models\ClientDetails\**" />
+    <EmbeddedResource Remove="Models\ClientDetails\**" />
+    <None Remove="Models\ClientDetails\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
@@ -26,10 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\My-Schedule.Shared\My-Schedule.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\ClientDetails\" />
   </ItemGroup>
 
 </Project>

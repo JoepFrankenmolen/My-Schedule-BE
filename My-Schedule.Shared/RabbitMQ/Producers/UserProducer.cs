@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Connections;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Messages;
 using System.Text;
 
@@ -14,6 +15,17 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
         }
 
         public async Task SendUserBannedMessage(Guid userId, bool state)
+        {
+            var message = new UserBannedMessage
+            {
+                UserId = userId,
+                IsBanned = state,
+            };
+
+            await _messageProducer.SendMessage(message, QueueNames.Users.UserBanned);
+        }
+
+        public async Task SendEmailConfirmedMessage(Guid userId, bool state)
         {
             var message = new UserBannedMessage
             {

@@ -1,7 +1,7 @@
-﻿using My_Schedule.Shared.Interfaces.AppSettings;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using System.Text;
 using Newtonsoft.Json;
+using My_Schedule.Shared.Interfaces.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ
 {
