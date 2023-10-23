@@ -5,7 +5,7 @@ using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
-using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,18 +15,15 @@ namespace My_Schedule.Shared.Services.Tokens
     public class TokenValidator : ITokenValidator
     {
         private readonly IAuthenticationSettings _appSettings;
-        private readonly IUserHelper _userHelper;
         private readonly ITokenSessionValidator _tokenSessionValidator;
         private readonly IUserContext _dbContext;
 
         public TokenValidator(
             IAuthenticationSettings appSettings,
-            IUserHelper userHelper,
             ITokenSessionValidator tokenSessionService,
             IUserContext dbContext)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-            _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
             _tokenSessionValidator = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
@@ -46,7 +43,7 @@ namespace My_Schedule.Shared.Services.Tokens
                 var sessionId = ExtractGuidFromToken(securityToken, CustomClaimTypes.SessionId);
 
                 // get user;
-                var user = await _userHelper.GetUserById(userId, _dbContext); // broken here
+                var user = await UserFetcherService.GetUserById(userId, _dbContext);
 
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))

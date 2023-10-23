@@ -9,6 +9,7 @@ using My_Schedule.Shared.Services.Tokens;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.Users;
 
 namespace My_Schedule.Shared.Core.DI
 {
@@ -42,6 +43,12 @@ namespace My_Schedule.Shared.Core.DI
 
             services.AddScoped<ITokenValidator, TokenValidator>();
 
+            // logging
+            services.AddLogging(builder =>
+            {
+                builder.AddConsole(); // Logs to the console
+            });
+
             // service bus
             services.AddScoped<IMessageProducer, MessageProducer>();
 
@@ -57,7 +64,9 @@ namespace My_Schedule.Shared.Core.DI
 
             // user helpers
 
-            services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IUserCreateService, UserCreateService>();
+
+            services.AddScoped<IUserUpdateService, UserUpdateService>();
 
             services.AddScoped<IUserAuthDetailHelper, UserAuthDetailHelper>();
 

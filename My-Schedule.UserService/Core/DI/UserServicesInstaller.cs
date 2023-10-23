@@ -41,6 +41,7 @@ namespace My_Schedule.UserService.Core.DI
 
             // Consumer
             services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
         }
     }
 }

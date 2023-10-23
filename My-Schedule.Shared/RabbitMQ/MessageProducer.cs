@@ -10,9 +10,11 @@ namespace My_Schedule.Shared.RabbitMQ
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private readonly ILogger<MessageProducer> _logger;
 
-        public MessageProducer(IMessageQueueSettings appSettings)
+        public MessageProducer(ILogger<MessageProducer> logger, IMessageQueueSettings appSettings)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
             var factory = new ConnectionFactory
@@ -47,11 +49,12 @@ namespace My_Schedule.Shared.RabbitMQ
                 var body = Encoding.UTF8.GetBytes(jsonMessage);
 
                 _channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+
+                _logger.LogInformation($"Message sent to {queueName}: {message.GetType().Name}");
             }
             catch (Exception ex)
             {
-                // Handle exceptions
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                _logger.LogError(ex, $"Error sending message to {queueName}: {message.GetType().Name}");
             }
         }
 
