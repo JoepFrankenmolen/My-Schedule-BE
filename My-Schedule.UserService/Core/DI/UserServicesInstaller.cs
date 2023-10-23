@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.RabbitMQ.Consumers;
-using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Services.Users;
 
 namespace My_Schedule.UserService.Core.DI
@@ -20,6 +18,7 @@ namespace My_Schedule.UserService.Core.DI
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IAuthenticationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
+            services.AddSingleton<IMessageQueueSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
             // Register the UserServiceContext and associated interfaces
             services.AddDbContext<UserServiceContext>(options =>

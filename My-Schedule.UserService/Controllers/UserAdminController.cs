@@ -5,17 +5,15 @@ namespace My_Schedule.UserService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[AuthorizedRoles(UserRoleType.Admin, UserRoleType.MasterAdmin)]
     public class UserAdminController : ControllerBase
     {
         private readonly UserAdminFetchingService _userFetchingService;
         private readonly UserAdminService _userAdminService;
 
-
         public UserAdminController(UserAdminFetchingService userFetchingService, UserAdminService userAdminService)
         {
             _userFetchingService = userFetchingService ?? throw new ArgumentNullException(nameof(userFetchingService));
-            _userAdminService = userAdminService ?? throw new ArgumentNullException( nameof(userAdminService));
+            _userAdminService = userAdminService ?? throw new ArgumentNullException(nameof(userAdminService));
         }
 
         [HttpPut("Create")]

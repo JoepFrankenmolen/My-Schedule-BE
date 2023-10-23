@@ -12,8 +12,6 @@ using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
-using My_Schedule.Shared.Services.Users;
-using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Core.DI
 {
@@ -31,6 +29,7 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddSingleton<IAuthenticationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IUserSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
+            services.AddSingleton<IMessageQueueSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
             // Register the UserServiceContext and associated interfaces
             services.AddDbContext<AuthServiceContext>(options =>
@@ -67,7 +66,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddScoped<ITokenSessionValidator, TokenSessionService>();
 
-            services.AddScoped<TokenSessionService>(); // why
+            services.AddScoped<TokenSessionService>();
 
             services.AddScoped<NotificationTriggerService>();
 

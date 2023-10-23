@@ -4,11 +4,9 @@ using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Confirmations;
 using My_Schedule.AuthService.Services.Logs;
-using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Models.Users;
-using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication

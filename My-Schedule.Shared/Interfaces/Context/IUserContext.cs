@@ -5,6 +5,6 @@ namespace My_Schedule.Shared.Interfaces.Context
 {
     public interface IUserContext : IContextBase
     {
-        DbSet<User> Users{ get; set; }
+        DbSet<User> Users { get; set; }
     }
 }

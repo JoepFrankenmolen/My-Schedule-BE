@@ -2,7 +2,7 @@
 
 namespace My_Schedule.Shared.Models.Users
 {
-    public interface IUser: IUserDetails, IUserStatus, IUserRoles, IEntityWithGuidKey
+    public interface IUser : IUserDetails, IUserStatus, IUserRoles, IEntityWithGuidKey
     {
     }
 }

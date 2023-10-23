@@ -1,7 +1,6 @@
 ﻿using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers;
 using My_Schedule.Shared.Models.Users;
-using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 

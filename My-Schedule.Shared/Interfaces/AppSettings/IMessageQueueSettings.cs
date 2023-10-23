@@ -3,10 +3,10 @@
     public interface IMessageQueueSettings
     {
         string MessageQueueHostName { get; }
-        int MessageQueuePort { get; set; }
-        string MessageQueueUserName { get; set; }
-        string MessageQueuePassword { get; set; }
-        string MessageQueueVirtualHost { get; set; }
-        bool MessageQueueUseSsl { get; set; }
+        int MessageQueuePort { get; }
+        string MessageQueueUserName { get; }
+        string MessageQueuePassword { get; }
+        string MessageQueueVirtualHost { get; }
+        bool MessageQueueUseSsl { get; }
     }
 }

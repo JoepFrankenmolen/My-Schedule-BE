@@ -33,7 +33,7 @@ namespace My_Schedule.AuthService.Services.Users
                     TokenRevocationTimestamp = 0,
                     Roles = new List<UserRole>()
                 },
-                
+
                 TwoFactorEnabled = true,
                 PasswordHash = hashDTO.PasswordHash,
                 Salt = hashDTO.Salt,

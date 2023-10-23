@@ -1,5 +1,4 @@
 ﻿using My_Schedule.Shared.Models.Users;
-using My_Schedule.Shared.Models.Users.UserInterfaces;
 
 namespace My_Schedule.Shared.Helpers.Validators
 {

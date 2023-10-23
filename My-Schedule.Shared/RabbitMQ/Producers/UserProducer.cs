@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Connections;
-using My_Schedule.Shared.Interfaces.Interfaces;
+﻿using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Messages;
-using System.Text;
 
 namespace My_Schedule.Shared.RabbitMQ.Producers
 {

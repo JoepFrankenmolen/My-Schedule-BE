@@ -23,7 +23,7 @@ namespace My_Schedule.AuthService.Core
         public DbSet<Confirmation> Confirmations { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
         public DbSet<ClientDetails> ClientDetails { get; set; }
-        
+
         public async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();

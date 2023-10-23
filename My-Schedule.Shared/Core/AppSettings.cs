@@ -21,6 +21,12 @@
         public string Pepper => LoadSetting("Pepper");
         public string SenderEmail => LoadSetting("SenderEmail");
         public string SenderPassword => LoadSetting("SenderPassword");
+        public string MessageQueueHostName => LoadSetting("MessageQueueHostName");
+        public int MessageQueuePort => int.Parse(LoadSetting("MessageQueuePort"));
+        public string MessageQueueUserName => LoadSetting("MessageQueueUserName");
+        public string MessageQueuePassword => LoadSetting("MessageQueuePassword");
+        public string MessageQueueVirtualHost => LoadSetting("MessageQueueVirtualHost");
+        public bool MessageQueueUseSsl => bool.Parse(LoadSetting("MessageQueueUseSsl"));
 
         private string LoadSetting(string key)
         {

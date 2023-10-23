@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.Shared.DTO.Users;
-using My_Schedule.Shared.Interfaces.Interfaces;
+﻿using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Producers;
-using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Core;
 
@@ -20,7 +17,7 @@ namespace My_Schedule.UserService.Services.Users
             UserServiceContext dbContext,
             IUserHelper userHelper,
             IUserAuthDetailHelper userAuthDetailHelper,
-            UserProducer userProducer, 
+            UserProducer userProducer,
             IUserAuthenticationContext userAuthenticationContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));

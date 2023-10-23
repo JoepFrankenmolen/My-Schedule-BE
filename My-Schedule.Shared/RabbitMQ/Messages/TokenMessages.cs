@@ -1,6 +1,4 @@
-﻿using SecureLogin.Data.Models.Tokens;
-
-namespace My_Schedule.Shared.RabbitMQ.Messages
+﻿namespace My_Schedule.Shared.RabbitMQ.Messages
 {
     public abstract class TokenMessages
     {

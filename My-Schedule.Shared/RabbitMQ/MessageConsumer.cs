@@ -1,9 +1,10 @@
-﻿using RabbitMQ.Client.Events;
+﻿using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Interfaces.Interfaces;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Text;
 using IModel = RabbitMQ.Client.IModel;
-using Newtonsoft.Json;
-using My_Schedule.Shared.Interfaces.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ
 {
@@ -12,14 +13,14 @@ namespace My_Schedule.Shared.RabbitMQ
         private readonly IConnection _connection;
         private readonly IModel _channel;
 
-        public MessageConsumer(/*IMessageQueueSettings appSettings*/)
+        public MessageConsumer(IMessageQueueSettings appSettings)
         {
-            // _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
+            _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
             var factory = new ConnectionFactory
             {
-                HostName = "localhost"//appSettings.MessageQueueHostName, // RabbitMQ server host name
-                /*Port = appSettings.MessageQueuePort,         // Port number (usually 5672)
+                HostName = appSettings.MessageQueueHostName, // RabbitMQ server host name
+                Port = appSettings.MessageQueuePort,         // Port number (usually 5672)
                 UserName = appSettings.MessageQueueUserName, // RabbitMQ username
                 Password = appSettings.MessageQueuePassword, // RabbitMQ password
                 VirtualHost = appSettings.MessageQueueVirtualHost, // RabbitMQ virtual host (if used)
@@ -29,7 +30,7 @@ namespace My_Schedule.Shared.RabbitMQ
                 {
                     Enabled = appSettings.MessageQueueUseSsl, // Set to true if you want to use SSL/TLS
                     ServerName = appSettings.MessageQueueHostName // Server name for SSL certificate validation
-                }*/
+                }
             };
 
             _connection = factory.CreateConnection();

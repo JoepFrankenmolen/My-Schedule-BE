@@ -6,10 +6,8 @@ using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Models.PasswordReset;
 using My_Schedule.AuthService.Services.Auth;
 using My_Schedule.AuthService.Services.Notifications;
-using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
-using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Confirmations

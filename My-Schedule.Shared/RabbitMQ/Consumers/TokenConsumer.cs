@@ -4,6 +4,7 @@ using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Tokens;
 using My_Schedule.Shared.RabbitMQ.Messages;
 using My_Schedule.Shared.Services.Tokens;
+
 namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
     public class TokenConsumer<T> : IHostedService where T : DbContext, ITokenStatusContext
