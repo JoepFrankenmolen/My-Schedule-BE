@@ -10,6 +10,7 @@ using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
@@ -32,6 +33,9 @@ namespace My_Schedule.AuthService.Core.DI
 
             services.AddDbContext<AuthServiceContext>(options =>
                 options.UseSqlServer(appSettings.DatabaseConnection), ServiceLifetime.Scoped);
+
+            // Context builder
+            services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
 
             services.AddScoped<LogoutService>();
 

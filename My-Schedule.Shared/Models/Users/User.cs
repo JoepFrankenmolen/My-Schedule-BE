@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.Shared.Models.Users
 {
-    public class User : IUserDetails, IUserActivity, IUserSecurity, IUserRoles, IUserBasic
+    public class User : IUserDetails, IUserActivity, IUserSecurity, IUserStatus, IUserRoles, IUserBasic
     {
         // IUserDetails
         [Key]

@@ -32,9 +32,19 @@ namespace My_Schedule.UserService.Services.Users.Helpers
             return await _dbContext.Users.AnyAsync(n => n.Email == email);
         }
 
-        public async Task<IUserBasic> GetUserBasicById(Guid id)
+        Task<IUserBasic> IUserBasicHelper.GetUserById(Guid id)
         {
-            return await GetUserById(id);
+            throw new NotImplementedException();
+        }
+
+        Task<IUserBasic> IUserBasicHelper.GetUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IUserBasic> GetUserByUserName(string userName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

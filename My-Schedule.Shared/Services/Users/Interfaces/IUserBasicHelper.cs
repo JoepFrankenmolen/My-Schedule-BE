@@ -4,6 +4,10 @@ namespace My_Schedule.Shared.Services.Users.Interfaces
 {
     public interface IUserBasicHelper
     {
-        Task<IUserBasic> GetUserBasicById(Guid id);
+        Task<IUserBasic> GetUserById(Guid id);
+
+        Task<IUserBasic> GetUserByEmail(string email);
+
+        Task<IUserBasic> GetUserByUserName(string userName);
     }
 }

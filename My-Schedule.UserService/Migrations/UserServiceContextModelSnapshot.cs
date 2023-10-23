@@ -38,7 +38,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientDetails");
+                    b.ToTable("ClientDetails", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Tokens.TokenStatus", b =>
@@ -58,7 +58,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TokenStatus");
+                    b.ToTable("TokenStatus", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.User", b =>
@@ -112,7 +112,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -131,7 +131,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>

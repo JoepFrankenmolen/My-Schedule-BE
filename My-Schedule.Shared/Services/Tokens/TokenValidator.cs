@@ -39,7 +39,7 @@ namespace My_Schedule.Shared.Services.Tokens
                 var sessionId = ExtractGuidFromToken(securityToken, CustomClaimTypes.SessionId);
 
                 // get user;
-                var user = await _userBasicHelper.GetUserBasicById(userId); // broken here
+                var user = await _userBasicHelper.GetUserById(userId); // broken here
 
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))

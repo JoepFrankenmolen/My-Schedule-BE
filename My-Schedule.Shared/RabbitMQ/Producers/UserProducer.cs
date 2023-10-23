@@ -33,7 +33,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 IsBanned = state,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserBanned);
+            await _messageProducer.SendMessage(message, QueueNames.Users.UserBanned); // wrong quename :)
         }
 
         public async Task SendUserBlockedMessage(Guid userId, bool state)

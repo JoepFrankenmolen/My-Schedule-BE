@@ -15,7 +15,7 @@ namespace My_Schedule.AuthService.Services.Users
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<User> GetUserRealById(Guid id)
         {
             return await _dbContext.Users
                 .Include(u => u.Roles)
@@ -32,9 +32,19 @@ namespace My_Schedule.AuthService.Services.Users
             return await _dbContext.Users.AnyAsync(n => n.Email == email);
         }
 
-        public async Task<IUserBasic> GetUserBasicById(Guid id)
+        public async Task<IUserBasic> GetUserById(Guid id)
         {
-            return await GetUserById(id);
+            return await GetUserRealById(id);
+        }
+
+        Task<IUserBasic> IUserBasicHelper.GetUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IUserBasic> GetUserByUserName(string userName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

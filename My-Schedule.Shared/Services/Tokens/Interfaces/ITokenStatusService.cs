@@ -6,6 +6,6 @@ namespace My_Schedule.Shared.Services.Tokens.Interfaces
 {
     public interface ITokenStatusService
     {
-        Task CreateTokenStatus<T>(ITokenStatus tokenStatus) where T : DbContext, ITokenStatusContext;
+        Task CreateTokenStatus(ITokenStatus tokenStatus, ITokenStatusContext tokenStatusContext);
     }
 }

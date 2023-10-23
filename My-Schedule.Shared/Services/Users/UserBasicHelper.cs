@@ -14,11 +14,25 @@ namespace My_Schedule.Shared.Services.Users
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<IUserBasic> GetUserBasicById(Guid id)
+        public async Task<IUserBasic> GetUserById(Guid id)
         {
             return await _dbContext.UserBasics
                 .Include(u => u.Roles)
                 .FirstOrDefaultAsync(n => n.Id == id);
+        }
+
+        public async Task<IUserBasic> GetUserByEmail(string email)
+        {
+            return await _dbContext.UserBasics
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(n => n.Email == email);
+        }
+
+        public async Task<IUserBasic> GetUserByUserName(string userName)
+        {
+            return await _dbContext.UserBasics
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(n => n.UserName == userName);
         }
     }
 }

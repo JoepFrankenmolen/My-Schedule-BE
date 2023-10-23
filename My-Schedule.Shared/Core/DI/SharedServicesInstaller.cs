@@ -58,8 +58,6 @@ namespace My_Schedule.Shared.Core.DI
             {
                 services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
 
-                services.AddTransient<ITokenStatusService, TokenStatusService>();
-
 
                 // for now specify which consumers to use in the specific installers not the shared.
             }
