@@ -3,10 +3,11 @@ using RabbitMQ.Client;
 using System.Text;
 using IModel = RabbitMQ.Client.IModel;
 using Newtonsoft.Json;
+using My_Schedule.Shared.Interfaces.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ
 {
-    public class MessageConsumer : IDisposable
+    public class MessageConsumer : IMessageConsumer
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;

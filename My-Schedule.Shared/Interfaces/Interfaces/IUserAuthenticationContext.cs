@@ -5,7 +5,7 @@ namespace My_Schedule.Shared.Interfaces.Interfaces
 {
     public interface IUserAuthenticationContext
     {
-        public void Install(HttpContext context, IUserBasic user);
+        public void Install(HttpContext context, IUser user);
 
         Guid UserId { get; }
         string UserIp { get; }

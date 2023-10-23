@@ -96,7 +96,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
 
             await _confirmationLogService.CreateConfirmationLog(userId, confirmDTO.ConfirmationId, !isValid);
 
-            // if not confirmed or valid return null
+            // if not confirmed or invalid return null
             if (isValid && confirmation.IsConfirmed)
             {
                 return confirmation;

@@ -2,29 +2,37 @@
 using My_Schedule.Shared.DTO.Users;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Producers;
+using My_Schedule.Shared.Services.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.UserService.Core;
-using My_Schedule.UserService.Services.Users.Helpers;
 
 namespace My_Schedule.UserService.Services.Users
 {
     public class UserAdminService
     {
         private readonly UserServiceContext _dbContext;
-        private readonly UserHelper _userHelper;
+        private readonly IUserHelper _userHelper;
+        private readonly IUserAuthDetailHelper _userAuthDetailHelper;
         private readonly UserProducer _userProducer;
         private readonly IUserAuthenticationContext _userAuthenticationContext;
 
-        public UserAdminService(UserServiceContext dbContext, UserHelper userHelper, UserProducer userProducer, IUserAuthenticationContext userAuthenticationContext)
+        public UserAdminService(
+            UserServiceContext dbContext,
+            IUserHelper userHelper,
+            IUserAuthDetailHelper userAuthDetailHelper,
+            UserProducer userProducer, 
+            IUserAuthenticationContext userAuthenticationContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userAuthDetailHelper = userAuthDetailHelper ?? throw new ArgumentNullException(nameof(userAuthDetailHelper));
             _userProducer = userProducer ?? throw new ArgumentNullException(nameof(userProducer));
             _userAuthenticationContext = userAuthenticationContext ?? throw new ArgumentNullException(nameof(_userAuthenticationContext));
         }
 
         public async Task BanUser(string userId, bool state, bool sendMessage = true)
         {
-            var user = await _userHelper.GetUserById(Guid.Parse(userId));
+            var user = await _userHelper.GetUserById(Guid.Parse(userId), _dbContext);
 
             if (user == null)
             {
@@ -44,7 +52,7 @@ namespace My_Schedule.UserService.Services.Users
 
         public async Task BlockUser(string userId, bool state, bool sendMessage = true)
         {
-            var user = await _userHelper.GetUserById(Guid.Parse(userId));
+            var user = await _userHelper.GetUserById(Guid.Parse(userId), _dbContext);
 
             if (user == null)
             {
@@ -60,53 +68,6 @@ namespace My_Schedule.UserService.Services.Users
 
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<List<UserDTO>> GetAllUsers()
-        {
-            var users = await _dbContext.Users.Include(u => u.Roles).ToListAsync(); // Retrieve all users from the database
-
-            // Create a list of UserDTO objects to store the mapped user data
-            var userDTOs = new List<UserDTO>();
-
-            foreach (var user in users)
-            {
-                var userDTO = new UserDTO
-                {
-                    Id = user.Id,
-                    CreationTimestamp = user.CreationTimestamp,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    LastLoggedInTimeStamp = user.LastLoginTimestamp,
-                    Roles = user.Roles
-                };
-
-                userDTOs.Add(userDTO);
-            }
-
-            return userDTOs;
-        }
-
-        public async Task<UserDTO> GetCurrentLoggedInUser()
-        {
-            try
-            {
-                var user = await _userHelper.GetUserById(_userAuthenticationContext.UserId);
-
-                return new UserDTO
-                {
-                    Id = user.Id,
-                    CreationTimestamp = user.CreationTimestamp,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    LastLoggedInTimeStamp = user.LastLoginTimestamp,
-                    Roles = user.Roles
-                };
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
     }
 }

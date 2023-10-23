@@ -45,14 +45,21 @@ namespace My_Schedule.Shared.Core.DI
             // service bus
             services.AddScoped<IMessageProducer, MessageProducer>();
 
-            services.AddTransient<MessageConsumer>();
+            services.AddTransient<IMessageConsumer, MessageConsumer>();
 
             // producers
             services.AddTransient<UserProducer>();
 
             services.AddTransient<TokenProducer>();
 
+            // tolen helper
             services.AddSingleton<TokenStatusService>();
+
+            // user helpers
+
+            services.AddScoped<IUserHelper, UserHelper>();
+
+            services.AddScoped<IUserAuthDetailHelper, UserAuthDetailHelper>();
 
             if (!contextConfig.CustomTokenSessionValidator)
             {
@@ -64,7 +71,6 @@ namespace My_Schedule.Shared.Core.DI
 
             if (!contextConfig.CustomUserBasicHelper)
             {
-                services.AddScoped<IUserBasicHelper, UserBasicHelper>();
             }
         }
     }

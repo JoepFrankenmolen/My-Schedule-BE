@@ -10,9 +10,9 @@ namespace My_Schedule.UserService.Controllers
     [AuthorizedRoles(UserRoleType.User)]
     public class UserController : ControllerBase
     {
-        private readonly UserFetchingService _userFetchingService;
+        private readonly UserAdminFetchingService _userFetchingService;
 
-        public UserController(UserFetchingService userFetchingService)
+        public UserController(UserAdminFetchingService userFetchingService)
         {
             _userFetchingService = userFetchingService ?? throw new ArgumentNullException(nameof(userFetchingService));
         }

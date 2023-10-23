@@ -1,6 +1,6 @@
 ﻿namespace My_Schedule.Shared.Models.Users.UserInterfaces
 {
-    public interface IUserSecurity : IUserStatus
+    public interface IUserSecurity
     {
         bool TwoFactorEnabled { get; set; }
         string PasswordHash { get; set; }

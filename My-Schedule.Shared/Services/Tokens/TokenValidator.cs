@@ -2,6 +2,7 @@
 using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
+using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users.Interfaces;
@@ -14,14 +15,20 @@ namespace My_Schedule.Shared.Services.Tokens
     public class TokenValidator : ITokenValidator
     {
         private readonly IAuthenticationSettings _appSettings;
-        private readonly IUserBasicHelper _userBasicHelper;
+        private readonly IUserHelper _userHelper;
         private readonly ITokenSessionValidator _tokenSessionValidator;
+        private readonly IUserContext _dbContext;
 
-        public TokenValidator(IAuthenticationSettings appSettings, IUserBasicHelper userHelper, ITokenSessionValidator tokenSessionService)
+        public TokenValidator(
+            IAuthenticationSettings appSettings,
+            IUserHelper userHelper,
+            ITokenSessionValidator tokenSessionService,
+            IUserContext dbContext)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-            _userBasicHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
             _tokenSessionValidator = tokenSessionService ?? throw new ArgumentNullException(nameof(tokenSessionService));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<ValidatedTokenUserDTO> ValidateToken(string token, TokenType type)
@@ -39,7 +46,7 @@ namespace My_Schedule.Shared.Services.Tokens
                 var sessionId = ExtractGuidFromToken(securityToken, CustomClaimTypes.SessionId);
 
                 // get user;
-                var user = await _userBasicHelper.GetUserById(userId); // broken here
+                var user = await _userHelper.GetUserById(userId, _dbContext); // broken here
 
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))
@@ -82,7 +89,7 @@ namespace My_Schedule.Shared.Services.Tokens
             return null;
         }
 
-        // Alter this to check the session revoced section
+        // Checks if token is revoked based on timestamps and if the session is valid.
         private async Task<bool> IsTokenRevoked(IUserStatus user, SecurityToken token, Guid sessionId)
         {
             long tokenValidFromUnixTimestamp = ConvertDateTimeToUnixTimestamp(token.ValidFrom);

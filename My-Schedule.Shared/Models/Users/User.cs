@@ -1,11 +1,9 @@
-﻿using My_Schedule.Shared.Models.Users.UserInterfaces;
-using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.Shared.Models.Users
 {
-    public class User : IUserDetails, IUserActivity, IUserSecurity, IUserStatus, IUserRoles, IUserBasic
+    public class User : IUser
     {
         // IUserDetails
         [Key]
@@ -22,19 +20,6 @@ namespace My_Schedule.Shared.Models.Users
         [EmailAddress]
         public string Email { get; set; }
 
-        // IUserSecurity
-        [Required]
-        public bool TwoFactorEnabled { get; set; }
-
-        [Required]
-        public string PasswordHash { get; set; }
-
-        [Required]
-        public string Salt { get; set; }
-
-        [Required]
-        public int FailedLoginAttempts { get; set; }
-
         // IUserStatus
         [Required]
         public bool IsBlocked { get; set; }
@@ -47,13 +32,6 @@ namespace My_Schedule.Shared.Models.Users
 
         [Required]
         public long TokenRevocationTimestamp { get; set; }
-
-        // IUserActivity
-        [Required]
-        public long LastLoginTimestamp { get; set; }
-
-        [Required]
-        public int LoginCount { get; set; }
 
         // IUserRoles
         [Required]

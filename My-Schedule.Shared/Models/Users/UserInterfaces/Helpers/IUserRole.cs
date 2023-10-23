@@ -1,8 +1,8 @@
-﻿namespace My_Schedule.Shared.Models.Users
+﻿namespace My_Schedule.Shared.Models.Users.UserInterfaces.Helpers
 {
     public interface IUserRole : IEntityWithGuidKey
     {
-        Guid UserId { get; set; }
         UserRoleType Role { get; set; }
+        Guid UserId { get; set; }
     }
 }

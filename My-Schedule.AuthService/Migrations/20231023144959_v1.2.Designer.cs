@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using My_Schedule.AuthService.Core;
 
@@ -11,9 +12,11 @@ using My_Schedule.AuthService.Core;
 namespace My_Schedule.AuthService.Migrations
 {
     [DbContext(typeof(AuthServiceContext))]
-    partial class AuthServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20231023144959_v1.2")]
+    partial class v12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,7 +7,7 @@ namespace My_Schedule.Shared.Core
 {
     public class UserAuthenticationContext : IUserAuthenticationContext
     {
-        public void Install(HttpContext context, IUserBasic user)
+        public void Install(HttpContext context, IUser user)
         {
             UserId = user.Id;
             UserIp = context.Connection.RemoteIpAddress?.ToString();

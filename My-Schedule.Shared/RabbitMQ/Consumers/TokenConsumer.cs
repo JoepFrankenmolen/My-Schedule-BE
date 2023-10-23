@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.Context;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Tokens;
 using My_Schedule.Shared.RabbitMQ.Messages;
 using My_Schedule.Shared.Services.Tokens;
@@ -8,11 +8,11 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
     public class TokenConsumer<T> : IHostedService where T : DbContext, ITokenStatusContext
     {
-        private readonly MessageConsumer _messageConsumer;
+        private readonly IMessageConsumer _messageConsumer;
         private readonly TokenStatusService _tokenStatusService;
         private readonly IDefaultContextBuilder _defaultContextBuilder;
 
-        public TokenConsumer(MessageConsumer messageConsumer, TokenStatusService tokenStatusService, IDefaultContextBuilder defaultContextBuilder)
+        public TokenConsumer(IMessageConsumer messageConsumer, TokenStatusService tokenStatusService, IDefaultContextBuilder defaultContextBuilder)
         {
             _messageConsumer = messageConsumer ?? throw new ArgumentNullException(nameof(messageConsumer));
             _tokenStatusService = tokenStatusService ?? throw new ArgumentNullException(nameof(tokenStatusService));

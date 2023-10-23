@@ -12,6 +12,7 @@ using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
+using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Core.DI
@@ -31,8 +32,15 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddSingleton<IUserSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
+            // Register the UserServiceContext and associated interfaces
             services.AddDbContext<AuthServiceContext>(options =>
-                options.UseSqlServer(appSettings.DatabaseConnection), ServiceLifetime.Scoped);
+            {
+                options.UseSqlServer(appSettings.DatabaseConnection);
+            });
+
+            // Register the interfaces with their implementations
+            services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<AuthServiceContext>());
+            services.AddScoped<IUserContext>(provider => provider.GetRequiredService<AuthServiceContext>());
 
             // Context builder
             services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
@@ -48,10 +56,6 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<TokenGenerator>();
 
             services.AddScoped<UserService>();
-
-            services.AddScoped<IUserBasicHelper, UserHelper>();
-
-            services.AddScoped<UserHelper>(); // why
 
             services.AddScoped<ClientDetailService>();
 
