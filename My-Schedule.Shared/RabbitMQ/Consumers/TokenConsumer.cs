@@ -12,12 +12,18 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         private readonly IMessageConsumer _messageConsumer;
         private readonly TokenStatusService _tokenStatusService;
         private readonly IDefaultContextBuilder _defaultContextBuilder;
+        private readonly ILogger<TokenConsumer<T>> _logger;
 
-        public TokenConsumer(IMessageConsumer messageConsumer, TokenStatusService tokenStatusService, IDefaultContextBuilder defaultContextBuilder)
+        public TokenConsumer(
+            IMessageConsumer messageConsumer,
+            TokenStatusService tokenStatusService,
+            IDefaultContextBuilder defaultContextBuilder,
+            ILogger<TokenConsumer<T>> logger)
         {
             _messageConsumer = messageConsumer ?? throw new ArgumentNullException(nameof(messageConsumer));
             _tokenStatusService = tokenStatusService ?? throw new ArgumentNullException(nameof(tokenStatusService));
             _defaultContextBuilder = defaultContextBuilder ?? throw new ArgumentNullException(nameof(defaultContextBuilder));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -46,13 +52,19 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
                 BlockedTimestamp = message.BlockedTimestamp
             };
 
-            using (var context = _defaultContextBuilder.CreateContext<T>())
+            try
             {
-                await _tokenStatusService.CreateTokenStatus(tokenStatus, context);
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _tokenStatusService.CreateTokenStatus(tokenStatus, context);
+                }
+
+                _logger.LogInformation($"TokenStatusCreate Message processed for SessionId: {message.SessionId}");
             }
-            // Specific message processing logic for TokenConsumer
-            Console.WriteLine("TokenConsumer received: {0}", message);
-            // Add your custom message processing logic here
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing TokenStatusCreate Message");
+            }
         }
     }
 }

@@ -90,7 +90,6 @@ namespace My_Schedule.Shared.Services.Users.Users
         {
             var user = await UserFetcherService.GetUserById(userId, context);
 
-            user.Email = userIdentity.Email;
             user.UserName = userIdentity.UserName;
 
             context.Users.Update(user);

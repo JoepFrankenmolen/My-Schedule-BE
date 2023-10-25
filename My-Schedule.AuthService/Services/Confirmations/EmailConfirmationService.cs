@@ -4,6 +4,7 @@ using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.Shared.Models.Users;
+using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Confirmations
 {
@@ -12,12 +13,19 @@ namespace My_Schedule.AuthService.Services.Confirmations
         private readonly ConfirmationService _confirmationService;
         private readonly NotificationTriggerService _notificationTriggerService;
         private readonly AuthServiceContext _dbContext;
+        private readonly IUserUpdateService _userUpdateService;
 
-        public EmailConfirmationService(ConfirmationService confirmationService, AuthServiceContext dbContext, NotificationTriggerService notificationTriggerService)
+
+        public EmailConfirmationService(
+            ConfirmationService confirmationService,
+            AuthServiceContext dbContext,
+            NotificationTriggerService notificationTriggerService,
+            IUserUpdateService userUpdateService)
         {
             _confirmationService = confirmationService ?? throw new ArgumentNullException(nameof(confirmationService));
             _notificationTriggerService = notificationTriggerService ?? throw new ArgumentNullException(nameof(notificationTriggerService));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _userUpdateService = userUpdateService ?? throw new ArgumentNullException(nameof(userUpdateService));
         }
 
         public async Task<Guid> CreateEmailConfirmation(User user)
@@ -34,10 +42,8 @@ namespace My_Schedule.AuthService.Services.Confirmations
 
             if (confirmation != null)
             {
-                confirmation.User.IsEmailConfirmed = true;
-                confirmation.User.TokenRevocationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-                await _dbContext.SaveChangesAsync();
+                var timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+                await _userUpdateService.EmailConfirmation(confirmation.UserId, true, timestamp, _dbContext);
                 return;
             }
             throw new UnauthorizedAccessException();

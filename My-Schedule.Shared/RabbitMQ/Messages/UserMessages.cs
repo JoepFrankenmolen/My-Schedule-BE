@@ -1,4 +1,5 @@
-﻿using My_Schedule.Shared.Models.Users;
+﻿using My_Schedule.Shared.DTO.Users;
+using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.Shared.RabbitMQ.Messages
 {
@@ -45,7 +46,6 @@ namespace My_Schedule.Shared.RabbitMQ.Messages
     public class UserIdentityMessage : UserMessages
     {
         public string UserName { get; set; }
-        public string Email { get; set; }
     }
 
     public class UserRoleUpdateMessage : UserMessages

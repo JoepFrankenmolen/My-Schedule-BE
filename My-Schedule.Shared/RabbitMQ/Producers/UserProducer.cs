@@ -66,7 +66,6 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
             var message = new UserIdentityMessage
             {
                 UserId = userId,
-                Email = userIdentity.Email,
                 UserName = userIdentity.UserName,
             };
 

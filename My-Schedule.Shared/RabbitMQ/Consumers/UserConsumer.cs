@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.Shared.DTO.Users;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Interfaces.Interfaces;
+using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.RabbitMQ.Messages;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
@@ -33,6 +35,11 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             // Start the background processing logic directly
             _messageConsumer.StartConsuming<UserBannedMessage>(ProcessUserBannedMessage, QueueNames.Users.UserBanned);
             _messageConsumer.StartConsuming<UserBlockedMessage>(ProcessUserBlockedMessage, QueueNames.Users.UserBlocked);
+            _messageConsumer.StartConsuming<UserTokenRevokedMessage>(ProcessUserTokenRevokedMessage, QueueNames.Users.UserTokenRevocation);
+            _messageConsumer.StartConsuming<UserEmailConfirmationMessage>(ProcessUserEmailConfirmationMessage, QueueNames.Users.UserEmailConfirmation);
+            _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate);
+            _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate);
+            _messageConsumer.StartConsuming<UserCreatedMessage>(ProcessUserCreateMessage, QueueNames.Users.UserCreated);
 
             return Task.CompletedTask;
         }
@@ -49,9 +56,10 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         {
             try
             {
-                // Process the UserBannedMessage here
-                // Example: Update the user's banned status in the database
-                //await _userUpdateService.BanUser(message.UserId, message.TokenRevocationTimestamp);
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.BanUser(message.UserId, message.IsBanned, message.TokenRevocationTimestamp, context, false);
+                }
 
                 _logger.LogInformation($"User Banned Message processed for UserId: {message.UserId}");
             }
@@ -65,15 +73,116 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         {
             try
             {
-                // Process the UserBannedMessage here
-                // Example: Update the user's banned status in the database
-                //await _userUpdateService.BanUser(message.UserId, message.TokenRevocationTimestamp);
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.BlockUser(message.UserId, message.IsBlocked, message.TokenRevocationTimestamp, context, false);
+                }
 
                 _logger.LogInformation($"User Blocked Message processed for UserId: {message.UserId}");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing User Blocked Message");
+            }
+        }
+
+        private async Task ProcessUserEmailConfirmationMessage(UserEmailConfirmationMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.EmailConfirmation(message.UserId, message.IsEmailConfirmed, message.TokenRevocationTimestamp, context, false);
+                }
+
+                _logger.LogInformation($"User Email Confirmed Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User Email Confirmed Message");
+            }
+        }
+
+        private async Task ProcessUserTokenRevokedMessage(UserTokenRevokedMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.TokenRevocation(message.UserId, message.TokenRevocationTimestamp, context, false);
+                }
+
+                _logger.LogInformation($"User token revokation Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User token revokation Message");
+            }
+        }
+
+        private async Task ProcessUserIdentityMessage(UserIdentityMessage message)
+        {
+            try
+            {
+                var userIdentity = new UserIdentityDTO { UserName = message.UserName,  };
+
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.IdentityUpdate(message.UserId, userIdentity, context, false);
+                }
+
+                _logger.LogInformation($"User Update Identity Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User Update Identity Message");
+            }
+        }
+
+        private async Task ProcessUserRoleUpdateMessage(UserRoleUpdateMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userUpdateService.RoleUpdate(message.UserId, message.Role, context, false);
+                }
+
+                _logger.LogInformation($"User Role Update Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User Role Update Message");
+            }
+        }
+
+        private async Task ProcessUserCreateMessage(UserCreatedMessage message)
+        {
+            try
+            {
+                var user = new User
+                {
+                    Id = message.UserId,
+                    UserName = message.UserName,
+                    Email = message.Email,
+                    CreationTimestamp = message.CreationTimestamp,
+                    IsBanned = message.IsBanned,
+                    IsBlocked = message.IsBlocked,
+                    IsEmailConfirmed = message.IsEmailConfirmed,
+                    Roles = message.Roles,
+                    TokenRevocationTimestamp = message.TokenRevocationTimestamp,
+                };
+
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userCreateService.CreateUser(user, context, false);
+                }
+
+                _logger.LogInformation($"User Create Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User Create Message");
             }
         }
     }
