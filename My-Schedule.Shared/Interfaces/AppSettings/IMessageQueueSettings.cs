@@ -8,5 +8,7 @@
         string MessageQueuePassword { get; }
         string MessageQueueVirtualHost { get; }
         bool MessageQueueUseSsl { get; }
+        string MessageQueueHeaderName { get; }
+        string MessageQueueServiceName { get; }
     }
 }

@@ -23,7 +23,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserBanned);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserBanned);
         }
 
         public async Task SendUserBlockedMessage(Guid userId, bool state, long timestamp)
@@ -35,7 +35,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserBlocked);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserBlocked);
         }
 
         public async Task SendTokenRevovationMessage(Guid userId, long timestamp)
@@ -46,7 +46,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserTokenRevocation);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserTokenRevocation);
         }
 
         public async Task SendEmailConfirmationMessage(Guid userId, bool state, long timestamp)
@@ -58,7 +58,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserEmailConfirmation);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserEmailConfirmation);
         }
 
         public async Task SendIdentityUpdateMessage(Guid userId, UserIdentityDTO userIdentity)
@@ -69,7 +69,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 UserName = userIdentity.UserName,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserIdentityUpdate);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserIdentityUpdate);
         }
 
         public async Task SendRoleUpdateMessage(Guid userId, UserRole role)
@@ -80,7 +80,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 Role = role,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserRoleUpdate);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserRoleUpdate);
         }
 
         public async Task SendUserCreatedMessage(User user)
@@ -98,7 +98,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 Roles = user.Roles
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserCreated);
+            await _messageProducer.SendMassMessage(message, QueueNames.Users.UserCreated);
         }
     }
 }

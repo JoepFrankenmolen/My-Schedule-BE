@@ -27,6 +27,8 @@
         public string MessageQueuePassword => LoadSetting("MessageQueuePassword");
         public string MessageQueueVirtualHost => LoadSetting("MessageQueueVirtualHost");
         public bool MessageQueueUseSsl => bool.Parse(LoadSetting("MessageQueueUseSsl"));
+        public string MessageQueueHeaderName => LoadSetting("MessageQueueHeaderName");
+        public string MessageQueueServiceName => LoadSetting("MessageQueueServiceName");
 
         private string LoadSetting(string key)
         {

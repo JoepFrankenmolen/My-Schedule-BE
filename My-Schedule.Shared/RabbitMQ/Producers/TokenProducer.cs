@@ -23,7 +23,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 BlockedTimestamp = tokenStatus.BlockedTimestamp.Value,
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Tokens.TokenStatusCreated);
+            await _messageProducer.SendMassMessage(message, QueueNames.Tokens.TokenStatusCreated);
         }
     }
 }

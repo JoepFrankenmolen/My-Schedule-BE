@@ -1,4 +1,5 @@
-﻿using My_Schedule.Shared.Interfaces.AppSettings;
+﻿using My_Schedule.Shared.Core;
+using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -10,55 +11,34 @@ namespace My_Schedule.Shared.RabbitMQ
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly ILogger<MessageProducer> _logger;
+        private readonly ILogger<MessageConsumer> _logger;
+        private readonly Dictionary<string, object> _headers;
 
-        public MessageProducer(ILogger<MessageProducer> logger, IMessageQueueSettings appSettings)
+        public MessageProducer(IMessageQueueSettings appSettings, ILogger<MessageConsumer> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
+            _connection = new ConnectionFactoryWrapper(appSettings, _logger).CreateConnection();
+            _channel = _connection.CreateModel();
 
-            var factory = new ConnectionFactory
-            {
-                HostName = appSettings.MessageQueueHostName, // RabbitMQ server host name
-                Port = appSettings.MessageQueuePort,         // Port number (usually 5672)
-                UserName = appSettings.MessageQueueUserName, // RabbitMQ username
-                Password = appSettings.MessageQueuePassword, // RabbitMQ password
-                VirtualHost = appSettings.MessageQueueVirtualHost, // RabbitMQ virtual host (if used)
-
-                // Enable SSL/TLS for secure communication (optional)
-                Ssl = new SslOption
-                {
-                    Enabled = appSettings.MessageQueueUseSsl, // Set to true if you want to use SSL/TLS
-                    ServerName = appSettings.MessageQueueHostName // Server name for SSL certificate validation
-                }
-            };
-
-            try
-            {
-                _connection = factory.CreateConnection();
-                _channel = _connection.CreateModel();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error connecting to RabbitMQ.");
-                throw new Exception("Error connecting to RabbitMQ.");
-            }
-
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            // Add headers so that when picked up by a consumer it can check if it has already processed this message.
+            _headers = CreateHeaders(appSettings);
         }
 
-        public async Task SendMessage<T>(T message, string queueName, CancellationToken cancellationToken = default)
+        public async Task SendMessage<T>(T message, string queueName)
         {
-            // Declare a queue
+            // Declare queue
             _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
             try
             {
-                var jsonMessage = JsonConvert.SerializeObject(message);
+                // Convert to JSON
+                var body = ConvertMessageToBody(message);
 
-                var body = Encoding.UTF8.GetBytes(jsonMessage);
+                // Add headers
+                var properties = CreateProperties();
 
-                _channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+                // Send queue message
+                _channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: properties, body: body);
 
                 _logger.LogInformation($"Message sent to {queueName}: {message.GetType().Name}");
             }
@@ -68,10 +48,55 @@ namespace My_Schedule.Shared.RabbitMQ
             }
         }
 
+        public async Task SendMassMessage<T>(T message, string exchangeName)
+        {
+            try
+            {
+                // Convert to JSON
+                var body = ConvertMessageToBody(message);
+
+                // Add Headers
+                var properties = CreateProperties();
+
+                // Send Exchange message.
+                _channel.BasicPublish(exchange: exchangeName, routingKey: "", basicProperties: properties, body: body);
+
+                _logger.LogInformation($"Message sent to fanout exchange {exchangeName}: {message.GetType().Name}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error sending message to fanout exchange {exchangeName}: {message.GetType().Name}");
+            }
+        }
+
         public void Dispose()
         {
             _channel.Close();
             _connection.Close();
+        }
+
+        private byte[] ConvertMessageToBody<T>(T message)
+        {
+            var jsonMessage = JsonConvert.SerializeObject(message);
+            return Encoding.UTF8.GetBytes(jsonMessage);
+        }
+
+        private IBasicProperties CreateProperties()
+        {
+            var properties = _channel.CreateBasicProperties();
+            if (_headers != null)
+            {
+                properties.Headers = new Dictionary<string, object>(_headers);
+            }
+            return properties;
+        }
+
+        private Dictionary<string, object> CreateHeaders(IMessageQueueSettings appSettings)
+        {
+            return new Dictionary<string, object>
+            {
+                { appSettings.MessageQueueHeaderName, appSettings.MessageQueueServiceName },
+            };
         }
     }
 }

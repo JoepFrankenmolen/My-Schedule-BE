@@ -30,5 +30,7 @@ namespace My_Schedule.AuthService.Core
         public string MessageQueuePassword => _appSettings.MessageQueuePassword;
         public string MessageQueueVirtualHost => _appSettings.MessageQueueVirtualHost;
         public bool MessageQueueUseSsl => _appSettings.MessageQueueUseSsl;
+        public string MessageQueueHeaderName => _appSettings.MessageQueueHeaderName;
+        public string MessageQueueServiceName => _appSettings.MessageQueueServiceName;
     }
 }

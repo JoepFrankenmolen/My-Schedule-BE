@@ -12,40 +12,15 @@ namespace My_Schedule.Shared.RabbitMQ
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private readonly IMessageQueueSettings _appSettings;
         private readonly ILogger<MessageConsumer> _logger;
 
         public MessageConsumer(IMessageQueueSettings appSettings, ILogger<MessageConsumer> logger)
         {
-            _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-
-            var factory = new ConnectionFactory
-            {
-                HostName = appSettings.MessageQueueHostName, // RabbitMQ server host name
-                Port = appSettings.MessageQueuePort,         // Port number (usually 5672)
-                UserName = appSettings.MessageQueueUserName, // RabbitMQ username
-                Password = appSettings.MessageQueuePassword, // RabbitMQ password
-                VirtualHost = appSettings.MessageQueueVirtualHost, // RabbitMQ virtual host (if used)
-
-                // Enable SSL/TLS for secure communication.
-                Ssl = new SslOption
-                {
-                    Enabled = appSettings.MessageQueueUseSsl, // Set to true if you want to use SSL/TLS
-                    ServerName = appSettings.MessageQueueHostName // Server name for SSL certificate validation
-                }
-            };
-
-            try
-            {
-                _connection = factory.CreateConnection();
-                _channel = _connection.CreateModel();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error connecting to RabbitMQ.");
-                throw new Exception("Error connecting to RabbitMQ.");
-            }
-
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _appSettings = appSettings ?? throw new ArgumentException(nameof(appSettings));
+            _connection = new ConnectionFactoryWrapper(appSettings, _logger).CreateConnection();
+            _channel = _connection.CreateModel();
         }
 
         public void StartConsuming<T>(Func<T, Task> messageHandler, string queueName)
@@ -55,23 +30,23 @@ namespace My_Schedule.Shared.RabbitMQ
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, ea) =>
             {
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body); // Use UTF-8 encoding for decoding
+                // Convert body to message.
+                T messageObject = ConvertBodyToMessage<T>(ea);
 
-                T messageObject = default(T); // Initialize messageObject with a default value
-
-                try
+                // Check the "ServiceName" header in the message
+                if (!HasSameServiceName(ea.BasicProperties))
                 {
-                    // Convert from JSON to the specified type T
-                    messageObject = JsonConvert.DeserializeObject<T>(message);
+                    // Pass the deserialized messageObject to the handler.
+                    messageHandler(messageObject);
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Handle deserialization errors here, e.g., log the exception
-                    Console.WriteLine($"Failed to deserialize message: {ex.Message}");
+                    // Log and throw an error when ServiceName doesn't match
+                    _logger.LogError("Message has the same ServiceName.");
                 }
 
-                messageHandler(messageObject); // Pass the deserialized messageObject to the handler
+                // Pass the deserialized messageObject to the handler.
+                messageHandler(messageObject); 
             };
 
             _channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
@@ -81,6 +56,37 @@ namespace My_Schedule.Shared.RabbitMQ
         {
             _channel.Close();
             _connection.Close();
+        }
+
+        private T ConvertBodyToMessage<T>(BasicDeliverEventArgs ea)
+        {
+            var body = ea.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body); // Use UTF-8 encoding for decoding
+
+            try
+            {
+                // Convert from JSON to the specified type T
+                return JsonConvert.DeserializeObject<T>(message);
+            }
+            catch (Exception ex)
+            {
+                // Handle deserialization errors here, e.g., log the exception
+                _logger.Equals($"Failed to deserialize message: {ex.Message}");
+                throw new ArgumentException($"Failed to deserialize message: {ex.Message}");
+            }
+        }
+
+        private bool HasSameServiceName(IBasicProperties properties)
+        {
+            var headerName = _appSettings.MessageQueueHeaderName;
+            var serviceName = _appSettings.MessageQueueServiceName;
+
+            if (properties.Headers != null && properties.Headers.ContainsKey(headerName))
+            {
+                var headerValue = properties.Headers[headerName].ToString();
+                return string.Equals(serviceName, serviceName, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
         }
     }
 }
