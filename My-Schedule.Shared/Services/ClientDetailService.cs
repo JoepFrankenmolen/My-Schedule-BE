@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.AuthService.Core;
+using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Models.ClientDetails;
 
-namespace My_Schedule.AuthService.Services
+namespace My_Schedule.Shared.Services
 {
     public class ClientDetailService
     {
-        private readonly AuthServiceContext _dbContext;
+        private readonly IClientDetailsContext _dbContext;
 
-        public ClientDetailService(AuthServiceContext dbContext)
+        public ClientDetailService(IClientDetailsContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }

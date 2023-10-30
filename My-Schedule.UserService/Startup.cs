@@ -18,7 +18,7 @@ namespace My_Schedule.UserService
         {
             // Set config settings
             var contextConfig = new ContextConfig();
-            contextConfig.CustomUserBasicHelper = true;
+            contextConfig.ContainsUserAuthDetails = true;
 
             SharedServicesInstaller.Install(services, _configuration, contextConfig);
             UserServicesInstaller.Install(services, _configuration);

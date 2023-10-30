@@ -8,26 +8,29 @@ using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
-    public class UserConsumer<T> : IHostedService where T : DbContext, IUserContext
+    public class UserConsumer<T> : IHostedService where T : DbContext, IUserContext, IUserAuthDetailContext?
     {
         private readonly IMessageConsumer _messageConsumer;
         private readonly IUserUpdateService _userUpdateService;
         private readonly IUserCreateService _userCreateService;
         private readonly IDefaultContextBuilder _defaultContextBuilder;
         private readonly ILogger<UserConsumer<T>> _logger;
+        private readonly ConsumerConfiguration _consumerConfiguration;
 
         public UserConsumer(
             IMessageConsumer messageConsumer,
             IUserUpdateService userUpdateService,
             IUserCreateService userCreateService,
             IDefaultContextBuilder defaultContextBuilder,
-            ILogger<UserConsumer<T>> logger)
+            ILogger<UserConsumer<T>> logger,
+            ConsumerConfiguration consumerConfiguration)
         {
             _messageConsumer = messageConsumer ?? throw new ArgumentNullException(nameof(messageConsumer));
             _userUpdateService = userUpdateService ?? throw new ArgumentNullException(nameof(userUpdateService));
             _userCreateService = userCreateService ?? throw new ArgumentNullException(nameof(userCreateService));
             _defaultContextBuilder = defaultContextBuilder ?? throw new ArgumentNullException(nameof(defaultContextBuilder));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _consumerConfiguration = consumerConfiguration ?? throw new ArgumentNullException(nameof(consumerConfiguration));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -39,7 +42,15 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             _messageConsumer.StartConsuming<UserEmailConfirmationMessage>(ProcessUserEmailConfirmationMessage, QueueNames.Users.UserEmailConfirmation);
             _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate);
             _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate);
-            _messageConsumer.StartConsuming<UserCreatedMessage>(ProcessUserCreateMessage, QueueNames.Users.UserCreated);
+
+            if (!_consumerConfiguration.DoesUserAuthExist)
+            {
+                _messageConsumer.StartConsuming<UserCreatedMessage>(ProcessUserCreateMessage, QueueNames.Users.UserCreated);
+            }
+            else
+            {
+                _logger.LogInformation($"Not processing user creation messages in this service!");
+            }
 
             return Task.CompletedTask;
         }
@@ -124,7 +135,7 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         {
             try
             {
-                var userIdentity = new UserIdentityDTO { UserName = message.UserName,  };
+                var userIdentity = new UserIdentityDTO { UserName = message.UserName, };
 
                 using (var context = _defaultContextBuilder.CreateContext<T>())
                 {
@@ -156,6 +167,11 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             }
         }
 
+        /// <summary>
+        /// Should never be used when Auth is present.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private async Task ProcessUserCreateMessage(UserCreatedMessage message)
         {
             try

@@ -12,8 +12,9 @@ namespace My_Schedule.Shared.RabbitMQ
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private readonly ILogger<MessageConsumer> _logger;
 
-        public MessageConsumer(IMessageQueueSettings appSettings)
+        public MessageConsumer(IMessageQueueSettings appSettings, ILogger<MessageConsumer> logger)
         {
             _ = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
@@ -25,7 +26,7 @@ namespace My_Schedule.Shared.RabbitMQ
                 Password = appSettings.MessageQueuePassword, // RabbitMQ password
                 VirtualHost = appSettings.MessageQueueVirtualHost, // RabbitMQ virtual host (if used)
 
-                // Enable SSL/TLS for secure communication (optional)
+                // Enable SSL/TLS for secure communication.
                 Ssl = new SslOption
                 {
                     Enabled = appSettings.MessageQueueUseSsl, // Set to true if you want to use SSL/TLS
@@ -33,8 +34,18 @@ namespace My_Schedule.Shared.RabbitMQ
                 }
             };
 
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
+            try
+            {
+                _connection = factory.CreateConnection();
+                _channel = _connection.CreateModel();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error connecting to RabbitMQ.");
+                throw new Exception("Error connecting to RabbitMQ.");
+            }
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void StartConsuming<T>(Func<T, Task> messageHandler, string queueName)

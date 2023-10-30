@@ -11,9 +11,6 @@ namespace My_Schedule.Shared.Models.Users
     {
         // IUserDetails
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         [ForeignKey("User")]
         [Required]
         public Guid UserId { get; set; }
@@ -22,7 +19,7 @@ namespace My_Schedule.Shared.Models.Users
 
         // IUserSecurity
         [Required]
-        public bool TwoFactorEnabled { get; set; }
+        public bool TwoFactorEnabled { get; set; } // should be in user settings :)
 
         [Required]
         public string PasswordHash { get; set; }
@@ -30,12 +27,12 @@ namespace My_Schedule.Shared.Models.Users
         [Required]
         public string Salt { get; set; }
 
-        [Required]
-        public int FailedLoginAttempts { get; set; }
-
         // IUserActivity
         [Required]
         public long LastLoginTimestamp { get; set; }
+
+        [Required]
+        public int FailedLoginAttempts { get; set; }
 
         [Required]
         public int LoginCount { get; set; }

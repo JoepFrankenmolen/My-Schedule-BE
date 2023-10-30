@@ -33,8 +33,18 @@ namespace My_Schedule.Shared.RabbitMQ
                 }
             };
 
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
+            try
+            {
+                _connection = factory.CreateConnection();
+                _channel = _connection.CreateModel();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error connecting to RabbitMQ.");
+                throw new Exception("Error connecting to RabbitMQ.");
+            }
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task SendMessage<T>(T message, string queueName, CancellationToken cancellationToken = default)

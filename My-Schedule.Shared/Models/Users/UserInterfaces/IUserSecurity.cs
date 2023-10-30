@@ -2,9 +2,8 @@
 {
     public interface IUserSecurity
     {
-        bool TwoFactorEnabled { get; set; }
+        bool TwoFactorEnabled { get; set; } // should be moved to IUserSettings
         string PasswordHash { get; set; }
         string Salt { get; set; }
-        int FailedLoginAttempts { get; } // Number of failed login attempts. Resets after successfull login.
     }
 }

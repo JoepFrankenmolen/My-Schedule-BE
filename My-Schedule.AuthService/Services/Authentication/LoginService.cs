@@ -8,6 +8,7 @@ using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.UserAuthDetails;
 
 namespace My_Schedule.AuthService.Services.Auth.Authentication
 {
@@ -15,17 +16,17 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
     {
         private readonly LoginVerificationService _loginVerificationService;
         private readonly EmailConfirmationService _emailConfirmationService;
+        private readonly IUserAuthDetailUpdateService _userAuthDetailUpdateService;
         private readonly IUserSettings _appSettings;
         private readonly HashService _hashService;
-        private readonly IUserAuthDetailHelper _userAuthDetailHelper;
         private readonly AuthServiceContext _dbContext;
         private readonly LoginLogService _loginLogService;
 
-        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IUserSettings appSettings, IUserAuthDetailHelper userHelper, HashService hashService, LoginLogService loginLogService)
+        public LoginService(AuthServiceContext dbContext, LoginVerificationService loginVerificationService, EmailConfirmationService emailConfirmationService, IUserSettings appSettings, IUserAuthDetailUpdateService userAuthDetailUpdateService, HashService hashService, LoginLogService loginLogService)
         {
             _loginVerificationService = loginVerificationService ?? throw new ArgumentNullException(nameof(loginVerificationService));
             _emailConfirmationService = emailConfirmationService ?? throw new ArgumentNullException(nameof(emailConfirmationService));
-            _userAuthDetailHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userAuthDetailUpdateService = userAuthDetailUpdateService ?? throw new ArgumentNullException(nameof(userAuthDetailUpdateService));
             _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
             _loginLogService = loginLogService ?? throw new ArgumentNullException(nameof(loginLogService));
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
@@ -35,7 +36,14 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
         public async Task<ConfirmationCodeResponse> Login(CredentialsDTO credentialsDTO)
         {
             // Get the user. Can be null.
-            var userAuth = await _userAuthDetailHelper.GetUserByEmail(credentialsDTO.Email, _dbContext);
+            UserAuthDetail userAuth = null;
+
+            try
+            {
+                userAuth = await UserAuthDetailFetcherService.GetUserByEmail(credentialsDTO.Email, _dbContext);
+            }
+            catch (Exception ex) { }
+
             var response = new ConfirmationCodeResponse();
             var maxAttempts = _appSettings.MaxLoginAttempts;
             var isValid = false;
@@ -56,7 +64,7 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                     else
                     {
                         // Update user fields due to SuccessFullLogin.
-                        userAuth = await _userAuthDetailHelper.UpdateOnLoginSuccess(userAuth, _dbContext);
+                        userAuth = await _userAuthDetailUpdateService.UpdateOnLoginSuccess(userAuth.UserId, userAuth, _dbContext);
 
                         // Set isValid to true.
                         var id = await _loginVerificationService.CreateLoginVerification(userAuth.User);
@@ -67,7 +75,10 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
                 }
                 else
                 {
-                    await _userAuthDetailHelper.UpdateOnLoginFail(userAuth, maxAttempts, _dbContext);
+                    // If the user exeeds the max amount of attempts and is not blocked yet than block the user.
+                    var isUserBlocked = userAuth.FailedLoginAttempts >= maxAttempts && !userAuth.User.IsBlocked;
+
+                    await _userAuthDetailUpdateService.UpdateOnLoginFail(userAuth.UserId, userAuth, isUserBlocked, _dbContext);
                 }
             }
 

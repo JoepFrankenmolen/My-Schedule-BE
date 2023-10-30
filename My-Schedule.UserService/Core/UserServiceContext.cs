@@ -6,7 +6,7 @@ using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.UserService.Core
 {
-    public class UserServiceContext : DbContext, ITokenStatusContext, IUserAuthDetailContext, IUserContext
+    public class UserServiceContext : DbContext, ITokenStatusContext, IUserAuthDetailContext, IUserContext, IClientDetailsContext
     {
         public UserServiceContext(DbContextOptions<UserServiceContext> options) : base(options)
         {

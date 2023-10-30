@@ -2,6 +2,7 @@
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
+using My_Schedule.Shared.RabbitMQ;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.UserService.Services.Users;
 
@@ -13,6 +14,13 @@ namespace My_Schedule.UserService.Core.DI
         {
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
+
+            // Set consumer configuration.
+            var consumerConfig = new ConsumerConfiguration
+            {
+                DoesUserAuthExist = true
+            };
+            services.AddTransient(_ => consumerConfig);
 
             // Register services
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
@@ -30,6 +38,8 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<ITokenStatusContext>(provider => provider.GetRequiredService<UserServiceContext>());
             services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<UserServiceContext>());
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<UserServiceContext>());
+            services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<UserServiceContext>());
+
 
             // Context builder
             services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
@@ -42,6 +52,7 @@ namespace My_Schedule.UserService.Core.DI
             // Consumer
             services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
             services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserAuthDetailConsumer<UserServiceContext>>();
         }
     }
 }

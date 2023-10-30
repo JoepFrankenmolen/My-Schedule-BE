@@ -40,13 +40,14 @@ namespace My_Schedule.AuthService.Services.Confirmations
         {
             var confirmation = await _confirmationService.ValidateConfirmation(confirmDTO);
 
-            if (confirmation != null)
+            if (confirmation == null)
             {
-                var timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-                await _userUpdateService.EmailConfirmation(confirmation.UserId, true, timestamp, _dbContext);
-                return;
+                throw new UnauthorizedAccessException();
             }
-            throw new UnauthorizedAccessException();
+
+            var timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+            await _userUpdateService.EmailConfirmation(confirmation.UserId, true, timestamp, _dbContext);
+            // place the token generation here.
         }
     }
 }

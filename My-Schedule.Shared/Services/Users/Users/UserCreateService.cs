@@ -14,7 +14,7 @@ namespace My_Schedule.Shared.Services.Users.Users
             _userProducer = userProducer ?? throw new ArgumentNullException(nameof(userProducer));
         }
 
-        public async Task CreateUser(User user, IUserContext context, bool sendMessage = true)
+        public async Task<User> CreateUser(User user, IUserContext context, bool sendMessage = true)
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
@@ -23,6 +23,8 @@ namespace My_Schedule.Shared.Services.Users.Users
             {
                 await _userProducer.SendUserCreatedMessage(user);
             }
+
+            return user;
         }
     }
 }

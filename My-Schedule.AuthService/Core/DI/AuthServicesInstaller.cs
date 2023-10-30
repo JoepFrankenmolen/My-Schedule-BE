@@ -11,6 +11,8 @@ using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
+using My_Schedule.Shared.RabbitMQ;
+using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
 namespace My_Schedule.AuthService.Core.DI
@@ -22,6 +24,13 @@ namespace My_Schedule.AuthService.Core.DI
             // Done like this to make sure there is only one place the DatabaseConnection gets called.
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
+
+            // Set consumer configuration.
+            var consumerConfig = new ConsumerConfiguration
+            {
+                DoesUserAuthExist = true
+            };
+            services.AddTransient(_ => consumerConfig);
 
             // probely more efficent ways of doing this but good for now
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
@@ -40,49 +49,45 @@ namespace My_Schedule.AuthService.Core.DI
             // Register the interfaces with their implementations
             services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<AuthServiceContext>());
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<AuthServiceContext>());
+            services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<AuthServiceContext>());
 
             // Context builder
             services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
 
+            // Auth
             services.AddScoped<LogoutService>();
-
             services.AddScoped<LoginService>();
-
             services.AddScoped<RegisterService>();
-
-            services.AddScoped<TokenService>();
-
-            services.AddScoped<TokenGenerator>();
-
-            services.AddScoped<UserService>();
-
-            services.AddScoped<ClientDetailService>();
-
             services.AddScoped<HashService>();
-
-            services.AddScoped<LoginLogService>();
-
-            services.AddScoped<ConfirmationLogService>();
-
-            services.AddScoped<ITokenSessionValidator, TokenSessionService>();
-
-            services.AddScoped<TokenSessionService>();
-
-            services.AddScoped<NotificationTriggerService>();
-
-            services.AddScoped<TokenDevelopmentGenerator>();
-
-            services.AddScoped<NotificationSender>();
-
-            services.AddScoped<ConfirmationService>();
-
-            services.AddScoped<ConfirmationDispatcher>();
-
             services.AddScoped<PasswordResetService>();
-
             services.AddScoped<LoginVerificationService>();
 
+            // Tokens 
+            services.AddScoped<ITokenSessionValidator, TokenSessionService>();
+            services.AddScoped<TokenSessionService>();
+            services.AddScoped<TokenService>();
+            services.AddScoped<TokenGenerator>();
+            services.AddScoped<TokenDevelopmentGenerator>();
+
+            // Users
+            services.AddScoped<UserService>();
+
+            // Confirmation
+            services.AddScoped<ConfirmationService>();
+            services.AddScoped<ConfirmationDispatcher>();
             services.AddScoped<EmailConfirmationService>();
+
+            // Logs
+            services.AddScoped<LoginLogService>();
+            services.AddScoped<ConfirmationLogService>();
+
+            // Notifications
+            services.AddScoped<NotificationTriggerService>();
+            services.AddScoped<NotificationSender>();
+  
+            // Consumers
+            services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();
+            services.AddSingleton<IHostedService, UserAuthDetailConsumer<AuthServiceContext>>();
         }
     }
 }

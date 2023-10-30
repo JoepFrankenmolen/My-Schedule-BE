@@ -9,6 +9,7 @@ using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.UserAuthDetails;
 
 namespace My_Schedule.AuthService.Services.Confirmations
 {
@@ -16,15 +17,15 @@ namespace My_Schedule.AuthService.Services.Confirmations
     {
         private readonly IUserSettings _appSettings;
         private readonly ConfirmationService _confirmationService;
-        private readonly IUserAuthDetailHelper _userAuthDetailHelper;
+        private readonly IUserAuthDetailUpdateService _userAuthDetailUpdateService;
         private readonly HashService _hashService;
         private readonly NotificationTriggerService _notificationTriggerService;
         private readonly AuthServiceContext _dbContext;
 
-        public PasswordResetService(ConfirmationService confirmationService, IUserSettings appSettings, IUserAuthDetailHelper userHelper, AuthServiceContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
+        public PasswordResetService(ConfirmationService confirmationService, IUserSettings appSettings, IUserAuthDetailUpdateService userAuthDetailUpdateService, AuthServiceContext dbContext, HashService hashService, NotificationTriggerService notificationTriggerService)
         {
             _confirmationService = confirmationService ?? throw new ArgumentNullException(nameof(confirmationService));
-            _userAuthDetailHelper = userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+            _userAuthDetailUpdateService = userAuthDetailUpdateService ?? throw new ArgumentNullException(nameof(userAuthDetailUpdateService));
             _notificationTriggerService = notificationTriggerService ?? throw new ArgumentNullException(nameof(notificationTriggerService));
             _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -36,7 +37,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
             // validate password before fetching the user
             if (PasswordValidator.IsValidPassword(credentialsDTO.Password))
             {
-                var userAuth = await _userAuthDetailHelper.GetUserByEmail(credentialsDTO.Email, _dbContext);
+                var userAuth = await UserAuthDetailFetcherService.GetUserByEmail(credentialsDTO.Email, _dbContext);
 
                 if (userAuth != null && userAuth.User != null && UserValidator.IsValidUser(userAuth, _appSettings.MaxLoginAttempts))
                 {
@@ -67,7 +68,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
         public async Task ConfirmPasswordReset(ConfirmDTO confirmDTO)
         {
             var confirmation = await _confirmationService.ValidateConfirmation(confirmDTO);
-            var userAuth = await _userAuthDetailHelper.GetUserById(confirmation.UserId, _dbContext);
+            var userAuth = await UserAuthDetailFetcherService.GetUserById(confirmation.UserId, _dbContext);
             var maxAttempts = _appSettings.MaxLoginAttempts;
 
             if (userAuth != null && userAuth.User != null && confirmation != null)
@@ -76,7 +77,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
                 {
                     var passwordReset = await GetPasswordReset(confirmation.UserId, confirmation.Id);
 
-                    await _userAuthDetailHelper.UpdateCredentials(userAuth, passwordReset.PasswordHash, passwordReset.Salt, _dbContext);
+                    await _userAuthDetailUpdateService.UpdateCredentials(userAuth.UserId, userAuth, passwordReset.PasswordHash, passwordReset.Salt, _dbContext);
                 }
                 return;
             }

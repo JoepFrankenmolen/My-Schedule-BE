@@ -1,5 +1,4 @@
-﻿using My_Schedule.Shared.DTO.Users;
-using My_Schedule.Shared.Models.Users;
+﻿using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.Shared.RabbitMQ.Messages
 {

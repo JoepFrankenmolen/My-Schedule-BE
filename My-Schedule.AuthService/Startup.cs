@@ -19,7 +19,7 @@ namespace My_Schedule.AuthService
             // Set config settings
             var contextConfig = new ContextConfig();
             contextConfig.CustomTokenSessionValidator = true;
-            contextConfig.CustomUserBasicHelper = true;
+            contextConfig.ContainsUserAuthDetails = true;
 
             SharedServicesInstaller.Install(services, _configuration, contextConfig);
             AuthServicesInstaller.Install(services, _configuration);

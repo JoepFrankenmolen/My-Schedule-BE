@@ -9,22 +9,23 @@ namespace My_Schedule.AuthService.Services.Users
     public class UserService
     {
         private readonly AuthServiceContext _dbContext;
-        private readonly IUserAuthDetailHelper _authDetailHelper;
+        private readonly IUserAuthDetailCreateService _userAuthDetailCreateService;
 
-        public UserService(AuthServiceContext dbContext, IUserAuthDetailHelper userAuthDetailHelper)
+        public UserService(AuthServiceContext dbContext, IUserAuthDetailCreateService userAuthDetailCreateService)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _authDetailHelper = userAuthDetailHelper ?? throw new ArgumentNullException(nameof(userAuthDetailHelper));
+            _userAuthDetailCreateService = userAuthDetailCreateService ?? throw new ArgumentNullException(nameof(userAuthDetailCreateService));
         }
 
         public async Task<User> CreateUser(RegisterDTO registerDTO, HashDTO hashDTO)
         {
+            var userId = Guid.NewGuid();
             var userAuth = new UserAuthDetail
             {
-                Id = new Guid(),
-                User = new User // check if this also gets saved
+                UserId = userId,
+                User = new User
                 {
-                    Id = new Guid(),
+                    Id = userId,
                     CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                     UserName = registerDTO.Username,
                     Email = registerDTO.Email,
@@ -41,9 +42,9 @@ namespace My_Schedule.AuthService.Services.Users
             };
 
             // create role
-            userAuth.User.Roles.Add(await CreateBasicRole(userAuth.Id, UserRoleType.User));
+            userAuth.User.Roles.Add(await CreateBasicRole(userAuth.UserId, UserRoleType.User));
 
-            userAuth = await _authDetailHelper.CreateUserAuthDetail(userAuth, _dbContext);
+            userAuth = await _userAuthDetailCreateService.CreateUserAuthDetail(userAuth, _dbContext);
             return userAuth.User;
         }
 

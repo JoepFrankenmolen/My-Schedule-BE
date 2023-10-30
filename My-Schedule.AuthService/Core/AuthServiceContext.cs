@@ -9,7 +9,7 @@ using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Core
 {
-    public class AuthServiceContext : DbContext, IUserAuthDetailContext, IUserContext
+    public class AuthServiceContext : DbContext, IUserAuthDetailContext, IUserContext, IClientDetailsContext
     {
         public AuthServiceContext(DbContextOptions<AuthServiceContext> options) : base(options)
         {

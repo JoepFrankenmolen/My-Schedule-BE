@@ -5,6 +5,6 @@ namespace My_Schedule.Shared.Services.Users.Interfaces
 {
     public interface IUserCreateService
     {
-        Task CreateUser(User user, IUserContext context, bool sendMessage = true);
+        Task<User> CreateUser(User user, IUserContext context, bool sendMessage = true);
     }
 }
