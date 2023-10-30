@@ -40,7 +40,6 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<UserServiceContext>());
             services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<UserServiceContext>());
 
-
             // Context builder
             services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
 

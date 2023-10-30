@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using My_Schedule.Shared.Interfaces.AppSettings;
+﻿using My_Schedule.Shared.Interfaces.AppSettings;
 using RabbitMQ.Client;
 
 namespace My_Schedule.Shared.RabbitMQ
@@ -11,7 +10,7 @@ namespace My_Schedule.Shared.RabbitMQ
 
         public ConnectionFactoryWrapper(IMessageQueueSettings appSettings, ILogger logger)
         {
-            _appSettings = appSettings ??  throw new ArgumentNullException(nameof(appSettings));
+            _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

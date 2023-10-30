@@ -4,6 +4,6 @@
     {
         Task SendMessage<T>(T message, string queueName);
 
-        Task SendMassMessage<T>(T message, string exchangeName);
+        Task SendFanMessage<T>(T message, string exchangeName);
     }
 }

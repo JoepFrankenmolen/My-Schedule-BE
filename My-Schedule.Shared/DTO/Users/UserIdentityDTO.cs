@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace My_Schedule.Shared.DTO.Users
+﻿namespace My_Schedule.Shared.DTO.Users
 {
     public class UserIdentityDTO
     {

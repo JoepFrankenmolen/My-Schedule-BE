@@ -1,5 +1,4 @@
-﻿using My_Schedule.Shared.Core;
-using My_Schedule.Shared.Interfaces.AppSettings;
+﻿using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -24,6 +23,13 @@ namespace My_Schedule.Shared.RabbitMQ
             _headers = CreateHeaders(appSettings);
         }
 
+        /// <summary>
+        /// Sends a single message to a single queue.
+        /// </summary>
+        /// <typeparam name="T">The Type of the message.</typeparam>
+        /// <param name="message">The message itself.</param>
+        /// <param name="queueName">The queue to sent to.</param>
+        /// <returns></returns>
         public async Task SendMessage<T>(T message, string queueName)
         {
             // Declare queue
@@ -48,7 +54,14 @@ namespace My_Schedule.Shared.RabbitMQ
             }
         }
 
-        public async Task SendMassMessage<T>(T message, string exchangeName)
+        /// <summary>
+        /// Sends a fan out message. This means one message to multible queues.
+        /// </summary>
+        /// <typeparam name="T">The message Type.</typeparam>
+        /// <param name="message">The message itself.</param>
+        /// <param name="exchangeName">The queue name.</param>
+        /// <returns></returns>
+        public async Task SendFanMessage<T>(T message, string exchangeName)
         {
             try
             {

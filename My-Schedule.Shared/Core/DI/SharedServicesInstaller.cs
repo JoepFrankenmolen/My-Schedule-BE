@@ -26,7 +26,7 @@ namespace My_Schedule.Shared.Core.DI
 
             // Register AppSettings as a service and pass the IConfiguration instance
             services.AddSingleton<AppSettings>(new AppSettings(configuration));
-            
+
             // Auth
             services.AddScoped<AuthorizationMiddleware>();
             // services.AddScoped<DevelopmentMiddleware>();

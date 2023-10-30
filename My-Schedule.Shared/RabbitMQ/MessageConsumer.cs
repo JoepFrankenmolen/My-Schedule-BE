@@ -14,6 +14,8 @@ namespace My_Schedule.Shared.RabbitMQ
         private readonly IModel _channel;
         private readonly IMessageQueueSettings _appSettings;
         private readonly ILogger<MessageConsumer> _logger;
+        private readonly string _serviceName;
+        private readonly string _headerName;
 
         public MessageConsumer(IMessageQueueSettings appSettings, ILogger<MessageConsumer> logger)
         {
@@ -21,33 +23,40 @@ namespace My_Schedule.Shared.RabbitMQ
             _appSettings = appSettings ?? throw new ArgumentException(nameof(appSettings));
             _connection = new ConnectionFactoryWrapper(appSettings, _logger).CreateConnection();
             _channel = _connection.CreateModel();
+            _serviceName = _appSettings.MessageQueueServiceName;
+            _headerName = _appSettings.MessageQueueHeaderName;
         }
 
-        public void StartConsuming<T>(Func<T, Task> messageHandler, string queueName)
+        /// <summary>
+        /// Use to start consuming on a queue.
+        /// </summary>
+        /// <typeparam name="T">The messageType</typeparam>
+        /// <param name="messageHandler">The function in which the message will be processed.</param>
+        /// <param name="queueName">The name of the queue.</param>
+        /// <param name="isFanExchange">True if the queue you are listening to is a fan exchange.</param>
+        public void StartConsuming<T>(Func<T, Task> messageHandler, string queueName, bool isFanExchange = false)
         {
-            _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            string exchangeName = isFanExchange ? queueName : string.Empty;
 
-            var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            if (isFanExchange)
             {
-                // Convert body to message.
-                T messageObject = ConvertBodyToMessage<T>(ea);
+                queueName = $"{_serviceName}.{queueName}";
 
-                // Check the "ServiceName" header in the message
-                if (!HasSameServiceName(ea.BasicProperties))
-                {
-                    // Pass the deserialized messageObject to the handler.
-                    messageHandler(messageObject);
-                }
-                else
-                {
-                    // Log and throw an error when ServiceName doesn't match
-                    _logger.LogError("Message has the same ServiceName.");
-                }
+                // Declare exchange
+                _channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Fanout);
+            }
 
-                // Pass the deserialized messageObject to the handler.
-                messageHandler(messageObject); 
-            };
+            // Declare queue
+            var queue = _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null).QueueName;
+
+            if (isFanExchange)
+            {
+                // Bind queue to exchange
+                _channel.QueueBind(queue, exchangeName, routingKey: "");
+            }
+
+            // Create the consumer and assign the messageHandler to the queue.
+            var consumer = CreateConsumer<T>(messageHandler);
 
             _channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
         }
@@ -61,7 +70,7 @@ namespace My_Schedule.Shared.RabbitMQ
         private T ConvertBodyToMessage<T>(BasicDeliverEventArgs ea)
         {
             var body = ea.Body.ToArray();
-            var message = Encoding.UTF8.GetString(body); // Use UTF-8 encoding for decoding
+            var message = Encoding.UTF8.GetString(body);
 
             try
             {
@@ -78,15 +87,39 @@ namespace My_Schedule.Shared.RabbitMQ
 
         private bool HasSameServiceName(IBasicProperties properties)
         {
-            var headerName = _appSettings.MessageQueueHeaderName;
-            var serviceName = _appSettings.MessageQueueServiceName;
-
-            if (properties.Headers != null && properties.Headers.ContainsKey(headerName))
+            if (properties.Headers != null && properties.Headers.ContainsKey(_headerName))
             {
-                var headerValue = properties.Headers[headerName].ToString();
-                return string.Equals(serviceName, serviceName, StringComparison.OrdinalIgnoreCase);
+                // rawHeaderValue is a byte array.
+                var rawHeaderValue = properties.Headers[_headerName];
+                var headerValue = Encoding.UTF8.GetString((byte[])rawHeaderValue);
+
+                return string.Equals(_serviceName, headerValue, StringComparison.OrdinalIgnoreCase);
             }
             return false;
+        }
+
+        private EventingBasicConsumer CreateConsumer<T>(Func<T, Task> messageHandler)
+        {
+            var consumer = new EventingBasicConsumer(_channel);
+            consumer.Received += async (model, ea) =>
+            {
+                // Convert body to message.
+                T messageObject = ConvertBodyToMessage<T>(ea);
+
+                // Check the "ServiceName" header in the message
+                if (!HasSameServiceName(ea.BasicProperties))
+                {
+                    // Pass the deserialized messageObject to the handler.
+                    await messageHandler(messageObject);
+                }
+                else
+                {
+                    // Log and throw an error when ServiceName doesn't match
+                    _logger.LogWarning("Message has the same ServiceName.");
+                }
+            };
+
+            return consumer;
         }
     }
 }

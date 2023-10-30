@@ -36,12 +36,12 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         public Task StartAsync(CancellationToken cancellationToken)
         {
             // Start the background processing logic directly
-            _messageConsumer.StartConsuming<UserBannedMessage>(ProcessUserBannedMessage, QueueNames.Users.UserBanned);
-            _messageConsumer.StartConsuming<UserBlockedMessage>(ProcessUserBlockedMessage, QueueNames.Users.UserBlocked);
-            _messageConsumer.StartConsuming<UserTokenRevokedMessage>(ProcessUserTokenRevokedMessage, QueueNames.Users.UserTokenRevocation);
-            _messageConsumer.StartConsuming<UserEmailConfirmationMessage>(ProcessUserEmailConfirmationMessage, QueueNames.Users.UserEmailConfirmation);
-            _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate);
-            _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate);
+            _messageConsumer.StartConsuming<UserBannedMessage>(ProcessUserBannedMessage, QueueNames.Users.UserBanned, true);
+            _messageConsumer.StartConsuming<UserBlockedMessage>(ProcessUserBlockedMessage, QueueNames.Users.UserBlocked, true);
+            _messageConsumer.StartConsuming<UserTokenRevokedMessage>(ProcessUserTokenRevokedMessage, QueueNames.Users.UserTokenRevocation, true);
+            _messageConsumer.StartConsuming<UserEmailConfirmationMessage>(ProcessUserEmailConfirmationMessage, QueueNames.Users.UserEmailConfirmation, true);
+            _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate, true);
+            _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate, true);
 
             if (!_consumerConfiguration.DoesUserAuthExist)
             {

@@ -2,6 +2,6 @@
 {
     public interface IMessageConsumer : IDisposable
     {
-        void StartConsuming<T>(Func<T, Task> messageHandler, string queueName);
+        void StartConsuming<T>(Func<T, Task> messageHandler, string queueName, bool isFanExchange = false);
     }
 }

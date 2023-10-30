@@ -29,7 +29,7 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         public Task StartAsync(CancellationToken cancellationToken)
         {
             // Start the background processing logic directly
-            _messageConsumer.StartConsuming<TokenStatusCreateMessage>(ProcessTokenStatusCreateMessage, QueueNames.Tokens.TokenStatusCreated);
+            _messageConsumer.StartConsuming<TokenStatusCreateMessage>(ProcessTokenStatusCreateMessage, QueueNames.Tokens.TokenStatusCreated, true);
 
             return Task.CompletedTask;
         }

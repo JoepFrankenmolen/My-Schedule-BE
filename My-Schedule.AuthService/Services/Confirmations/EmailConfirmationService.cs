@@ -15,7 +15,6 @@ namespace My_Schedule.AuthService.Services.Confirmations
         private readonly AuthServiceContext _dbContext;
         private readonly IUserUpdateService _userUpdateService;
 
-
         public EmailConfirmationService(
             ConfirmationService confirmationService,
             AuthServiceContext dbContext,

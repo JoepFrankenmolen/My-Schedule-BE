@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using My_Schedule.AuthService.Services;
 using My_Schedule.AuthService.Services.Auth;
 using My_Schedule.AuthService.Services.Auth.Authentication;
 using My_Schedule.AuthService.Services.Auth.Tokens;
@@ -62,7 +61,7 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<PasswordResetService>();
             services.AddScoped<LoginVerificationService>();
 
-            // Tokens 
+            // Tokens
             services.AddScoped<ITokenSessionValidator, TokenSessionService>();
             services.AddScoped<TokenSessionService>();
             services.AddScoped<TokenService>();
@@ -84,7 +83,7 @@ namespace My_Schedule.AuthService.Core.DI
             // Notifications
             services.AddScoped<NotificationTriggerService>();
             services.AddScoped<NotificationSender>();
-  
+
             // Consumers
             services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();
             services.AddSingleton<IHostedService, UserAuthDetailConsumer<AuthServiceContext>>();

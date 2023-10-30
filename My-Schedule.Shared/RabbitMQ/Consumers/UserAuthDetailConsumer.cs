@@ -32,10 +32,10 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         public Task StartAsync(CancellationToken cancellationToken)
         {
             // Start the background processing logic directly
-            _messageConsumer.StartConsuming<TwoFactorEnabledMessage>(ProcessTwoFactorEnabledMessage, QueueNames.UserAuthDetails.TwoFactorEnabledUpdate);
-            _messageConsumer.StartConsuming<SuccessfullLoginMessage>(ProcessSuccessfullLoginMessage, QueueNames.UserAuthDetails.SuccessfullLogin);
-            _messageConsumer.StartConsuming<FailedLoginAttemptMessage>(ProcessFailedLoginAttemptMessage, QueueNames.UserAuthDetails.FailedLoginAttempt);
-            _messageConsumer.StartConsuming<UserAuthDetailCreatedMessage>(ProcessUserAuthDetailCreatedMessage, QueueNames.UserAuthDetails.UserAuthDetailCreated);
+            _messageConsumer.StartConsuming<TwoFactorEnabledMessage>(ProcessTwoFactorEnabledMessage, QueueNames.UserAuthDetails.TwoFactorEnabledUpdate, true);
+            _messageConsumer.StartConsuming<SuccessfullLoginMessage>(ProcessSuccessfullLoginMessage, QueueNames.UserAuthDetails.SuccessfullLogin, true);
+            _messageConsumer.StartConsuming<FailedLoginAttemptMessage>(ProcessFailedLoginAttemptMessage, QueueNames.UserAuthDetails.FailedLoginAttempt, true);
+            _messageConsumer.StartConsuming<UserAuthDetailCreatedMessage>(ProcessUserAuthDetailCreatedMessage, QueueNames.UserAuthDetails.UserAuthDetailCreated, true);
 
             return Task.CompletedTask;
         }
