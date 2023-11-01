@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3.12-management"
+    ports:
+      - "5672:5672"  # RabbitMQ AMQP port
+      - "15672:15672"  # RabbitMQ management UI
+    networks:
+      - my-schedule-network
+
+  api-gateway:
+    build:
+      context: ./My-Schedule.APIGateway  # Path to the folder containing the Dockerfile
+    ports:
+      - "8080:80"  # Expose the API Gateway on port 8080
+    depends_on:
+      - rabbitmq  # Make sure the API Gateway starts after RabbitMQ
+    #environment:
+    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
+    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
+    networks:
+      - my-schedule-network
+
+  auth-service:
+    build:
+      context: ./My-Schedule-BE/My-Schedule.AuthService  # Path to the folder containing the Dockerfile
+    ports:
+      - "8081:80"  # Expose the Auth Service on port 8081
+    depends_on:
+      - rabbitmq  # Make sure the Auth Service starts after RabbitMQ
+    #environment:
+    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
+    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
+    networks:
+      - my-schedule-network
+
+  user-service:
+    build:
+      context: ./My-Schedule.UserService  # Path to the folder containing the Dockerfile
+    ports:
+      - "8082:80"  # Expose the User Service on port 8082
+    depends_on:
+      - rabbitmq  # Make sure the User Service starts after RabbitMQ
+    #environment:
+    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
+    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
+    networks:
+      - my-schedule-network
+
+networks:
+  my-schedule-network:

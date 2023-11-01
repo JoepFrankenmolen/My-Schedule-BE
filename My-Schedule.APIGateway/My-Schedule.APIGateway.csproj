@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>My_Schedule_APIGateway</RootNamespace>
+    <RootNamespace>My_Schedule.APIGateway</RootNamespace>
     <UserSecretsId>5d7adb6f-6afa-4584-b5ed-f42684d4fdfd</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
