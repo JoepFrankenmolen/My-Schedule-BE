@@ -22,31 +22,31 @@ services:
     networks:
       - my-schedule-network
 
-  auth-service:
-    build:
-      context: ./My-Schedule-BE/My-Schedule.AuthService  # Path to the folder containing the Dockerfile
-    ports:
-      - "8081:80"  # Expose the Auth Service on port 8081
-    depends_on:
-      - rabbitmq  # Make sure the Auth Service starts after RabbitMQ
-    #environment:
-    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
-    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
-    networks:
-      - my-schedule-network
+  # auth-service:
+  #   build:
+  #     context: ./My-Schedule.AuthService  # Path to the folder containing the Dockerfile
+  #   ports:
+  #     - "8081:80"  # Expose the Auth Service on port 8081
+  #   depends_on:
+  #     - rabbitmq  # Make sure the Auth Service starts after RabbitMQ
+  #   #environment:
+  #   #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
+  #   #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
+  #   networks:
+  #     - my-schedule-network
 
-  user-service:
-    build:
-      context: ./My-Schedule.UserService  # Path to the folder containing the Dockerfile
-    ports:
-      - "8082:80"  # Expose the User Service on port 8082
-    depends_on:
-      - rabbitmq  # Make sure the User Service starts after RabbitMQ
-    #environment:
-    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
-    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
-    networks:
-      - my-schedule-network
+  # user-service:
+  #   build:
+  #     context: ./My-Schedule.UserService  # Path to the folder containing the Dockerfile
+  #   ports:
+  #     - "8082:80"  # Expose the User Service on port 8082
+  #   depends_on:
+  #     - rabbitmq  # Make sure the User Service starts after RabbitMQ
+  #   #environment:
+  #   #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
+  #   #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
+  #   networks:
+  #     - my-schedule-network
 
 networks:
   my-schedule-network:

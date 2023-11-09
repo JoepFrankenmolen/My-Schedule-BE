@@ -1,22 +1,24 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# build: 
+# dir: this
+# cmd: docker build -t my-schedule-apigateway:1.4 .
+# run: docker run -p 8080:80 --network my-schedule-network --name my-schedule-api-container my-schedule-apigateway:1.4
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["My-Schedule.APIGateway/My-Schedule.APIGateway.csproj", "My-Schedule.APIGateway/"]
-RUN dotnet restore "My-Schedule.APIGateway/My-Schedule.APIGateway.csproj"
 COPY . .
-WORKDIR "/src/My-Schedule.APIGateway"
+RUN dotnet restore "My-Schedule.APIGateway.csproj"
 RUN dotnet build "My-Schedule.APIGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "My-Schedule.APIGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
-WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=build /src/Ocelot.json /app/Ocelot.json
 ENTRYPOINT ["dotnet", "My-Schedule.APIGateway.dll"]

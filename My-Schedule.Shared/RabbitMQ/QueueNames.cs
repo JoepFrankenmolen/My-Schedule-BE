@@ -23,7 +23,7 @@
 
         public static class Tokens
         {
-            public const string TokenStatusCreated = "token_status_created";
+            public const string TokenStatusCreated = "tokenStatus.created";
         }
     }
 }

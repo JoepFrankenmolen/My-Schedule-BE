@@ -1,7 +1,7 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-namespace My_Schedule_APIGateway
+namespace My_Schedule.APIGateway
 {
     public class Program
     {
@@ -10,7 +10,7 @@ namespace My_Schedule_APIGateway
             var builder = WebApplication.CreateBuilder(args);
 
             // Add your ocelot.json configuration
-            builder.Configuration.AddJsonFile("ocelot.json");
+            builder.Configuration.AddJsonFile("Ocelot.json");
 
             // Add Ocelot services
             builder.Services.AddOcelot(builder.Configuration);
