@@ -11,7 +11,9 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY /My-Schedule.APIGateway ./My-Schedule.APIGateway
+
+COPY /My-Schedule.APIGateway .
+
 RUN mv /src/Ocelot-docker.json /src/Ocelot.json # Rename Ocelot-docker.json to Ocelot.json
 RUN dotnet restore "My-Schedule.APIGateway.csproj"
 RUN dotnet build "My-Schedule.APIGateway.csproj" -c Release -o /app/build
@@ -23,3 +25,4 @@ FROM base AS final
 COPY --from=publish /app/publish .
 COPY --from=build /src/Ocelot.json /app/Ocelot.json
 ENTRYPOINT ["dotnet", "My-Schedule.APIGateway.dll"]
+
