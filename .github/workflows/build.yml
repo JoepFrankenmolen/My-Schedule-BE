@@ -30,3 +30,21 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release
+
+  build-docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker images
+        run: |
+          for project_dir in $(find . -maxdepth 1 -type d -not -name '.'); do
+            project_name=$(basename "$project_dir")
+            echo "Building Docker image for $project_name"
+            docker build -t "$project_name:latest" -f "$project_name/Dockerfile" "$project_dir"
+          done
