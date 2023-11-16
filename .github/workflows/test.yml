@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - main
       - develop
 
-concurrency: build
+concurrency: test
 
 jobs:
   test:
