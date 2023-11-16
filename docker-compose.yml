@@ -1,8 +1,12 @@
+# command:
+# normal: docker-compose up -d
+# rebuild: docker-compose up --build --force-recreate --no-deps 
 version: '3.8'
 
 services:
   rabbitmq:
     image: "rabbitmq:3.12-management"
+    container_name: rabbitmq
     ports:
       - "5672:5672"  # RabbitMQ AMQP port
       - "15672:15672"  # RabbitMQ management UI
@@ -12,41 +16,41 @@ services:
   api-gateway:
     build:
       context: ./My-Schedule.APIGateway  # Path to the folder containing the Dockerfile
+    container_name: my-schedule-api-container
     ports:
       - "8080:80"  # Expose the API Gateway on port 8080
     depends_on:
       - rabbitmq  # Make sure the API Gateway starts after RabbitMQ
-    #environment:
-    #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
-    #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
     networks:
       - my-schedule-network
 
-  # auth-service:
-  #   build:
-  #     context: ./My-Schedule.AuthService  # Path to the folder containing the Dockerfile
-  #   ports:
-  #     - "8081:80"  # Expose the Auth Service on port 8081
-  #   depends_on:
-  #     - rabbitmq  # Make sure the Auth Service starts after RabbitMQ
-  #   #environment:
-  #   #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
-  #   #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
-  #   networks:
-  #     - my-schedule-network
+  auth-service:
+    build:
+      context: .
+      dockerfile: My-Schedule.AuthService/Dockerfile
+    container_name: my-schedule-auth-container
+    ports:
+      - "8081:80"  # Expose the AuthService on port 8081
+    depends_on:
+      - rabbitmq  # Make sure AuthService starts after RabbitMQ
+    environment:
+      - MessageQueueHostName=rabbitmq  # Set the hostname for RabbitMQ
+    networks:
+      - my-schedule-network
 
-  # user-service:
-  #   build:
-  #     context: ./My-Schedule.UserService  # Path to the folder containing the Dockerfile
-  #   ports:
-  #     - "8082:80"  # Expose the User Service on port 8082
-  #   depends_on:
-  #     - rabbitmq  # Make sure the User Service starts after RabbitMQ
-  #   #environment:
-  #   #  - RabbitMQ__HostName=rabbitmq  # Set the hostname for RabbitMQ
-  #   #  - RabbitMQ__Port=5672  # Set the port for RabbitMQ
-  #   networks:
-  #     - my-schedule-network
+  user-service:
+    build:
+      context: .
+      dockerfile: My-Schedule.UserService/Dockerfile
+    container_name: my-schedule-user-container
+    ports:
+      - "8082:80"  # Expose the UserService on port 8082
+    depends_on:
+      - rabbitmq  # Make sure UserService starts after RabbitMQ
+    environment:
+      - MessageQueueHostName=rabbitmq  # Set the hostname for RabbitMQ
+    networks:
+      - my-schedule-network
 
 networks:
   my-schedule-network:

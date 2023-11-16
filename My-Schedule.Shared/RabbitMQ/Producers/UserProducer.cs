@@ -58,7 +58,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp
             };
 
-            await _messageProducer.SendFanMessage(message, QueueNames.Users.UserEmailConfirmation);
+            await _messageProducer.SendMessage(message, QueueNames.Users.UserEmailConfirmation);
         }
 
         public async Task SendIdentityUpdateMessage(Guid userId, UserIdentityDTO userIdentity)
