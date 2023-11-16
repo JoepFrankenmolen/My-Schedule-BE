@@ -1,4 +1,4 @@
-name: Build staging
+name: Build
 
 on:
   push:
@@ -10,11 +10,11 @@ on:
       - main
       - develop
 
-concurrency: build-staging
+concurrency: build
 
 jobs:
   build:
-    name: Build staging
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,7 +28,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build and Test
+      - name: Build
         run: |
           for dir in $(find . -type d -name '*'); do
             if [ -f "$dir/*.csproj" ]; then
