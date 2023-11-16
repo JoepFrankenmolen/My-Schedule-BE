@@ -29,12 +29,4 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: |
-          for dir in $(find . -type d -name '*'); do
-            if [ -f "$dir/*.csproj" ]; then
-              echo "Building $dir"
-              cd "$dir"
-              dotnet build --configuration Release
-              cd -
-            fi
-          done
+        run: dotnet build --configuration Release
