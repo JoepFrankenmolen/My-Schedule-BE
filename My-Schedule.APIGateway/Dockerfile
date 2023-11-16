@@ -1,6 +1,6 @@
 # build: 
-# dir: this
-# cmd: docker build -t my-schedule-apigateway:1.4 .
+# dir: parent
+# cmd: docker build -t my-schedule-apigateway:1.0 -f My-Schedule.APIGateway/Dockerfile .
 # run: docker run -p 8080:80 --network my-schedule-network --name my-schedule-api-container my-schedule-apigateway:1.4
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
@@ -11,7 +11,7 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY . .
+COPY /My-Schedule.APIGateway ./My-Schedule.APIGateway
 RUN mv /src/Ocelot-docker.json /src/Ocelot.json # Rename Ocelot-docker.json to Ocelot.json
 RUN dotnet restore "My-Schedule.APIGateway.csproj"
 RUN dotnet build "My-Schedule.APIGateway.csproj" -c Release -o /app/build
