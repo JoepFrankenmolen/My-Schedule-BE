@@ -13,7 +13,7 @@ on:
 concurrency: build
 
 jobs:
-  build:
+  test:
     name: Test
     runs-on: ubuntu-latest
     steps:
@@ -29,12 +29,4 @@ jobs:
         run: dotnet restore
 
       - name: Test
-        run: |
-          for dir in $(find . -type d -name '*'); do
-            if [ -f "$dir/*.csproj" ]; then
-              echo "Testing $dir"
-              cd "$dir"
-              dotnet test --configuration Release
-              cd -
-            fi
-          done
+        run: dotnet test --configuration Release
