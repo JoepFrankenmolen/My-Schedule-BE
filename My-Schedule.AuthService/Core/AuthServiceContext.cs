@@ -18,7 +18,7 @@ namespace My_Schedule.AuthService.Core
         public DbSet<User> Users { get; set; }
         public DbSet<UserAuthDetail> UserAuthDetails { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
-        public DbSet<ConfirmationLog> ConfirmationLogs { get; set; }
+        public DbSet<ConfirationLog> ConfirmationLogs { get; set; }
         public DbSet<TokenSession> TokenSessions { get; set; }
         public DbSet<Confirmation> Confirmations { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
