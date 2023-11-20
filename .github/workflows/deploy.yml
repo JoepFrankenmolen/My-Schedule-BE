@@ -38,5 +38,5 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            docker push "myschedule.azurecr.io/${image_name,,}:1.0"
+            docker push "${image_name,,}:1.0"
           done
