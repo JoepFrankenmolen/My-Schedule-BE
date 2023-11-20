@@ -2,6 +2,6 @@
 {
     public interface ITokenSessionValidator
     {
-        Task<bool> isValidSession(Guid sessionId);
+        Task<bool> IsValidSession(Guid sessionId);
     }
 }

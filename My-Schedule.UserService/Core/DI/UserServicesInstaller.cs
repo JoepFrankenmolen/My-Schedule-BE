@@ -2,9 +2,9 @@
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
-using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.RabbitMQ;
+using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.UserService.Services.Users;
-using My_Schedule.UserService.Services.Users.Helpers;
 
 namespace My_Schedule.UserService.Core.DI
 {
@@ -12,27 +12,46 @@ namespace My_Schedule.UserService.Core.DI
     {
         public static void Install(IServiceCollection services, IConfiguration configuration)
         {
-            // Done like this to make sure there is only one place the DatabaseConnection gets called.
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
 
-            // probely more efficent ways of doing this but good for now
+            // Set consumer configuration.
+            var consumerConfig = new ConsumerConfiguration
+            {
+                DoesUserAuthExist = true
+            };
+            services.AddTransient(_ => consumerConfig);
+
+            // Register services
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IAuthenticationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
+            services.AddSingleton<IMessageQueueSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
-            services.AddDbContext<ITokenStatusContext, UserServiceContext>(options =>
-                options.UseSqlServer(appSettings.DatabaseConnection), ServiceLifetime.Scoped); // check of dit werkt
+            // Register the UserServiceContext and associated interfaces
+            services.AddDbContext<UserServiceContext>(options =>
+            {
+                options.UseSqlServer(appSettings.DatabaseConnection);
+            });
 
-            services.AddScoped<IUserBasicHelper, UserHelper>();
+            // Register the interfaces with their implementations
+            services.AddScoped<ITokenStatusContext>(provider => provider.GetRequiredService<UserServiceContext>());
+            services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<UserServiceContext>());
+            services.AddScoped<IUserContext>(provider => provider.GetRequiredService<UserServiceContext>());
+            services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<UserServiceContext>());
 
-            services.AddScoped<UserHelper>();
+            // Context builder
+            services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
 
-            services.AddScoped<UserCreationService>();
-
+            // User services
             services.AddScoped<UserRoleService>();
+            services.AddScoped<UserAdminFetchingService>();
+            services.AddScoped<UserAdminService>();
 
-            services.AddScoped<UserFetchingService>();
+            // Consumer
+            services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserAuthDetailConsumer<UserServiceContext>>();
         }
     }
 }

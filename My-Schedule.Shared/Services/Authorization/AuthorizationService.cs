@@ -1,6 +1,6 @@
 ﻿using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers;
-using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
+using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
@@ -15,7 +15,7 @@ namespace My_Schedule.Shared.Services.Authorization
             _tokenValidator = tokenValidator ?? throw new ArgumentNullException(nameof(tokenValidator));
         }
 
-        public async Task<IUserBasic> AuthorizeRequest(HttpRequest request)
+        public async Task<IUser> AuthorizeRequest(HttpRequest request)
         {
             var token = HttpContextHelper.GetBearerToken(request) ?? throw new ArgumentNullException();
 

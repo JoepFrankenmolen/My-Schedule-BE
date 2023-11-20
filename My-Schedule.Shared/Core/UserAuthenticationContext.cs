@@ -1,13 +1,12 @@
-﻿using My_Schedule.Shared.Core.Interfaces;
+﻿using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
-using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
 
 namespace My_Schedule.Shared.Core
 {
     public class UserAuthenticationContext : IUserAuthenticationContext
     {
-        public void Install(HttpContext context, IUserBasic user)
+        public void Install(HttpContext context, IUser user)
         {
             UserId = user.Id;
             UserIp = context.Connection.RemoteIpAddress?.ToString();

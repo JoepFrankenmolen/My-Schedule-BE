@@ -74,9 +74,6 @@ namespace My_Schedule.UserService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FailedLoginAttempts")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
 
@@ -85,6 +82,26 @@ namespace My_Schedule.UserService.Migrations
 
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<long>("TokenRevocationTimestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserAuthDetail", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
 
                     b.Property<long>("LastLoginTimestamp")
                         .HasColumnType("bigint");
@@ -100,19 +117,12 @@ namespace My_Schedule.UserService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TokenRevocationTimestamp")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("UserId");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.ToTable("UserAuthDetails");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -132,6 +142,17 @@ namespace My_Schedule.UserService.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserAuthDetail", b =>
+                {
+                    b.HasOne("My_Schedule.Shared.Models.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>

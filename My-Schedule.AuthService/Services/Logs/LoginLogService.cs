@@ -1,6 +1,7 @@
 ﻿using My_Schedule.AuthService.Core;
 using My_Schedule.AuthService.Models.Logs;
 using My_Schedule.Shared.Helpers;
+using My_Schedule.Shared.Services;
 
 namespace My_Schedule.AuthService.Services.Logs
 {

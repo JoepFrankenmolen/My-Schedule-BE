@@ -1,23 +1,64 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using My_Schedule.Shared.Attributes;
-using My_Schedule.Shared.Models.Users;
 using My_Schedule.UserService.Services.Users;
 
 namespace My_Schedule.UserService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AuthorizedRoles(UserRoleType.Admin, UserRoleType.MasterAdmin)]
     public class UserAdminController : ControllerBase
     {
-        private readonly UserFetchingService _userFetchingService;
+        private readonly UserAdminFetchingService _userFetchingService;
+        private readonly UserAdminService _userAdminService;
 
-        public UserAdminController(UserFetchingService userFetchingService)
+        public UserAdminController(UserAdminFetchingService userFetchingService, UserAdminService userAdminService)
         {
             _userFetchingService = userFetchingService ?? throw new ArgumentNullException(nameof(userFetchingService));
+            _userAdminService = userAdminService ?? throw new ArgumentNullException(nameof(userAdminService));
         }
 
-        [HttpGet]
+        [HttpPut("Create")]
+        public async Task<IActionResult> CreateUser(string userId, bool state)
+        {
+            try
+            {
+                await _userAdminService.BanUser(userId, state);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("Ban")]
+        public async Task<IActionResult> BanUser(string userId, bool state)
+        {
+            try
+            {
+                await _userAdminService.BanUser(userId, state);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("Block")]
+        public async Task<IActionResult> BLockUser(string userId, bool state)
+        {
+            try
+            {
+                await _userAdminService.BlockUser(userId, state);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("Get/All")]
         public async Task<IActionResult> GetAllUsers()
         {
             try

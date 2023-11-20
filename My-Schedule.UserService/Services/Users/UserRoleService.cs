@@ -1,6 +1,5 @@
 ﻿using My_Schedule.Shared.Models.Users;
 using My_Schedule.UserService.Core;
-using My_Schedule.UserService.Services.Users.Helpers;
 
 namespace My_Schedule.UserService.Services.Users
 {
@@ -8,7 +7,7 @@ namespace My_Schedule.UserService.Services.Users
     {
         private readonly UserServiceContext _dbContext;
 
-        public UserRoleService(UserServiceContext dbContext, UserHelper userHelper)
+        public UserRoleService(UserServiceContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }

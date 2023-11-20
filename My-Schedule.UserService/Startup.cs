@@ -18,7 +18,7 @@ namespace My_Schedule.UserService
         {
             // Set config settings
             var contextConfig = new ContextConfig();
-            contextConfig.CustomUserBasicHelper = true;
+            contextConfig.ContainsUserAuthDetails = true;
 
             SharedServicesInstaller.Install(services, _configuration, contextConfig);
             UserServicesInstaller.Install(services, _configuration);
@@ -29,9 +29,9 @@ namespace My_Schedule.UserService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "AuthService API",
+                    Title = "UserService API",
                     Version = "v1",
-                    Description = "Service used for Authentication"
+                    Description = "Service used for managing users."
                 });
             });
 
@@ -42,7 +42,7 @@ namespace My_Schedule.UserService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || true)
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

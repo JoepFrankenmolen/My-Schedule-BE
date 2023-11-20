@@ -3,6 +3,6 @@
     public class ContextConfig
     {
         public bool CustomTokenSessionValidator = false;
-        public bool CustomUserBasicHelper = false;
+        public bool ContainsUserAuthDetails = false;
     }
 }

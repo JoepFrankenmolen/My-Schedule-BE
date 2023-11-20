@@ -1,9 +1,9 @@
-﻿using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
+﻿using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.Shared.Services.Authorization.Interfaces
 {
     public interface IAuthorizationService
     {
-        Task<IUserBasic> AuthorizeRequest(HttpRequest request);
+        Task<IUser> AuthorizeRequest(HttpRequest request);
     }
 }

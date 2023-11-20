@@ -1,10 +1,10 @@
-﻿using My_Schedule.Shared.Models.Users.UserInterfaces.Helpers;
+﻿using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.Shared.DTO.Tokens
 {
     public class ValidatedTokenUserDTO
     {
-        public IUserBasic user { get; set; }
+        public User user { get; set; }
 
         public Guid SessionId { get; set; }
     }

@@ -22,25 +22,6 @@ namespace My_Schedule.AuthService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("My_Schedule.AuthService.Models.ClientDetail.ClientDetails", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("IPAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAgent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClientDetails", (string)null);
-                });
-
             modelBuilder.Entity("My_Schedule.AuthService.Models.Confirmations.Confirmation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -76,7 +57,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Confirmations", (string)null);
+                    b.ToTable("Confirmations");
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.ConfirmationLog", b =>
@@ -104,7 +85,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("ConfirmationLogs", (string)null);
+                    b.ToTable("ConfirmationLogs");
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.LoginLog", b =>
@@ -130,7 +111,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("LoginLogs", (string)null);
+                    b.ToTable("LoginLogs");
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.PasswordReset.PasswordReset", b =>
@@ -159,7 +140,7 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PasswordResets", (string)null);
+                    b.ToTable("PasswordResets");
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Tokens.TokenSession", b =>
@@ -187,10 +168,29 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("ClientDetailsId");
 
-                    b.ToTable("TokenSessions", (string)null);
+                    b.ToTable("TokenSessions");
                 });
 
-            modelBuilder.Entity("My_Schedule.AuthService.Models.User", b =>
+            modelBuilder.Entity("My_Schedule.Shared.Models.ClientDetails.ClientDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("IPAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAgent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientDetails");
+                });
+
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -203,9 +203,6 @@ namespace My_Schedule.AuthService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FailedLoginAttempts")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
 
@@ -214,6 +211,26 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<long>("TokenRevocationTimestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserAuthDetail", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
 
                     b.Property<long>("LastLoginTimestamp")
                         .HasColumnType("bigint");
@@ -229,19 +246,12 @@ namespace My_Schedule.AuthService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TokenRevocationTimestamp")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("UserId");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("UserAuthDetails");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -260,12 +270,12 @@ namespace My_Schedule.AuthService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole", (string)null);
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Confirmations.Confirmation", b =>
                 {
-                    b.HasOne("My_Schedule.AuthService.Models.User", "User")
+                    b.HasOne("My_Schedule.Shared.Models.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,7 +286,7 @@ namespace My_Schedule.AuthService.Migrations
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.ConfirmationLog", b =>
                 {
-                    b.HasOne("My_Schedule.AuthService.Models.ClientDetail.ClientDetails", "ClientDetails")
+                    b.HasOne("My_Schedule.Shared.Models.ClientDetails.ClientDetails", "ClientDetails")
                         .WithMany()
                         .HasForeignKey("ClientDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -287,7 +297,7 @@ namespace My_Schedule.AuthService.Migrations
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Logs.LoginLog", b =>
                 {
-                    b.HasOne("My_Schedule.AuthService.Models.ClientDetail.ClientDetails", "ClientDetails")
+                    b.HasOne("My_Schedule.Shared.Models.ClientDetails.ClientDetails", "ClientDetails")
                         .WithMany()
                         .HasForeignKey("ClientDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,7 +314,7 @@ namespace My_Schedule.AuthService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("My_Schedule.AuthService.Models.User", "User")
+                    b.HasOne("My_Schedule.Shared.Models.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,7 +327,7 @@ namespace My_Schedule.AuthService.Migrations
 
             modelBuilder.Entity("My_Schedule.AuthService.Models.Tokens.TokenSession", b =>
                 {
-                    b.HasOne("My_Schedule.AuthService.Models.ClientDetail.ClientDetails", "ClientDetails")
+                    b.HasOne("My_Schedule.Shared.Models.ClientDetails.ClientDetails", "ClientDetails")
                         .WithMany()
                         .HasForeignKey("ClientDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,16 +336,27 @@ namespace My_Schedule.AuthService.Migrations
                     b.Navigation("ClientDetails");
                 });
 
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserAuthDetail", b =>
+                {
+                    b.HasOne("My_Schedule.Shared.Models.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
                 {
-                    b.HasOne("My_Schedule.AuthService.Models.User", null)
+                    b.HasOne("My_Schedule.Shared.Models.Users.User", null)
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("My_Schedule.AuthService.Models.User", b =>
+            modelBuilder.Entity("My_Schedule.Shared.Models.Users.User", b =>
                 {
                     b.Navigation("Roles");
                 });

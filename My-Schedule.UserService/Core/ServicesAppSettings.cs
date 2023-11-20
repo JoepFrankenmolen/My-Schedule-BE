@@ -3,7 +3,7 @@ using My_Schedule.Shared.Interfaces.AppSettings;
 
 namespace My_Schedule.UserService.Core
 {
-    public class ServicesAppSettings : IDatabaseSettings, IAuthenticationSettings, IEmailSettings
+    public class ServicesAppSettings : IDatabaseSettings, IAuthenticationSettings, IEmailSettings, IMessageQueueSettings
     {
         private readonly AppSettings _appSettings;
 
@@ -20,5 +20,13 @@ namespace My_Schedule.UserService.Core
         public int RefreshTokenExpirationTime => _appSettings.RefreshTokenExpirationTime;
         public string SenderEmail => _appSettings.SenderEmail;
         public string SenderPassword => _appSettings.SenderPassword;
+        public string MessageQueueHostName => _appSettings.MessageQueueHostName;
+        public int MessageQueuePort => _appSettings.MessageQueuePort;
+        public string MessageQueueUserName => _appSettings.MessageQueueUserName;
+        public string MessageQueuePassword => _appSettings.MessageQueuePassword;
+        public string MessageQueueVirtualHost => _appSettings.MessageQueueVirtualHost;
+        public bool MessageQueueUseSsl => _appSettings.MessageQueueUseSsl;
+        public string MessageQueueHeaderName => _appSettings.MessageQueueHeaderName;
+        public string MessageQueueServiceName => _appSettings.MessageQueueServiceName;
     }
 }

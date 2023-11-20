@@ -6,9 +6,9 @@ namespace My_Schedule.Shared.DTO.Users
 {
     public class UserDTO : IUserPublic
     {
-        // IUserDetails
         public Guid Id { get; set; }
 
+        // IUserDetails
         public long CreationTimestamp { get; set; }
 
         public string UserName { get; set; }
@@ -16,8 +16,24 @@ namespace My_Schedule.Shared.DTO.Users
         [EmailAddress]
         public string Email { get; set; }
 
-        public long LastLoggedInTimeStamp { get; set; }
-
+        // IUserRoles
         public List<UserRole> Roles { get; set; }
+
+        public static UserDTO MapUserToDTO(User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserDTO
+            {
+                Id = user.Id,
+                CreationTimestamp = user.CreationTimestamp,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = user.Roles
+            };
+        }
     }
 }
