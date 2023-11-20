@@ -46,5 +46,5 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            docker build -t "my-schedule-${image_name,,}:1.0" -f "$project/Dockerfile" .
+            docker build -t "${image_name,,}:1.0" -f "$project/Dockerfile" .
           done
