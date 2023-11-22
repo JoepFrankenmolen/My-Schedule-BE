@@ -1,44 +1,43 @@
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: my-schedule-apigateway
-    namespace: myschedule
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: my-schedule-apigateway
-    template:
-      metadata:
-        labels:
-          app: my-schedule-apigateway
-      spec:
-        nodeSelector:
-          kubernetes.io/os: linux
-        containers:
-          - name: my-schedule-apigateway
-            image: myschedule.azurecr.io/my-schedule.apigateway:1.0
-            ports:
-              - containerPort: 80
-            resources:
-              requests:
-                cpu: "0"
-                memory: "0"
-              limits:
-                cpu: "256"
-                memory: "11400Gi"
-
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: my-schedule-apigateway
-    namespace: myschedule
-  spec:
-    type: LoadBalancer
-    ports:
-      - targetPort: 80
-        name: port80
-        port: 80
-        protocol: TCP
-    selector:
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-schedule-apigateway
+  namespace: myschedule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
       app: my-schedule-apigateway
+  template:
+    metadata:
+      labels:
+        app: my-schedule-apigateway
+    spec:
+      containers:
+        - image: myschedule.azurecr.io/my-schedule.apigateway:1.0
+          name: my-schedule-apigateway
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "256"
+              memory: 11400Gi
+            requests:
+              cpu: "0"
+              memory: "0"
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-schedule-apigateway
+  namespace: myschedule
+spec:
+  ports:
+    - name: port80
+      port: 80
+  selector:
+    app: my-schedule-apigateway
+  type: LoadBalancer
