@@ -61,7 +61,7 @@ jobs:
 
       - name: test
         run: |
-          cd .. 
+          cd ../My-Schedule-BE 
           tree
 
       - name: Deploy to AKS
