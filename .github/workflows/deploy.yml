@@ -64,6 +64,6 @@ jobs:
         with:
           namespace: "default"
           manifests: |
-            .github/k8s/my-schedule.apigateway.yaml
+            ./.github/k8s/my-schedule.apigateway.yaml
           images: "myschedule.azurecr.io/my-schedule.apigateway/1.0"
           pull-images: false
