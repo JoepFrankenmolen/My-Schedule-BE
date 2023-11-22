@@ -52,7 +52,7 @@ jobs:
       - name: Set up Azure Kubernetes CLI
         uses: azure/aks-set-context@v1
         with:
-          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           cluster-name: "my_schedule"
           resource-group: "my_schedule_group"
 
