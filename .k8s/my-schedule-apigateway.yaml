@@ -15,7 +15,7 @@ spec:
         app: my-schedule-apigateway
     spec:
       containers:
-        - image: myschedule.azurecr.io/my-schedule.apigateway:1.0
+        - image: myschedule.azurecr.io/my-schedule.apigateway:latest
           name: my-schedule-apigateway
           ports:
             - containerPort: 80
