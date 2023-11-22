@@ -1,7 +1,7 @@
  - apiVersion: v1
   kind: Namespace
   metadata:
-    name: default-1700664179729
+    name: myschedule
   spec:
     finalizers:
       - kubernetes
@@ -9,7 +9,7 @@
   kind: Deployment
   metadata:
     name: my-schedule-apigateway
-    namespace: default-1700664179729
+    namespace: myschedule
   spec:
     replicas: 1
     selector:
@@ -38,7 +38,7 @@
   kind: Service
   metadata:
     name: my-schedule-apigateway
-    namespace: default-1700664179729
+    namespace: myschedule
   spec:
     type: LoadBalancer
     ports:
