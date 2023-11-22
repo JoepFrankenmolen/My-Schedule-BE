@@ -6,7 +6,7 @@
     finalizers:
       - kubernetes
 
-  ---
+---
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -37,7 +37,7 @@
                 cpu: "256"
                 memory: "11400Gi"
 
-  ---
+---
 - apiVersion: v1
   kind: Service
   metadata:
