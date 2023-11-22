@@ -55,6 +55,15 @@ jobs:
           cluster-name: "my_schedule"
           resource-group: "my_schedule_group"
 
+      - name: Setup kubectl
+        id: install-kubectl
+        uses: azure/setup-kubectl@v3
       - name: Deploy to AKS
-        run: |
-          kubectl apply -f k8s-manifests/
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: "default"
+          manifests: |
+            .github/k8s/my-schedule.apigateway.yaml
+          images: "myschedule.azurecr.io/my-schedule.apigateway/1.0"
+          pull-images: false
