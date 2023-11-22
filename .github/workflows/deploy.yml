@@ -25,7 +25,7 @@ jobs:
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
             echo "Building image: ${image_name,,}:1.0"
-            docker build -t "myschedule.azurecr.io/${image_name,,}::${{ github.sha }}" -f "$project/Dockerfile" .
+            docker build -t "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}" -f "$project/Dockerfile" .
           done
 
       - name: Log in to Azure Container Registry
