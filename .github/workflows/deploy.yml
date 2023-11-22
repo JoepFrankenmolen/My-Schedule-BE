@@ -70,6 +70,6 @@ jobs:
         with:
           namespace: "default"
           manifests: |
-            manifests/my-schedule-apigateway.yaml
+            ../My-Schedule-BE/manifests/my-schedule-apigateway.yaml
           images: "myschedule.azurecr.io/my-schedule.apigateway/1.0"
           pull-images: false
