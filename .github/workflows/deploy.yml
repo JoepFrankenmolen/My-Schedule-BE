@@ -48,6 +48,9 @@ jobs:
     # needs: deploy-docker
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
       - name: Set up Azure Kubernetes CLI
         uses: azure/aks-set-context@v1
         with:
@@ -61,7 +64,6 @@ jobs:
 
       - name: test
         run: |
-          cd ../../
           tree
 
       - name: Deploy to AKS
@@ -70,6 +72,6 @@ jobs:
         with:
           namespace: "default"
           manifests: |
-            ../My-Schedule-BE/manifests/my-schedule-apigateway.yaml
+            .k8s/my-schedule-apigateway.yaml
           images: "myschedule.azurecr.io/my-schedule.apigateway/1.0"
           pull-images: false
