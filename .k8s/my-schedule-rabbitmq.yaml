@@ -2,23 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-schedule-apigateway
+  name: rabbitmq
   namespace: default
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: my-schedule-apigateway
   template:
     metadata:
       labels:
-        app: my-schedule-apigateway
+        app: rabbitmq
     spec:
       containers:
-        - image: myschedule.azurecr.io/my-schedule.apigateway:{{ github.sha }}
-          name: my-schedule-apigateway
-          ports:
-            - containerPort: 80
+      - name: rabbitmq
+        image: rabbitmq:latest
+        ports:
+        - containerPort: 5672
+
           resources:
             limits:
               cpu: "0.5"
@@ -30,12 +28,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-schedule-apigateway
-  namespace: default
+  name: rabbitmq-service
 spec:
-  ports:
-    - name: port80
-      port: 80
   selector:
-    app: my-schedule-apigateway
+    app: rabbitmq
+  ports:
+  - protocol: TCP
+    port: 5672
+    targetPort: 5672
   type: LoadBalancer
+
