@@ -69,12 +69,13 @@ jobs:
           namespace: "default"
           manifests: |
             .k8s/my-schedule-apigateway.yaml
-            .k8s/my-schedule-rabbitmq.yaml
+            .k8s/my-schedule-userservice.yaml
+            .k8s/my-schedule-authservice.yaml
           images: |
             myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}
-            rabbitmq:3.12-management
+            myschedule.azurecr.io/my-schedule.userservice:${{ github.sha }}
+            myschedule.azurecr.io/my-schedule.authservice:${{ github.sha }}
           pull-images: false
-# .k8s/my-schedule-userservice.yaml
-# .k8s/my-schedule-authservice.yaml
-# myschedule.azurecr.io/my-schedule.userservice:${{ github.sha }}
-# myschedule.azurecr.io/my-schedule.authservice:${{ github.sha }}
+## adding rabbitmq
+# manifests: .k8s/my-schedule-rabbitmq.yaml
+# images: rabbitmq:3.12-management
