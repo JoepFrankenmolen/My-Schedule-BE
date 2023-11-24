@@ -32,8 +32,8 @@
       "Key": "My-Schedule",
       "Config": [
         {
-          "Name": "AuthService API v2",
-          "Version": "v1",
+          "Name": "AuthService API",
+          "Version": "v2",
           "Url": "http://my-schedule-auth-container:80/swagger/v1/swagger.json"
         }
       ]
