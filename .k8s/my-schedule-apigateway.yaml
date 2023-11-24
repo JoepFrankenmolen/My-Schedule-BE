@@ -26,15 +26,6 @@ spec:
             requests:
               cpu: "0"
               memory: "0"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: myschedule
-                    operator: In
-                    values:
-                      - "myschedule"
 ---
 apiVersion: v1
 kind: Service
