@@ -24,8 +24,8 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            echo "Building image: ${image_name,,}:1.1"
-            docker build -t "myschedule.azurecr.io/${image_name,,}:1.1" -f "$project/Dockerfile" .
+            echo "Building image: ${image_name,,}:${{ github.sha }}"
+            docker build -t "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}" -f "$project/Dockerfile" .
           done
 
       - name: Log in to Azure Container Registry
@@ -39,7 +39,7 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            docker push "myschedule.azurecr.io/${image_name,,}:1.1"
+            docker push "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}"
           done
 
   deploy-k8s:
@@ -69,6 +69,6 @@ jobs:
           namespace: "default"
           manifests: |
             .k8s/my-schedule-apigateway.yaml
-          images: "myschedule.azurecr.io/my-schedule.apigateway/1.1"
+          images: "myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}"
           pull-images: false
           wait-for-deployments: false
