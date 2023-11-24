@@ -29,11 +29,11 @@
   ],
   "SwaggerEndPoints": [
     {
-      "Key": "My-Schedules",
+      "Key": "My-Schedule",
       "Config": [
         {
           "Name": "AuthService API",
-          "Version": "v1",
+          "Version": "v2",
           "Url": "http://my-schedule-auth-container:80/swagger/v1/swagger.json"
         }
       ]
