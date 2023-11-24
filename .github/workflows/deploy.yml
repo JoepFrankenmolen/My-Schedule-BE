@@ -69,5 +69,10 @@ jobs:
           namespace: "default"
           manifests: |
             .k8s/my-schedule-apigateway.yaml
-          images: "myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}"
+            .k8s/my-schedule-userservice.yaml
+            .k8s/my-schedule-authservice.yaml
+          images: |
+            myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}
+            myschedule.azurecr.io/my-schedule.userservice:${{ github.sha }}
+            myschedule.azurecr.io/my-schedule.authservice:${{ github.sha }}
           pull-images: false
