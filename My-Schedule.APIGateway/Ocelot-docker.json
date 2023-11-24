@@ -33,7 +33,7 @@
       "Config": [
         {
           "Name": "AuthService API",
-          "Version": "v2",
+          "Version": "v1",
           "Url": "http://my-schedule-auth-container:80/swagger/v1/swagger.json"
         }
       ]
