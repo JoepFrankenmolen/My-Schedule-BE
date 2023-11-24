@@ -72,7 +72,7 @@ jobs:
             .k8s/my-schedule-rabbitmq.yaml
           images: |
             myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}
-            rabbitmq:latest
+            rabbitmq:3.12-management
           pull-images: false
 # .k8s/my-schedule-userservice.yaml
 # .k8s/my-schedule-authservice.yaml
