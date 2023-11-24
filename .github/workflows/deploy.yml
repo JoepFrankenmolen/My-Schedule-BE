@@ -24,8 +24,8 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            echo "Building image: ${image_name,,}:${{ github.sha }}"
-            docker build -t "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}" -f "$project/Dockerfile" .
+            echo "Building image: ${image_name,,}:1.0}"
+            docker build -t "myschedule.azurecr.io/${image_name,,}:1.0}" -f "$project/Dockerfile" .
           done
 
       - name: Log in to Azure Container Registry
@@ -39,7 +39,7 @@ jobs:
         run: |
           for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
             image_name=$(basename "$project")
-            docker push "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}"
+            docker push "myschedule.azurecr.io/${image_name,,}:1.0}"
           done
 
   deploy-k8s:
@@ -64,7 +64,7 @@ jobs:
 
       - name: Replace IMAGE_TAG in manifest
         run: |
-          sed -i 's|{IMAGE_TAG}|myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}|' .k8s/my-schedule-apigateway.yaml
+          sed -i 's|{IMAGE_TAG}|myschedule.azurecr.io/my-schedule.apigateway/1.0}|' .k8s/my-schedule-apigateway.yaml
 
       - name: Deploy to AKS
         id: deploy-aks
@@ -73,5 +73,6 @@ jobs:
           namespace: "default"
           manifests: |
             .k8s/my-schedule-apigateway.yaml
-          images: "myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}"
+          images: "myschedule.azurecr.io/my-schedule.apigateway/1.0}"
           pull-images: false
+          wait-for-deployments: false
