@@ -70,4 +70,4 @@ jobs:
           manifests: |
             .k8s/my-schedule-apigateway.yaml
           images: "myschedule.azurecr.io/my-schedule.apigateway/1.0"
-          pull-images: true
+          pull-images: false
