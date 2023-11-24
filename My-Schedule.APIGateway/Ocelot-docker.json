@@ -5,20 +5,20 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "my-schedule-auth-container",
+          "Host": "my-schedule-authservice",
           "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": [],
-      "SwaggerKey": "My-Schedule"
+      "SwaggerKey": "My-Schedule-AuthService"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "my-schedule-user-container",
+          "Host": "my-schedule-userservice",
           "Port": 80
         }
       ],
@@ -29,7 +29,7 @@
   ],
   "SwaggerEndPoints": [
     {
-      "Key": "My-Schedule",
+      "Key": "My-Schedule-AuthService",
       "Config": [
         {
           "Name": "AuthService API",
