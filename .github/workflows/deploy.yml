@@ -64,19 +64,14 @@ jobs:
 
       - name: Replace IMAGE_TAG in manifest
         run: |
-          sed -i 's|${IMAGE_TAG}|myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}|' .k8s/my-schedule-apigateway.yaml
+          sed -i 's|{IMAGE_TAG}|myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}|' .k8s/my-schedule-apigateway.yaml
 
       - name: Deploy to AKS
         id: deploy-aks
-        run: |
-          kubectl apply -f .k8s/my-schedule-apigateway.yaml --record
-
-      # - name: Deploy to AKS
-      #   id: deploy-aks
-      #   uses: Azure/k8s-deploy@v4
-      #   with:
-      #     namespace: "default"
-      #     manifests: |
-      #       .k8s/my-schedule-apigateway.yaml
-      #     images: "myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}"
-      #     pull-images: true
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: "default"
+          manifests: |
+            .k8s/my-schedule-apigateway.yaml
+          images: "myschedule.azurecr.io/my-schedule.apigateway/${{ github.sha }}"
+          pull-images: false
