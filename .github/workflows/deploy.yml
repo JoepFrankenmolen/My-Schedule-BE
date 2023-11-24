@@ -71,4 +71,3 @@ jobs:
             .k8s/my-schedule-apigateway.yaml
           images: "myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}"
           pull-images: false
-          wait-for-deployments: false
