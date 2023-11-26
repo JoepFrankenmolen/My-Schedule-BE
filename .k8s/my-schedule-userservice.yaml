@@ -38,4 +38,4 @@ spec:
       port: 80
   selector:
     app: my-schedule-userservice
-  type: ClusterIp
+  type: ClusterIP
