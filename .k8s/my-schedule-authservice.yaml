@@ -19,7 +19,7 @@ spec:
           name: my-schedule-authservice
           env:
             - name: MessageQueueHostName
-              value: {{ env.MESSAGEQUEUEHOSTNAME }}
+              value: {{ secret.MESSAGEQUEUEHOSTNAME }}
             - name: MessageQueuePort
               value: "5672"
             - name: MessageQueueUserName
@@ -33,7 +33,7 @@ spec:
             - name: MessageQueueHeaderName
               value: "ServiceName"
             - name: MessageQueueServiceName
-              value: "UserService"
+              value: "AuthService"
           # envFrom:
           #   - configMapRef:
           #       name: my-schedule-authservice-config
