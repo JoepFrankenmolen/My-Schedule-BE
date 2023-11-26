@@ -18,6 +18,8 @@ spec:
         - image: myschedule.azurecr.io/my-schedule.authservice:{{ github.sha }}
           name: my-schedule-authservice
           env:
+            - name: DatabaseConnection
+              value: secrets.AUTHSERVICE_DATABASECONNECTION
             - name: MessageQueueHostName
               value: secrets.MESSAGEQUEUEHOSTNAME
             - name: MessageQueuePort
