@@ -19,8 +19,7 @@ spec:
           name: my-schedule-authservice
           env:
             - name: MessageQueueHostName
-              # value: ${{ secrets.MESSAGEQUEUEHOSTNAME }}
-              value: "rabbitmq-service"
+              value: secrets.MESSAGEQUEUEHOSTNAME
             - name: MessageQueuePort
               value: "5672"
             - name: MessageQueueUserName
