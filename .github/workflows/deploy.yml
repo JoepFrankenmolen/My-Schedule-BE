@@ -60,9 +60,7 @@ jobs:
 
       - name: Substitute GitHub secrets in manifests
         run: |
-          sed -i "s/{{ github.sha }}/${{ github.sha }}/g" .k8s/my-schedule-authservice.yaml
-          sed -i "s|secrets.MessageQueueHostName|${{ secrets.MessageQueueHostName }}|g" .k8s/my-schedule-authservice.yaml
-          sed -i "s|{{ secrets.MessageQueuePort }}|${{ secrets.MessageQueuePort }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MESSAGEQUEUEHOSTNAME|${{ secrets.MESSAGEQUEUEHOSTNAME }}|g" .k8s/my-schedule-authservice.yaml
 
       - name: Setup kubectl
         id: install-kubectl
