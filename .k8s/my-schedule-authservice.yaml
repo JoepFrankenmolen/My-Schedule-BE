@@ -21,7 +21,7 @@ spec:
             - name: MessageQueueHostName
               value: "rabbitmq-service"
             - name: MessageQueuePort
-              value: 5672
+              value: "5672"
             - name: MessageQueueUserName
               value: "guest"
             - name: MessageQueuePassword
