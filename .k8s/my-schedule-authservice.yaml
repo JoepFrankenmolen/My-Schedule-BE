@@ -17,6 +17,12 @@ spec:
       containers:
         - image: myschedule.azurecr.io/my-schedule.authservice:{{ github.sha }}
           name: my-schedule-authservice
+          env:
+            - name: MessageQueueHostName
+              value: "rabbitmq-service"
+          # envFrom:
+          #   - configMapRef:
+          #       name: my-schedule-authservice-config
           ports:
             - containerPort: 80
           resources:
