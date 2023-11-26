@@ -18,27 +18,46 @@ spec:
         - image: myschedule.azurecr.io/my-schedule.authservice:{{ github.sha }}
           name: my-schedule-authservice
           env:
+            - name: JWTIssuer
+              value: secrets.JWT_ISSUER
+            - name: JWTAudience
+              value: secrets.JWT_AUDIENCE
+            - name: JWTSigningKey
+              value: secrets.JWT_SIGNING_KEY
+            - name: Pepper
+              value: secrets.PASSWORD_PEPPER
+            - name: AccessTokenExpirationTime
+              value: secrets.TOKEN_ACCESS_EXPIRATION_TIME
+            - name: RefreshTokenExpirationTime
+              value: secrets.TOKEN_REFRESH_EXPIRATION_TIME
+            - name: MaxLoginAttempts
+              value: secrets.LOGIN_MAX_ATTEMPTS
+            - name: MaxConfirmationAttempts
+              value: secrets.CONFIRMATION_MAX_ATTEMPTS
+            - name: ConfirmationExpirationTime
+              value: secrets.CONFIRMATION_EXPIRATION_TIME
             - name: DatabaseConnection
-              value: secrets.AUTHSERVICE_DATABASECONNECTION
+              value: secrets.DC
+            - name: SenderEmail
+              value: secrets.SENDER_EMAIL
+            - name: SenderPassword
+              value: secrets.SENDER_PASSWORD
             - name: MessageQueueHostName
-              value: secrets.MESSAGEQUEUEHOSTNAME
+              value: secrets.MQ_HOSTNAME
             - name: MessageQueuePort
-              value: "5672"
+              value: secrets.MQ_PORT
             - name: MessageQueueUserName
-              value: "guest"
+              value: secrets.MQ_USERNAME
             - name: MessageQueuePassword
-              value: "guest"
+              value: secrets.MQ_PASSWORD
             - name: MessageQueueVirtualHost
-              value: "/"
+              value: secrets.MQ_VIRTUAL_HOST
             - name: MessageQueueUseSsl
-              value: "false"
+              value: secrets.MQ_USE_SSL
             - name: MessageQueueHeaderName
-              value: "ServiceName"
+              value: secrets.MQ_HEADERNAME
             - name: MessageQueueServiceName
               value: "AuthService"
-          # envFrom:
-          #   - configMapRef:
-          #       name: my-schedule-authservice-config
           ports:
             - containerPort: 80
           resources:
