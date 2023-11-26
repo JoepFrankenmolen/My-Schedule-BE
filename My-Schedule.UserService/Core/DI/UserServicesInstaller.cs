@@ -49,9 +49,9 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<UserAdminService>();
 
             // Consumer
-            services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
-            services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
-            services.AddSingleton<IHostedService, UserAuthDetailConsumer<UserServiceContext>>();
+            // services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
+            // services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
+            // services.AddSingleton<IHostedService, UserAuthDetailConsumer<UserServiceContext>>();
         }
     }
 }
