@@ -58,6 +58,13 @@ jobs:
           cluster-name: "my_schedule"
           resource-group: "my_schedule_group"
 
+      - name: Debug Secrets
+        run: |
+          echo "MessageQueueHostName: ${{ secrets.MESSAGEQUEUEHOSTNAME }}"
+          echo "ACR_USERNAME: ${{ secrets.ACR_USERNAME }}"
+          echo "ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}"
+          echo "AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}"
+
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
