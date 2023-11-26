@@ -20,6 +20,20 @@ spec:
           env:
             - name: MessageQueueHostName
               value: "rabbitmq-service"
+            - name: MessageQueuePort
+              value: 5672
+            - name: MessageQueueUserName
+              value: "guest"
+            - name: MessageQueuePassword
+              value: "guest"
+            - name: MessageQueueVirtualHost
+              value: "/"
+            - name: MessageQueueUseSsl
+              value: false
+            - name: MessageQueueHeaderName
+              value: "ServiceName"
+            - name: MessageQueueServiceName
+              value: "UserService"
           # envFrom:
           #   - configMapRef:
           #       name: my-schedule-authservice-config
