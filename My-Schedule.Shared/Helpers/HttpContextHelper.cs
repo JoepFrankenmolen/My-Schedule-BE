@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
-using My_Schedule.Shared.Models.Helpers;
+using My_Schedule.Shared.DTO.Helpers;
 
 namespace My_Schedule.Shared.Helpers
 {
@@ -26,7 +26,7 @@ namespace My_Schedule.Shared.Helpers
 
             return new HttpContextDetailsDTO
             {
-                IPAddress = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+                IPAddress = request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "undefined",
                 UserAgent = request.Headers["User-Agent"].ToString()
             };
         }

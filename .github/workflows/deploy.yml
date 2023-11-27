@@ -1,0 +1,118 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: deploy
+
+jobs:
+  deploy-docker:
+    name: Deploy Docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker images dynamically
+        run: |
+          for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
+            image_name=$(basename "$project")
+            echo "Building image: ${image_name,,}:${{ github.sha }}"
+            docker build -t "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}" -f "$project/Dockerfile" .
+          done
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: myschedule.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Push Docker images to Azure Container Registry
+        run: |
+          for project in $(find . -name "Dockerfile" -exec dirname {} \;); do
+            image_name=$(basename "$project")
+            docker push "myschedule.azurecr.io/${image_name,,}:${{ github.sha }}"
+          done
+
+  deploy-k8s:
+    name: Deploy K8s
+    runs-on: ubuntu-latest
+    needs: deploy-docker
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Azure Kubernetes CLI
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: "my_schedule"
+          resource-group: "my_schedule_group"
+
+      - name: Setup GitHub variables into AuthService
+        run: |
+          sed -i "s|secrets.JWT_ISSUER|${{ secrets.JWT_ISSUER }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.JWT_AUDIENCE|${{ secrets.JWT_AUDIENCE }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.JWT_SIGNING_KEY|${{ secrets.JWT_SIGNING_KEY }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.PASSWORD_PEPPER|${{ secrets.PASSWORD_PEPPER }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.TOKEN_ACCESS_EXPIRATION_TIME|${{ vars.TOKEN_ACCESS_EXPIRATION_TIME }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.TOKEN_REFRESH_EXPIRATION_TIME|${{ vars.TOKEN_REFRESH_EXPIRATION_TIME }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.LOGIN_MAX_ATTEMPTS|${{ vars.LOGIN_MAX_ATTEMPTS }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.CONFIRMATION_MAX_ATTEMPTS|${{ vars.CONFIRMATION_MAX_ATTEMPTS }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.CONFIRMATION_EXPIRATION_TIME|${{ vars.CONFIRMATION_EXPIRATION_TIME }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.DC|${{ secrets.DC_AUTH_SERVICE }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.SENDER_EMAIL|${{ secrets.SENDER_EMAIL }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.SENDER_PASSWORD|${{ secrets.SENDER_PASSWORD }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_HOSTNAME|${{ vars.MQ_HOSTNAME }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_PORT|${{ vars.MQ_PORT }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_USERNAME|${{ secrets.MQ_USERNAME }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_PASSWORD|${{ secrets.MQ_PASSWORD }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_VIRTUAL_HOST|${{ vars.MQ_VIRTUAL_HOST }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_USE_SSL|${{ vars.MQ_USE_SSL }}|g" .k8s/my-schedule-authservice.yaml
+          sed -i "s|secrets.MQ_HEADERNAME|${{ vars.MQ_HEADERNAME }}|g" .k8s/my-schedule-authservice.yaml
+
+      - name: Setup GitHub variables into UserService
+        run: |
+          sed -i "s|secrets.JWT_ISSUER|${{ secrets.JWT_ISSUER }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.JWT_AUDIENCE|${{ secrets.JWT_AUDIENCE }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.JWT_SIGNING_KEY|${{ secrets.JWT_SIGNING_KEY }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.TOKEN_ACCESS_EXPIRATION_TIME|${{ vars.TOKEN_ACCESS_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.TOKEN_REFRESH_EXPIRATION_TIME|${{ vars.TOKEN_REFRESH_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.DC|${{ secrets.DC_USER_SERVICE }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_HOSTNAME|${{ vars.MQ_HOSTNAME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_PORT|${{ vars.MQ_PORT }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_USERNAME|${{ secrets.MQ_USERNAME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_PASSWORD|${{ secrets.MQ_PASSWORD }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_VIRTUAL_HOST|${{ vars.MQ_VIRTUAL_HOST }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_USE_SSL|${{ vars.MQ_USE_SSL }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_HEADERNAME|${{ vars.MQ_HEADERNAME }}|g" .k8s/my-schedule-userservice.yaml
+
+      - name: Setup kubectl
+        id: install-kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: "default"
+          manifests: |
+            .k8s/my-schedule-apigateway.yaml
+            .k8s/my-schedule-userservice.yaml
+            .k8s/my-schedule-authservice.yaml
+          images: |
+            myschedule.azurecr.io/my-schedule.apigateway:${{ github.sha }}
+            myschedule.azurecr.io/my-schedule.userservice:${{ github.sha }}
+            myschedule.azurecr.io/my-schedule.authservice:${{ github.sha }}
+          pull-images: false
+## adding rabbitmq
+# manifests: .k8s/my-schedule-rabbitmq.yaml
+# images: rabbitmq:3.12-management

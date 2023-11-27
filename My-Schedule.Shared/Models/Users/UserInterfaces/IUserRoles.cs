@@ -2,6 +2,6 @@
 {
     public interface IUserRoles
     {
-        List<IUserRole> Roles { get; set; }
+        List<UserRole> Roles { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+# command:
+# normal: docker-compose up -d
+# rebuild: docker-compose up --build --force-recreate --no-deps 
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3.12-management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ AMQP port
+      - "15672:15672"  # RabbitMQ management UI
+    networks:
+      - my-schedule-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: My-Schedule.APIGateway/Dockerfile
+    container_name: my-schedule-apiservice
+    ports:
+      - "8080:80"  # Expose the API Gateway on port 8080
+    depends_on:
+      - rabbitmq  # Make sure the API Gateway starts after RabbitMQ
+    networks:
+      - my-schedule-network
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: My-Schedule.AuthService/Dockerfile
+    container_name: my-schedule-authservice
+    ports:
+      - "8081:80"  # Expose the AuthService on port 8081
+    depends_on:
+      - rabbitmq  # Make sure AuthService starts after RabbitMQ
+    environment:
+      - MessageQueueHostName=rabbitmq  # Set the hostname for RabbitMQ
+    networks:
+      - my-schedule-network
+
+  user-service:
+    build:
+      context: .
+      dockerfile: My-Schedule.UserService/Dockerfile
+    container_name: my-schedule-userservice
+    ports:
+      - "8082:80"  # Expose the UserService on port 8082
+    depends_on:
+      - rabbitmq  # Make sure UserService starts after RabbitMQ
+    environment:
+      - MessageQueueHostName=rabbitmq  # Set the hostname for RabbitMQ
+    networks:
+      - my-schedule-network
+
+networks:
+  my-schedule-network:

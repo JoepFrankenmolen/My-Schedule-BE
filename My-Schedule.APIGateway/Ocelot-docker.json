@@ -1,0 +1,55 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "my-schedule-authservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "My-Schedule-AuthService"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "my-schedule-userservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/user/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "My-Schedule-UserService"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "My-Schedule-AuthService",
+      "Config": [
+        {
+          "Name": "AuthService API",
+          "Version": "v1",
+          "Url": "http://my-schedule-authservice:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "My-Schedule-UserService",
+      "Config": [
+        {
+          "Name": "UserService API",
+          "Version": "v1",
+          "Url": "http://my-schedule-userservice:80/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost"
+  }
+}
