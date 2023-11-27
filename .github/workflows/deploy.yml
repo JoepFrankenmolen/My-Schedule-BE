@@ -60,9 +60,6 @@ jobs:
 
       - name: Setup GitHub variables into AuthService
         run: |
-          sed -i "s|secrets.JWT_ISSUER|${{ secrets.JWT_ISSUER }}|g" .k8s/my-schedule-authservice.yaml
-          sed -i "s|secrets.JWT_AUDIENCE|${{ secrets.JWT_AUDIENCE }}|g" .k8s/my-schedule-authservice.yaml
-          sed -i "s|secrets.JWT_SIGNING_KEY|${{ secrets.JWT_SIGNING_KEY }}|g" .k8s/my-schedule-authservice.yaml
           sed -i "s|secrets.PASSWORD_PEPPER|${{ secrets.PASSWORD_PEPPER }}|g" .k8s/my-schedule-authservice.yaml
           sed -i "s|secrets.TOKEN_ACCESS_EXPIRATION_TIME|${{ vars.TOKEN_ACCESS_EXPIRATION_TIME }}|g" .k8s/my-schedule-authservice.yaml
           sed -i "s|secrets.TOKEN_REFRESH_EXPIRATION_TIME|${{ vars.TOKEN_REFRESH_EXPIRATION_TIME }}|g" .k8s/my-schedule-authservice.yaml
@@ -95,7 +92,6 @@ jobs:
           sed -i "s|secrets.MQ_VIRTUAL_HOST|${{ vars.MQ_VIRTUAL_HOST }}|g" .k8s/my-schedule-userservice.yaml
           sed -i "s|secrets.MQ_USE_SSL|${{ vars.MQ_USE_SSL }}|g" .k8s/my-schedule-userservice.yaml
           sed -i "s|secrets.MQ_HEADERNAME|${{ vars.MQ_HEADERNAME }}|g" .k8s/my-schedule-userservice.yaml
-  
 
       - name: Setup kubectl
         id: install-kubectl
