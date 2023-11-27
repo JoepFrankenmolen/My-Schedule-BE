@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: My-Schedule.APIGateway/Dockerfile
-    container_name: my-schedule-api-container
+    container_name: my-schedule-apiservice
     ports:
       - "8080:80"  # Expose the API Gateway on port 8080
     depends_on:
