@@ -1,7 +1,7 @@
 # build: 
 # dir: parent
 # cmd: docker build -t my-schedule-authservice:1.0 -f My-Schedule.AuthService/Dockerfile .
-# run: docker run -p 8081:80 --network my-schedule-network --name my-schedule-auth-container -e MessageQueueHostName="rabbitmq" my-schedule-authservice:1.0
+# run: docker run -p 8081:80 --network my-schedule-network --name my-schedule-authservice -e MessageQueueHostName="rabbitmq" my-schedule-authservice:1.0
 
 # network: docker network create my-schedule-network
 # rabbitmq: docker run -it --network my-schedule-network --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
