@@ -83,18 +83,18 @@ jobs:
       - name: Setup GitHub variables into UserService
         run: |
           sed -i "s|secrets.JWT_ISSUER|${{ secrets.JWT_ISSUER }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.JWT_AUDIENCE|${{ secrets.JWT_AUDIENCE }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.JWT_SIGNING_KEY|${{ secrets.JWT_SIGNING_KEY }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.TOKEN_ACCESS_EXPIRATION_TIME|${{ vars.TOKEN_ACCESS_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.TOKEN_REFRESH_EXPIRATION_TIME|${{ vars.TOKEN_REFRESH_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.DC|${{ secrets.DC_USER_SERVICE }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_HOSTNAME|${{ vars.MQ_HOSTNAME }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_PORT|${{ vars.MQ_PORT }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_USERNAME|${{ secrets.MQ_USERNAME }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_PASSWORD|${{ secrets.MQ_PASSWORD }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_VIRTUAL_HOST|${{ vars.MQ_VIRTUAL_HOST }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_USE_SSL|${{ vars.MQ_USE_SSL }}|g" .k8s/my-schedule-userservice.yaml
-      #     sed -i "s|secrets.MQ_HEADERNAME|${{ vars.MQ_HEADERNAME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.JWT_AUDIENCE|${{ secrets.JWT_AUDIENCE }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.JWT_SIGNING_KEY|${{ secrets.JWT_SIGNING_KEY }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.TOKEN_ACCESS_EXPIRATION_TIME|${{ vars.TOKEN_ACCESS_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.TOKEN_REFRESH_EXPIRATION_TIME|${{ vars.TOKEN_REFRESH_EXPIRATION_TIME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.DC|${{ secrets.DC_USER_SERVICE }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_HOSTNAME|${{ vars.MQ_HOSTNAME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_PORT|${{ vars.MQ_PORT }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_USERNAME|${{ secrets.MQ_USERNAME }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_PASSWORD|${{ secrets.MQ_PASSWORD }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_VIRTUAL_HOST|${{ vars.MQ_VIRTUAL_HOST }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_USE_SSL|${{ vars.MQ_USE_SSL }}|g" .k8s/my-schedule-userservice.yaml
+          sed -i "s|secrets.MQ_HEADERNAME|${{ vars.MQ_HEADERNAME }}|g" .k8s/my-schedule-userservice.yaml
 
       - name: Setup kubectl
         id: install-kubectl
