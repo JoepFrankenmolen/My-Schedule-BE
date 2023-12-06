@@ -48,22 +48,5 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
 
             await _messageProducer.SendFanMessage(message, QueueNames.UserAuthDetails.FailedLoginAttempt);
         }
-
-        public async Task SendUserAuthDetailCreatedMessage(UserAuthDetail userAuthDetail)
-        {
-            var message = new UserAuthDetailCreatedMessage
-            {
-                UserId = userAuthDetail.UserId,
-                User = userAuthDetail.User,
-                TwoFactorEnabled = userAuthDetail.TwoFactorEnabled,
-                /*                PasswordHash = userAuthDetail.PasswordHash,
-                                Salt = userAuthDetail.Salt,*/
-                LastLoginTimestamp = userAuthDetail.LastLoginTimestamp,
-                FailedLoginAttempts = userAuthDetail.FailedLoginAttempts,
-                LoginCount = userAuthDetail.LoginCount,
-            };
-
-            await _messageProducer.SendFanMessage(message, QueueNames.UserAuthDetails.UserAuthDetailCreated);
-        }
     }
 }
