@@ -26,7 +26,9 @@ namespace My_Schedule.AuthService.Services.Auth.Authentication
 
         public async Task<ConfirmationCodeResponse> register(RegisterDTO registerDTO)
         {
-            if (InputValidator.IsValidInput(registerDTO.Username) && EmailValidator.IsValidEmail(registerDTO.Email) && PasswordValidator.IsValidPassword(registerDTO.Password))
+            var maxUsernameSize = 255;
+
+            if (InputValidator.IsValidInput(registerDTO.Username, maxUsernameSize) && EmailValidator.IsValidEmail(registerDTO.Email) && PasswordValidator.IsValidPassword(registerDTO.Password))
             {
                 if (!await UserCheckService.CheckIfEmailExists(registerDTO.Email, _dbContext))
                 {

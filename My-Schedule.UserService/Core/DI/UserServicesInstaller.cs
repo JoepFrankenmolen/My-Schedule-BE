@@ -2,7 +2,7 @@
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
-using My_Schedule.Shared.RabbitMQ;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.UserService.Services.Users;
 
@@ -14,13 +14,6 @@ namespace My_Schedule.UserService.Core.DI
         {
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
-
-            // Set consumer configuration.
-            var consumerConfig = new ConsumerConfiguration
-            {
-                DoesUserAuthExist = true
-            };
-            services.AddTransient(_ => consumerConfig);
 
             // Register services
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
@@ -47,6 +40,7 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<UserRoleService>();
             services.AddScoped<UserAdminFetchingService>();
             services.AddScoped<UserAdminService>();
+            services.AddScoped<IUserCreatedEvent, UserCreatedEventUser>();
 
             // Consumer
             services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();

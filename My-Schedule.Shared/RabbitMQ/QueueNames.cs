@@ -18,7 +18,6 @@
             public const string TwoFactorEnabledUpdate = "userAuthDetail.two_factor_enabled_update";
             public const string SuccessfullLogin = "userAuthDetail.successfull_login";
             public const string FailedLoginAttempt = "userAuthDetail.failed_login_attempt";
-            public const string UserAuthDetailCreated = "userAuthDetail.created";
         }
 
         public static class Tokens

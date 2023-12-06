@@ -12,10 +12,10 @@
         /// <param name="minDigits">The minimum number of digits (default is 1).</param>
         /// <param name="minSpecialChars">The minimum number of special characters (default is 1).</param>
         /// <returns>True if the password meets the specified requirements; otherwise, false.</returns>
-        public static bool IsValidPassword(string password, int minLength = 8, int minUpperCase = 1, int minLowerCase = 1, int minDigits = 1, int minSpecialChars = 1)
+        public static bool IsValidPassword(string password, int minLength = 8, int maxLength = 255, int minUpperCase = 1, int minLowerCase = 1, int minDigits = 1, int minSpecialChars = 1)
         {
-            // Ensure the password meets the minimum length requirement.
-            if (password.Length < minLength)
+            // Ensure the password meets the minimum or maximum length requirement.
+            if (password.Length < minLength || password.Length > maxLength)
             {
                 return false;
             }

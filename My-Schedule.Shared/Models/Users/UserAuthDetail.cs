@@ -27,7 +27,7 @@ namespace My_Schedule.Shared.Models.Users
         [Required]
         public string Salt { get; set; }
 
-        // IUserActivity
+        // IUserActivity  (move to user??)
         [Required]
         public long LastLoginTimestamp { get; set; }
 

@@ -35,7 +35,6 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             _messageConsumer.StartConsuming<TwoFactorEnabledMessage>(ProcessTwoFactorEnabledMessage, QueueNames.UserAuthDetails.TwoFactorEnabledUpdate, true);
             _messageConsumer.StartConsuming<SuccessfullLoginMessage>(ProcessSuccessfullLoginMessage, QueueNames.UserAuthDetails.SuccessfullLogin, true);
             _messageConsumer.StartConsuming<FailedLoginAttemptMessage>(ProcessFailedLoginAttemptMessage, QueueNames.UserAuthDetails.FailedLoginAttempt, true);
-            _messageConsumer.StartConsuming<UserAuthDetailCreatedMessage>(ProcessUserAuthDetailCreatedMessage, QueueNames.UserAuthDetails.UserAuthDetailCreated, true);
 
             return Task.CompletedTask;
         }

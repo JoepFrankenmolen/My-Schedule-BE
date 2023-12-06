@@ -27,11 +27,6 @@ namespace My_Schedule.Shared.Services.Users.UserAuthDetails
             context.UserAuthDetails.Add(userAuthDetail);
             await context.SaveChangesAsync();
 
-            if (sendMessage)
-            {
-                await _userAuthDetailProducer.SendUserAuthDetailCreatedMessage(userAuthDetail);
-            }
-
             return userAuthDetail;
         }
     }

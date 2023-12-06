@@ -10,6 +10,7 @@ using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
@@ -23,13 +24,6 @@ namespace My_Schedule.AuthService.Core.DI
             // Done like this to make sure there is only one place the DatabaseConnection gets called.
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
-
-            // Set consumer configuration.
-            var consumerConfig = new ConsumerConfiguration
-            {
-                DoesUserAuthExist = true
-            };
-            services.AddTransient(_ => consumerConfig);
 
             // probely more efficent ways of doing this but good for now
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
@@ -70,6 +64,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             // Users
             services.AddScoped<UserService>();
+            services.AddScoped<IUserCreatedEvent, UserCreatedEventAuth>();
 
             // Confirmation
             services.AddScoped<ConfirmationService>();

@@ -5,6 +5,7 @@ namespace My_Schedule.Shared.Helpers.Validators
 {
     public static class InputValidator
     {
+        // add size limiters
         public static bool IsValidInput(string input)
         {
             // Check for common SQL injection patterns
@@ -28,6 +29,16 @@ namespace My_Schedule.Shared.Helpers.Validators
             // Additional custom checks can be added here
 
             return true;
+        }
+
+        public static bool IsValidInput(string input, int sizeLimit)
+        {
+            if (input.Length >= sizeLimit)
+            {
+                return false;
+            }
+
+            return IsValidInput(input);
         }
 
         // totaly created by me
