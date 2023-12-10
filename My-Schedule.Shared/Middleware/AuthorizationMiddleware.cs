@@ -37,13 +37,13 @@ namespace My_Schedule.Shared.Middleware
 
                     if (!CheckRolesAuthorization(authorizedRolesAttribute, user))
                     {
-                        context.Response.StatusCode = 401; // Unauthorized
+                        context.Response.StatusCode = 402; // Unauthorized
                         return;
                     }
                 }
                 catch
                 {
-                    context.Response.StatusCode = 401; // Unauthorized
+                    context.Response.StatusCode = 403; // Unauthorized
                     return;
                 }
             }
