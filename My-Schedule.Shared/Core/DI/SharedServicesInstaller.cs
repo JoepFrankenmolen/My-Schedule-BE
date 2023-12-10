@@ -9,8 +9,8 @@ using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users.Interfaces;
-using My_Schedule.Shared.Services.Users.UserAuthDetails;
 using My_Schedule.Shared.Services.Users.Users;
+using My_Schedule.Shared.Services.Users.UserSecurities;
 
 namespace My_Schedule.Shared.Core.DI
 {
@@ -65,9 +65,9 @@ namespace My_Schedule.Shared.Core.DI
 
             if (contextConfig.ContainsUserAuthDetails)
             {
-                services.AddTransient<IUserAuthDetailUpdateService, UserAuthDetailUpdateService>();
-                services.AddTransient<IUserAuthDetailCreateService, UserAuthDetailCreateService>();
-                services.AddTransient<UserAuthDetailProducer>();
+                services.AddTransient<IUserSecurityUpdateService, UserSecurityUpdateService>();
+                services.AddTransient<IUserSecurityCreateService, UserSecurityCreateService>();
+                services.AddTransient<UserSettingsProducer>();
             }
         }
     }

@@ -33,6 +33,16 @@ namespace My_Schedule.Shared.Models.Users
         [Required]
         public long TokenRevocationTimestamp { get; set; }
 
+        // IUserActivity
+        [Required]
+        public long LastLoginTimestamp { get; set; }
+
+        [Required]
+        public int FailedLoginAttempts { get; set; }
+
+        [Required]
+        public int LoginCount { get; set; }
+
         // IUserRoles
         [Required]
         public List<UserRole> Roles { get; set; }

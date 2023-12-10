@@ -47,6 +47,19 @@ namespace My_Schedule.Shared.RabbitMQ.Messages
         public string UserName { get; set; }
     }
 
+    public class SuccessfullLoginMessage : UserMessages
+    {
+        public long LastLoginTimestamp;
+        public int LoginCount;
+        public int FailedLoginAttempts;
+    }
+
+    public class FailedLoginAttemptMessage : UserMessages
+    {
+        public int FailedLoginAttempts;
+        public bool IsUserBlocked;
+    }
+
     public class UserRoleUpdateMessage : UserMessages
     {
         public UserRole Role { get; set; }

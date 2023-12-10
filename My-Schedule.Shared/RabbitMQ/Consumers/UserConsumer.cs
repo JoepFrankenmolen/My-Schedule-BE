@@ -8,10 +8,11 @@ using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
-    public class UserConsumer<T> : IHostedService where T : DbContext, IUserContext, IUserAuthDetailContext?
+    public class UserConsumer<T> : IHostedService where T : DbContext, IUserContext, IUserSecurityContext?
     {
         private readonly IMessageConsumer _messageConsumer;
         private readonly IUserUpdateService _userUpdateService;
+        private readonly IUserActivityService _userActivityService;
         private readonly IUserCreateService _userCreateService;
         private readonly IDefaultContextBuilder _defaultContextBuilder;
         private readonly ILogger<UserConsumer<T>> _logger;
@@ -19,12 +20,14 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         public UserConsumer(
             IMessageConsumer messageConsumer,
             IUserUpdateService userUpdateService,
+            IUserActivityService userActivityService,
             IUserCreateService userCreateService,
             IDefaultContextBuilder defaultContextBuilder,
             ILogger<UserConsumer<T>> logger)
         {
             _messageConsumer = messageConsumer ?? throw new ArgumentNullException(nameof(messageConsumer));
             _userUpdateService = userUpdateService ?? throw new ArgumentNullException(nameof(userUpdateService));
+            _userActivityService = userActivityService ?? throw new ArgumentNullException(nameof(userActivityService));
             _userCreateService = userCreateService ?? throw new ArgumentNullException(nameof(userCreateService));
             _defaultContextBuilder = defaultContextBuilder ?? throw new ArgumentNullException(nameof(defaultContextBuilder));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -40,6 +43,9 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate, true);
             _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate, true);
             _messageConsumer.StartConsuming<UserCreatedMessage>(ProcessUserCreateMessage, QueueNames.Users.UserCreated, true);
+
+            _messageConsumer.StartConsuming<SuccessfullLoginMessage>(ProcessSuccessfullLoginMessage, QueueNames.UserActivity.SuccessfullLogin, true);
+            _messageConsumer.StartConsuming<FailedLoginAttemptMessage>(ProcessFailedLoginAttemptMessage, QueueNames.UserActivity.FailedLoginAttempt, true);
 
             return Task.CompletedTask;
         }
@@ -136,6 +142,40 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing User Update Identity Message");
+            }
+        }
+
+        private async Task ProcessSuccessfullLoginMessage(SuccessfullLoginMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userActivityService.UpdateOnLoginSuccess(message.UserId, null, context, false);
+                }
+
+                _logger.LogInformation($"ProcessSuccessfullLoginMessage processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing ProcessSuccessfullLoginMessage");
+            }
+        }
+
+        private async Task ProcessFailedLoginAttemptMessage(FailedLoginAttemptMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userActivityService.UpdateOnLoginFail(message.UserId, null, message.IsUserBlocked, context, false);
+                }
+
+                _logger.LogInformation($"ProcessFailedLoginAttemptMessage processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing ProcessFailedLoginAttemptMessage");
             }
         }
 

@@ -24,7 +24,7 @@ namespace My_Schedule.Shared.Helpers.Validators
         }
 
         // Use on login.
-        public static bool IsValidUser(UserAuthDetail user, int maxAttempts, bool mustEmailBeConfirmed = true)
+        public static bool IsValidUser(User user, int maxAttempts, bool mustEmailBeConfirmed = true)
         {
             // If user is null or has too many access failed attempts return false.
             if (user == null || user.FailedLoginAttempts >= maxAttempts)
@@ -32,7 +32,7 @@ namespace My_Schedule.Shared.Helpers.Validators
                 return false;
             }
 
-            return IsValidUser(user.User, mustEmailBeConfirmed);
+            return IsValidUser(user, mustEmailBeConfirmed);
         }
     }
 }

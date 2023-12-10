@@ -1,8 +1,6 @@
-﻿using My_Schedule.AuthService.Services.Notifications;
-using My_Schedule.Shared.Interfaces.Context;
+﻿using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users;
-using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.AuthService.Services.Users
 {

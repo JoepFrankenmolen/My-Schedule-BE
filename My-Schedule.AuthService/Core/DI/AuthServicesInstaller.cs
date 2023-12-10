@@ -11,7 +11,6 @@ using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Interfaces.Interfaces;
-using My_Schedule.Shared.RabbitMQ;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 
@@ -29,7 +28,7 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IConfirmationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IAuthenticationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
-            services.AddSingleton<IUserSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
+            services.AddSingleton<IUserAuthSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IMessageQueueSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
@@ -40,7 +39,7 @@ namespace My_Schedule.AuthService.Core.DI
             });
 
             // Register the interfaces with their implementations
-            services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<AuthServiceContext>());
+            services.AddScoped<IUserSecurityContext>(provider => provider.GetRequiredService<AuthServiceContext>());
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<AuthServiceContext>());
             services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<AuthServiceContext>());
 
@@ -81,7 +80,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             // Consumers
             services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();
-            services.AddSingleton<IHostedService, UserAuthDetailConsumer<AuthServiceContext>>();
+            services.AddSingleton<IHostedService, UserSettingsConsumer<AuthServiceContext>>();
         }
     }
 }

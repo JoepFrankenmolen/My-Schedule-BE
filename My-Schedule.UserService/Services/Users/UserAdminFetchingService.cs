@@ -19,14 +19,14 @@ namespace My_Schedule.UserService.Services.Users
         public async Task<List<UserDTO>> GetAllUsers()
         {
             // Retrieve all users from the database
-            var usersAuthDetails = await UserFetcherService.GetAll(_dbContext);
+            var users = await UserFetcherService.GetAll(_dbContext);
 
             // Create a list of UserDTO objects to store the mapped user data
             var userDTOs = new List<UserDTO>();
 
-            foreach (var userAuth in usersAuthDetails)
+            foreach (var user in users)
             {
-                var userDTO = UserDTO.MapUserToDTO(userAuth);
+                var userDTO = UserDTO.MapUserToDTO(user);
 
                 userDTOs.Add(userDTO);
             }

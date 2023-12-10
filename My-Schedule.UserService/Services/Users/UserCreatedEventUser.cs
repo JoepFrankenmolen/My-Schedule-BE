@@ -7,11 +7,11 @@ namespace My_Schedule.UserService.Services.Users
 {
     public class UserCreatedEventUser : IUserCreatedEvent
     {
-        private readonly IUserAuthDetailCreateService _userAuthDetailCreateService;
+        private readonly IUserSecurityCreateService _userSecurityCreateService;
 
-        public UserCreatedEventUser(IUserAuthDetailCreateService userAuthDetailCreateService) 
+        public UserCreatedEventUser(IUserSecurityCreateService userSecurityCreateService)
         {
-            _userAuthDetailCreateService = userAuthDetailCreateService ?? throw new ArgumentNullException(nameof(userAuthDetailCreateService));
+            _userSecurityCreateService = userSecurityCreateService ?? throw new ArgumentNullException(nameof(userSecurityCreateService));
         }
 
         public Task UserCreatedEvent(User user, IUserContext context)

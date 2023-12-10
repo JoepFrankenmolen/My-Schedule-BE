@@ -3,7 +3,7 @@ using My_Schedule.Shared.Interfaces.AppSettings;
 
 namespace My_Schedule.AuthService.Core
 {
-    public class ServicesAppSettings : IDatabaseSettings, IConfirmationSettings, IAuthenticationSettings, IUserSettings, IEmailSettings, IMessageQueueSettings
+    public class ServicesAppSettings : IDatabaseSettings, IConfirmationSettings, IAuthenticationSettings, IUserAuthSettings, IEmailSettings, IMessageQueueSettings
     {
         private readonly AppSettings _appSettings;
 

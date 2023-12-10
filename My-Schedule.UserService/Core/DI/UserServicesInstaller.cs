@@ -29,7 +29,7 @@ namespace My_Schedule.UserService.Core.DI
 
             // Register the interfaces with their implementations
             services.AddScoped<ITokenStatusContext>(provider => provider.GetRequiredService<UserServiceContext>());
-            services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<UserServiceContext>());
+            services.AddScoped<IUserSecurityContext>(provider => provider.GetRequiredService<UserServiceContext>());
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<UserServiceContext>());
             services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<UserServiceContext>());
 
@@ -45,7 +45,7 @@ namespace My_Schedule.UserService.Core.DI
             // Consumer
             services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
             services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
-            services.AddSingleton<IHostedService, UserAuthDetailConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserSettingsConsumer<UserServiceContext>>();
         }
     }
 }

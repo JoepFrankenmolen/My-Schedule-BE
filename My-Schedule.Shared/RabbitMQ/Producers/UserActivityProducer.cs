@@ -1,27 +1,15 @@
 ﻿using My_Schedule.Shared.Interfaces.Interfaces;
-using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.RabbitMQ.Messages;
 
 namespace My_Schedule.Shared.RabbitMQ.Producers
 {
-    public class UserAuthDetailProducer
+    public class UserActivityProducer
     {
         private readonly IMessageProducer _messageProducer;
 
-        public UserAuthDetailProducer(IMessageProducer messageProducer)
+        public UserActivityProducer(IMessageProducer messageProducer)
         {
             _messageProducer = messageProducer ?? throw new ArgumentNullException(nameof(messageProducer));
-        }
-
-        public async Task SendTwoFactorEnabledMessage(Guid userId, bool state)
-        {
-            var message = new TwoFactorEnabledMessage
-            {
-                UserId = userId,
-                TwoFactorEnabled = state,
-            };
-
-            await _messageProducer.SendFanMessage(message, QueueNames.UserAuthDetails.TwoFactorEnabledUpdate);
         }
 
         public async Task SendSuccessfullLoginMessage(Guid userId, long lastLoginTimestamp, int loginCount, int failedLoginAttempts)
@@ -34,7 +22,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 FailedLoginAttempts = failedLoginAttempts
             };
 
-            await _messageProducer.SendFanMessage(message, QueueNames.UserAuthDetails.SuccessfullLogin);
+            await _messageProducer.SendFanMessage(message, QueueNames.UserActivity.SuccessfullLogin);
         }
 
         public async Task SendFailedLoginAttemptMessage(Guid userId, int failedLoginCount, bool isUserBlocked)
@@ -46,7 +34,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 IsUserBlocked = isUserBlocked,
             };
 
-            await _messageProducer.SendFanMessage(message, QueueNames.UserAuthDetails.FailedLoginAttempt);
+            await _messageProducer.SendFanMessage(message, QueueNames.UserActivity.FailedLoginAttempt);
         }
     }
 }

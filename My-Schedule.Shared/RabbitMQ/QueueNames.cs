@@ -13,11 +13,15 @@
             public const string UserCreated = "user.created";
         }
 
-        public static class UserAuthDetails
+        public static class UserActivity
         {
-            public const string TwoFactorEnabledUpdate = "userAuthDetail.two_factor_enabled_update";
-            public const string SuccessfullLogin = "userAuthDetail.successfull_login";
-            public const string FailedLoginAttempt = "userAuthDetail.failed_login_attempt";
+            public const string SuccessfullLogin = "userActivity.successfull_login";
+            public const string FailedLoginAttempt = "userActivity.failed_login_attempt";
+        }
+
+        public static class UserSettings
+        {
+            public const string TwoFactorEnabledUpdate = "userSettings.two_factor_enabled_update";
         }
 
         public static class Tokens
