@@ -1,4 +1,5 @@
-﻿using My_Schedule.Shared.Attributes;
+﻿using Microsoft.AspNetCore.Http;
+using My_Schedule.Shared.Attributes;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
@@ -37,14 +38,14 @@ namespace My_Schedule.Shared.Middleware
 
                     if (!CheckRolesAuthorization(authorizedRolesAttribute, user))
                     {
-                        context.Response.StatusCode = 401; // Unauthorized
+                        context.Response.StatusCode = 402; // Unauthorized
+                        await context.Response.WriteAsync(authorizedRolesAttribute.Roles.ToString());
                         return;
                     }
                 }
                 catch (Exception ex)
                 {
                     context.Response.StatusCode = 401; // Unauthorized
-                    await context.Response.WriteAsync(ex.Message);
                     return;
                 }
             }
