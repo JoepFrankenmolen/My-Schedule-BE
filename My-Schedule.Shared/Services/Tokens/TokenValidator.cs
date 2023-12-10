@@ -3,6 +3,7 @@ using My_Schedule.Shared.DTO.Tokens;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
+using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
 using My_Schedule.Shared.Services.Users.Users;
@@ -48,7 +49,6 @@ namespace My_Schedule.Shared.Services.Tokens
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))
                 {
-                    throw new ArgumentNullException(user.Id.ToString());
                     return null;
                 }
 
@@ -58,8 +58,9 @@ namespace My_Schedule.Shared.Services.Tokens
                     SessionId = sessionId,
                 };
             }
-            catch
+            catch (Exception ex)
             {
+                throw new ArgumentNullException(ex.Message);
                 return null;
             }
         }
