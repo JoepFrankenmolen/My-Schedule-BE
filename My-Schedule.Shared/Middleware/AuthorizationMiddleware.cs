@@ -39,7 +39,6 @@ namespace My_Schedule.Shared.Middleware
                     if (!CheckRolesAuthorization(authorizedRolesAttribute, user))
                     {
                         context.Response.StatusCode = 402; // Unauthorized
-                        await context.Response.WriteAsync(authorizedRolesAttribute.Roles[1].ToString() + user.Roles[0].Role.ToString());
                         return;
                     }
                 }
