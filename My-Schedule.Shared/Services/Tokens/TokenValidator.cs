@@ -49,7 +49,6 @@ namespace My_Schedule.Shared.Services.Tokens
                 // check if the user is blocked or token is revoked.
                 if (user == null || !UserValidator.IsValidUser(user) || await IsTokenRevoked(user, securityToken, sessionId))
                 {
-                    throw new ArgumentNullException(user.Id.ToString());
                     return null;
                 }
 
@@ -61,7 +60,6 @@ namespace My_Schedule.Shared.Services.Tokens
             }
             catch (Exception ex)
             {
-                throw new ArgumentNullException(ex.Message);
                 return null;
             }
         }
