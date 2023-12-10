@@ -38,6 +38,16 @@ namespace My_Schedule.UserService
             services.AddMvc();
 
             services.AddHttpContextAccessor();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAny", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,9 +62,7 @@ namespace My_Schedule.UserService
                     c.RoutePrefix = "swagger";
                 });
 
-                //app.UseMiddleware<DevelopmentMiddleware>();
-
-                app.UseCors("AllowVueApp");
+                app.UseCors("AllowAny");
             }
 
             app.UseHttpsRedirection();
