@@ -41,9 +41,10 @@ namespace My_Schedule.Shared.Middleware
                         return;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     context.Response.StatusCode = 403; // Unauthorized
+                    await context.Response.WriteAsync(ex.Message);
                     return;
                 }
             }
