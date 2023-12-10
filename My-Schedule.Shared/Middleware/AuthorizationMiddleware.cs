@@ -30,7 +30,7 @@ namespace My_Schedule.Shared.Middleware
 
                     if (user == null)
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentNullException(nameof(user));
                     }
 
                     _userAuthenticationContext.Install(context, user);
