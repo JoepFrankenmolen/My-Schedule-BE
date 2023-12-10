@@ -16,7 +16,7 @@ namespace My_Schedule.Shared.Attributes
         public AuthorizedRolesAttribute(params UserRoleType[] roles)
         {
             Roles = roles ?? throw new ArgumentNullException(nameof(roles));
-            AddMasterAdminToRoles();
+            AddMasterAdminToRoles(); // does not work??
         }
 
         private void AddMasterAdminToRoles()
