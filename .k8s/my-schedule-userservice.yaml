@@ -5,7 +5,7 @@ metadata:
   name: my-schedule-userservice
   namespace: default
 spec:
-  replicas: 4
+  replicas: 2
   selector:
     matchLabels:
       app: my-schedule-userservice
@@ -68,3 +68,21 @@ spec:
   selector:
     app: my-schedule-userservice
   type: ClusterIP
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-schedule-userservice-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-schedule-userservice
+  minReplicas: 2 # adjust as needed
+  maxReplicas: 8 # adjust as needed
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50 # adjust as needed
