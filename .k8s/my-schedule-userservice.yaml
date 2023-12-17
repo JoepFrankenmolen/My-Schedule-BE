@@ -5,7 +5,7 @@ metadata:
   name: my-schedule-userservice
   namespace: default
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: my-schedule-userservice
