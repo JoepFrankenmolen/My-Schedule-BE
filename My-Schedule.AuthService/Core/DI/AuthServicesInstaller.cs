@@ -13,6 +13,8 @@ using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
+using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.Users;
 
 namespace My_Schedule.AuthService.Core.DI
 {
@@ -51,7 +53,7 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<LoginService>();
             services.AddScoped<RegisterService>();
             services.AddScoped<HashService>();
-            services.AddScoped<PasswordResetService>();
+            services.AddScoped<PasswordResetService>(); 
             services.AddScoped<LoginVerificationService>();
 
             // Tokens
@@ -78,9 +80,13 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<NotificationTriggerService>();
             services.AddScoped<NotificationSender>();
 
+            // UserCreatedEvent
+            services.AddTransient<IUserCreatedEvent, UserCreatedEventAuth>();
+
             // Consumers
             services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();
             services.AddSingleton<IHostedService, UserSettingsConsumer<AuthServiceContext>>();
+            services.AddSingleton<IHostedService, UserActivityConsumer<AuthServiceContext>>();
         }
     }
 }

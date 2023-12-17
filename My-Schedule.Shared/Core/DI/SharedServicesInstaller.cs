@@ -47,6 +47,7 @@ namespace My_Schedule.Shared.Core.DI
             // Producers
             services.AddTransient<UserProducer>();
             services.AddTransient<TokenProducer>();
+            services.AddTransient<UserActivityProducer>();
 
             // Token helper
             services.AddSingleton<TokenStatusService>();
@@ -54,6 +55,8 @@ namespace My_Schedule.Shared.Core.DI
             // User helpers
             services.AddTransient<IUserCreateService, UserCreateService>();
             services.AddTransient<IUserUpdateService, UserUpdateService>();
+            services.AddTransient<IUserActivityService, UserActivityService>();
+
 
             // ClientDetails
             services.AddScoped<ClientDetailService>();
@@ -63,6 +66,7 @@ namespace My_Schedule.Shared.Core.DI
                 services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
             }
 
+            // remove???
             if (contextConfig.ContainsUserAuthDetails)
             {
                 services.AddTransient<IUserSecurityUpdateService, UserSecurityUpdateService>();

@@ -42,10 +42,14 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<UserAdminService>();
             services.AddScoped<IUserCreatedEvent, UserCreatedEventUser>();
 
+            // UserCreatedEvent
+            services.AddTransient<IUserCreatedEvent, UserCreatedEventUser>();
+
             // Consumer
             services.AddSingleton<IHostedService, TokenConsumer<UserServiceContext>>();
             services.AddSingleton<IHostedService, UserConsumer<UserServiceContext>>();
             services.AddSingleton<IHostedService, UserSettingsConsumer<UserServiceContext>>();
+            services.AddSingleton<IHostedService, UserActivityConsumer<UserServiceContext>>();
         }
     }
 }
