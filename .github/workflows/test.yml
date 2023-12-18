@@ -32,7 +32,7 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release
 
-  tets-sonarqube:
+  sonarqube:
     name: Build and analyze
     runs-on: windows-latest
     steps:
@@ -63,6 +63,15 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0
+
+      - name: Restore dependencies
+        run: dotnet restore
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
@@ -70,5 +79,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"JoepFrankenmolen_My-Schedule-BE" /o:"joepfrankenmolen" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          <insert_your_build_command>
+          dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
