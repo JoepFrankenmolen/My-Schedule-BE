@@ -24,12 +24,9 @@ namespace My_Schedule.Shared.Services.Authorization
 
             if (validatedTokenUserDTO == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(validatedTokenUserDTO));
             }
-            else
-            {
-                return validatedTokenUserDTO.user;
-            }
+            return validatedTokenUserDTO.user;
         }
     }
 }

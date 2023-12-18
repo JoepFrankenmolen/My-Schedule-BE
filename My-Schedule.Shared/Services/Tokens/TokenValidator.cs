@@ -57,7 +57,7 @@ namespace My_Schedule.Shared.Services.Tokens
                     SessionId = sessionId,
                 };
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }

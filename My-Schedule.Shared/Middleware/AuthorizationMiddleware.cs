@@ -1,4 +1,4 @@
-﻿using My_Schedule.Shared.Attributes;
+using My_Schedule.Shared.Attributes;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users.UserInterfaces;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
@@ -30,7 +30,7 @@ namespace My_Schedule.Shared.Middleware
 
                     if (user == null)
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentNullException(nameof(user));
                     }
 
                     _userAuthenticationContext.Install(context, user);
@@ -41,7 +41,7 @@ namespace My_Schedule.Shared.Middleware
                         return;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     context.Response.StatusCode = 401; // Unauthorized
                     return;
