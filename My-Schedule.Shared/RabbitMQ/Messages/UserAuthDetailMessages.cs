@@ -7,29 +7,11 @@ namespace My_Schedule.Shared.RabbitMQ.Messages
         public Guid UserId;
     }
 
-    public class TwoFactorEnabledMessage : UserMessages
-    {
-        public bool TwoFactorEnabled;
-    }
-
-    public class SuccessfullLoginMessage : UserMessages
-    {
-        public long LastLoginTimestamp;
-        public int LoginCount;
-        public int FailedLoginAttempts;
-    }
-
-    public class FailedLoginAttemptMessage : UserMessages
-    {
-        public int FailedLoginAttempts;
-        public bool IsUserBlocked;
-    }
-
     public class UserAuthDetailCreatedMessage : UserMessages
     {
         // IUserDetails
         public User User;
-
+        HeaderDictionaryTypeExtensions moet gefixt worden
         // IUserSecurity
         public bool TwoFactorEnabled; // should be in user settings :)
 
