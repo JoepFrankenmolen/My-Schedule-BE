@@ -32,8 +32,9 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release
 
+  ## https://sonarcloud.io/summary/overall?id=JoepFrankenmolen_My-Schedule-BE
   sonarqube:
-    name: Build and analyze
+    name: SonarQube
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
