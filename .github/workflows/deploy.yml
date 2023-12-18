@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - mains
+      - main
 
 concurrency: deploy
 
