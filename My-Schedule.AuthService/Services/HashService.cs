@@ -8,9 +8,9 @@ namespace My_Schedule.AuthService.Services.Auth
 {
     public class HashService
     {
-        private readonly IUserSettings _appSettings;
+        private readonly IUserAuthSettings _appSettings;
 
-        public HashService(IUserSettings appSettings)
+        public HashService(IUserAuthSettings appSettings)
         {
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
         }

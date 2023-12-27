@@ -9,43 +9,46 @@ namespace My_Schedule.AuthService.Services.Users
     public class UserService
     {
         private readonly AuthServiceContext _dbContext;
-        private readonly IUserAuthDetailCreateService _userAuthDetailCreateService;
+        private readonly IUserSecurityCreateService _userSecurityCreateService;
 
-        public UserService(AuthServiceContext dbContext, IUserAuthDetailCreateService userAuthDetailCreateService)
+        public UserService(AuthServiceContext dbContext, IUserSecurityCreateService userSecurityCreateService)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _userAuthDetailCreateService = userAuthDetailCreateService ?? throw new ArgumentNullException(nameof(userAuthDetailCreateService));
+            _userSecurityCreateService = userSecurityCreateService ?? throw new ArgumentNullException(nameof(userSecurityCreateService));
         }
 
         public async Task<User> CreateUser(RegisterDTO registerDTO, HashDTO hashDTO)
         {
-            var userId = Guid.NewGuid();
-            var userAuth = new UserAuthDetail
+            // setup user
+            var user = new User
             {
-                UserId = userId,
-                User = new User
-                {
-                    Id = userId,
-                    CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                    UserName = registerDTO.Username,
-                    Email = registerDTO.Email,
-                    IsEmailConfirmed = false,
-                    IsBlocked = false,
-                    TokenRevocationTimestamp = 0,
-                    Roles = new List<UserRole>()
-                },
-
-                TwoFactorEnabled = true,
-                PasswordHash = hashDTO.PasswordHash,
-                Salt = hashDTO.Salt,
+                Id = Guid.NewGuid(),
+                CreationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                UserName = registerDTO.Username,
+                Email = registerDTO.Email,
+                IsEmailConfirmed = false,
+                IsBlocked = false,
+                TokenRevocationTimestamp = 0,
+                LastLoginTimestamp = 0,
                 FailedLoginAttempts = 0,
+                LoginCount = 0,
+                Roles = new List<UserRole>()
             };
 
             // create role
-            userAuth.User.Roles.Add(await CreateBasicRole(userAuth.UserId, UserRoleType.User));
+            user.Roles.Add(await CreateBasicRole(user.Id, UserRoleType.User));
 
-            userAuth = await _userAuthDetailCreateService.CreateUserAuthDetail(userAuth, _dbContext);
-            return userAuth.User;
+            // create security object
+            var userSecurity = new UserSecurity
+            {
+                UserId = user.Id,
+                User = user,
+                PasswordHash = hashDTO.PasswordHash,
+                Salt = hashDTO.Salt,
+            };
+
+            userSecurity = await _userSecurityCreateService.CreateUserSecurity(userSecurity, _dbContext);
+            return userSecurity.User;
         }
 
         private async Task<UserRole> CreateBasicRole(Guid userId, UserRoleType type)

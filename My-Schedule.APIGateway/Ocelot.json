@@ -6,12 +6,12 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8082
+          "Port": 8081
         }
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": [],
-      "SwaggerKey": "My-Schedule"
+      "SwaggerKey": "My-Schedule-authservice"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -19,7 +19,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8081
+          "Port": 8082
         }
       ],
       "UpstreamPathTemplate": "/api/user/{everything}",
@@ -29,12 +29,12 @@
   ],
   "SwaggerEndPoints": [
     {
-      "Key": "My-Schedule",
+      "Key": "My-Schedule-authservice",
       "Config": [
         {
           "Name": "AuthService API",
           "Version": "v1",
-          "Url": "http://localhost:8082/swagger/v1/swagger.json"
+          "Url": "http://localhost:8081/swagger/v1/swagger.json"
         }
       ]
     },
@@ -44,7 +44,7 @@
         {
           "Name": "UserService API",
           "Version": "v1",
-          "Url": "http://localhost:8081/swagger/v1/swagger.json"
+          "Url": "http://localhost:8082/swagger/v1/swagger.json"
         }
       ]
     }

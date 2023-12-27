@@ -1,6 +1,6 @@
 ﻿namespace My_Schedule.Shared.Interfaces.AppSettings
 {
-    public interface IUserSettings
+    public interface IUserAuthSettings
     {
         int MaxLoginAttempts { get; }
         string Pepper { get; }

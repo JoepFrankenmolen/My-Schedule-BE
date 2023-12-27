@@ -3,8 +3,8 @@ using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.Shared.Interfaces.Context
 {
-    public interface IUserAuthDetailContext : IContextBase, IUserContext
+    public interface IUserSecurityContext : IContextBase, IUserContext
     {
-        DbSet<UserAuthDetail> UserAuthDetails { get; set; }
+        DbSet<UserSecurity> UserSecurities { get; set; }
     }
 }

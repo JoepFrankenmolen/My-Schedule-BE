@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using My_Schedule.Shared.Models.Users.UserInterfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace My_Schedule.Shared.Models.Users
@@ -7,9 +8,8 @@ namespace My_Schedule.Shared.Models.Users
     /// This object resembles fields the authentication system needs.
     /// This should never be used if not needed.
     /// </summary>
-    public class UserAuthDetail : IUserAuthDetail
+    public class UserSecurity : IUserSecurity
     {
-        // IUserDetails
         [Key]
         [ForeignKey("User")]
         [Required]
@@ -19,22 +19,9 @@ namespace My_Schedule.Shared.Models.Users
 
         // IUserSecurity
         [Required]
-        public bool TwoFactorEnabled { get; set; } // should be in user settings :)
-
-        [Required]
         public string PasswordHash { get; set; }
 
         [Required]
         public string Salt { get; set; }
-
-        // IUserActivity
-        [Required]
-        public long LastLoginTimestamp { get; set; }
-
-        [Required]
-        public int FailedLoginAttempts { get; set; }
-
-        [Required]
-        public int LoginCount { get; set; }
     }
 }

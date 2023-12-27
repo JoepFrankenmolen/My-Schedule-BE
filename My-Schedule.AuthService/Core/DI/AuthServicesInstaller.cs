@@ -10,9 +10,11 @@ using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
-using My_Schedule.Shared.RabbitMQ;
+using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Consumers;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
+using My_Schedule.Shared.Services.Users.Interfaces;
+using My_Schedule.Shared.Services.Users.Users;
 
 namespace My_Schedule.AuthService.Core.DI
 {
@@ -24,18 +26,11 @@ namespace My_Schedule.AuthService.Core.DI
             // Use the AppSettings instance to retrieve the database connection string
             var appSettings = services.BuildServiceProvider().GetService<AppSettings>();
 
-            // Set consumer configuration.
-            var consumerConfig = new ConsumerConfiguration
-            {
-                DoesUserAuthExist = true
-            };
-            services.AddTransient(_ => consumerConfig);
-
             // probely more efficent ways of doing this but good for now
             services.AddSingleton<IDatabaseSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IConfirmationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IAuthenticationSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
-            services.AddSingleton<IUserSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
+            services.AddSingleton<IUserAuthSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IEmailSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
             services.AddSingleton<IMessageQueueSettings, ServicesAppSettings>(sp => new ServicesAppSettings(appSettings));
 
@@ -46,7 +41,7 @@ namespace My_Schedule.AuthService.Core.DI
             });
 
             // Register the interfaces with their implementations
-            services.AddScoped<IUserAuthDetailContext>(provider => provider.GetRequiredService<AuthServiceContext>());
+            services.AddScoped<IUserSecurityContext>(provider => provider.GetRequiredService<AuthServiceContext>());
             services.AddScoped<IUserContext>(provider => provider.GetRequiredService<AuthServiceContext>());
             services.AddScoped<IClientDetailsContext>(provider => provider.GetRequiredService<AuthServiceContext>());
 
@@ -58,7 +53,7 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<LoginService>();
             services.AddScoped<RegisterService>();
             services.AddScoped<HashService>();
-            services.AddScoped<PasswordResetService>();
+            services.AddScoped<PasswordResetService>(); 
             services.AddScoped<LoginVerificationService>();
 
             // Tokens
@@ -70,6 +65,7 @@ namespace My_Schedule.AuthService.Core.DI
 
             // Users
             services.AddScoped<UserService>();
+            services.AddScoped<IUserCreatedEvent, UserCreatedEventAuth>();
 
             // Confirmation
             services.AddScoped<ConfirmationService>();
@@ -84,9 +80,13 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddScoped<NotificationTriggerService>();
             services.AddScoped<NotificationSender>();
 
+            // UserCreatedEvent
+            services.AddTransient<IUserCreatedEvent, UserCreatedEventAuth>();
+
             // Consumers
             services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();
-            services.AddSingleton<IHostedService, UserAuthDetailConsumer<AuthServiceContext>>();
+            services.AddSingleton<IHostedService, UserSettingsConsumer<AuthServiceContext>>();
+            services.AddSingleton<IHostedService, UserActivityConsumer<AuthServiceContext>>();
         }
     }
 }
