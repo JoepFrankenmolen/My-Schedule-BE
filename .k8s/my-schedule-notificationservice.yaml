@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-schedule-notificationservice
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-schedule-notificationservice
+  template:
+    metadata:
+      labels:
+        app: my-schedule-notificationservice
+    spec:
+      containers:
+        - image: myschedule.azurecr.io/my-schedule.notificationservice:{{ github.sha }}
+          name: my-schedule-notificationservice
+          env:
+            - name: JWTIssuer
+              value: "secrets.JWT_ISSUER"
+            - name: JWTAudience
+              value: "secrets.JWT_AUDIENCE"
+            - name: JWTSigningKey
+              value: "secrets.JWT_SIGNING_KEY"
+            - name: AccessTokenExpirationTime
+              value: "secrets.TOKEN_ACCESS_EXPIRATION_TIME"
+            - name: RefreshTokenExpirationTime
+              value: "secrets.TOKEN_REFRESH_EXPIRATION_TIME"
+            - name: DatabaseConnection
+              value: "secrets.DC"
+            - name: MessageQueueHostName
+              value: "secrets.MQ_HOSTNAME"
+            - name: MessageQueuePort
+              value: "secrets.MQ_PORT"
+            - name: MessageQueueUserName
+              value: "secrets.MQ_USERNAME"
+            - name: MessageQueuePassword
+              value: "secrets.MQ_PASSWORD"
+            - name: MessageQueueVirtualHost
+              value: "secrets.MQ_VIRTUAL_HOST"
+            - name: MessageQueueUseSsl
+              value: "secrets.MQ_USE_SSL"
+            - name: MessageQueueHeaderName
+              value: "secrets.MQ_HEADERNAME"
+            - name: MessageQueueServiceName
+              value: "NotificationService"
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: 512Mi
+            requests:
+              cpu: "0"
+              memory: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-schedule-notificationservice
+  namespace: default
+spec:
+  ports:
+    - name: port80
+      port: 80
+  selector:
+    app: my-schedule-notificationservice
+  type: ClusterIP
