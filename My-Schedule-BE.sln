@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My-Schedule.Shared", "My-Sc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My-Schedule.UserService", "My-Schedule.UserService\My-Schedule.UserService.csproj", "{62A66D09-7D25-4A81-B288-72BC9C213516}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My-Schedule.NotificationService", "My-Schedule.NotificationService\My-Schedule.NotificationService.csproj", "{7D132486-E98F-4498-9C33-E7C08324EEE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{62A66D09-7D25-4A81-B288-72BC9C213516}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62A66D09-7D25-4A81-B288-72BC9C213516}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62A66D09-7D25-4A81-B288-72BC9C213516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D132486-E98F-4498-9C33-E7C08324EEE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D132486-E98F-4498-9C33-E7C08324EEE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D132486-E98F-4498-9C33-E7C08324EEE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D132486-E98F-4498-9C33-E7C08324EEE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

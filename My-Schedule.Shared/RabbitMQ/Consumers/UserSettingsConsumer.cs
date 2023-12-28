@@ -2,11 +2,10 @@
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.RabbitMQ.Messages;
-using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
-    public class UserSettingsConsumer<T> : IHostedService where T : DbContext, IUserSecurityContext
+    public class UserSettingsConsumer<T> : IHostedService where T : DbContext, IUserContext
     {
         private readonly IMessageConsumer _messageConsumer;
         private readonly IDefaultContextBuilder _defaultContextBuilder;

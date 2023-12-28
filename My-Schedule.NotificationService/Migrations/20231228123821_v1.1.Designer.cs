@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using My_Schedule.UserService.Core;
+using My_Schedule.NotificationService.Core;
 
 #nullable disable
 
-namespace My_Schedule.UserService.Migrations
+namespace My_Schedule.NotificationService.Migrations
 {
-    [DbContext(typeof(UserServiceContext))]
-    partial class UserServiceContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(NotificationServiceContext))]
+    [Migration("20231228123821_v1.1")]
+    partial class v11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,25 +24,6 @@ namespace My_Schedule.UserService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("My_Schedule.Shared.Models.ClientDetails.ClientDetails", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("IPAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAgent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClientDetails", (string)null);
-                });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Tokens.TokenStatus", b =>
                 {
@@ -58,7 +42,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TokenStatus", (string)null);
+                    b.ToTable("TokenStatus");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.User", b =>
@@ -101,7 +85,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -120,25 +104,7 @@ namespace My_Schedule.UserService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserSecurity", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("UserSecurities", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserRole", b =>
@@ -148,17 +114,6 @@ namespace My_Schedule.UserService.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("My_Schedule.Shared.Models.Users.UserSecurity", b =>
-                {
-                    b.HasOne("My_Schedule.Shared.Models.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("My_Schedule.Shared.Models.Users.User", b =>

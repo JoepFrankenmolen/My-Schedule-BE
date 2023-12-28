@@ -8,9 +8,9 @@ using My_Schedule.Shared.Services.Authorization;
 using My_Schedule.Shared.Services.Authorization.Interfaces;
 using My_Schedule.Shared.Services.Tokens;
 using My_Schedule.Shared.Services.Tokens.Interfaces;
+using My_Schedule.Shared.Services.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 using My_Schedule.Shared.Services.Users.Users;
-using My_Schedule.Shared.Services.Users.UserSecurities;
 
 namespace My_Schedule.Shared.Core.DI
 {
@@ -57,21 +57,20 @@ namespace My_Schedule.Shared.Core.DI
             services.AddTransient<IUserUpdateService, UserUpdateService>();
             services.AddTransient<IUserActivityService, UserActivityService>();
 
-
-            // ClientDetails
-            services.AddScoped<ClientDetailService>();
+            if (contextConfig.HasClientDetailService)
+            {
+                // ClientDetails
+                services.AddScoped<ClientDetailService>();
+            }
 
             if (!contextConfig.CustomTokenSessionValidator)
             {
                 services.AddScoped<ITokenSessionValidator, TokenSessionValidator>();
             }
 
-            // remove???
-            if (contextConfig.ContainsUserAuthDetails)
+            if (!contextConfig.CustomUserCreatedEvent)
             {
-                services.AddTransient<IUserSecurityUpdateService, UserSecurityUpdateService>();
-                services.AddTransient<IUserSecurityCreateService, UserSecurityCreateService>();
-                services.AddTransient<UserSettingsProducer>();
+                services.AddTransient<IUserCreatedEvent, UserCreatedEventShared>();
             }
         }
     }

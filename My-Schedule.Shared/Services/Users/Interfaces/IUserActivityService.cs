@@ -5,8 +5,8 @@ namespace My_Schedule.Shared.Services.Users.Interfaces
 {
     public interface IUserActivityService
     {
-        Task<User> UpdateOnLoginFail(Guid userId, User? user, bool isUserBlocked, IUserSecurityContext context, bool sendMessage = true);
+        Task<User> UpdateOnLoginFail(Guid userId, User? user, bool isUserBlocked, IUserContext context, bool sendMessage = true);
 
-        Task<User> UpdateOnLoginSuccess(Guid userId, User? user, IUserSecurityContext context, bool sendMessage = true);
+        Task<User> UpdateOnLoginSuccess(Guid userId, User? user, IUserContext context, bool sendMessage = true);
     }
 }

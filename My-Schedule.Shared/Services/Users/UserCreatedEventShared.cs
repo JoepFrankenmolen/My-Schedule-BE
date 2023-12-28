@@ -2,11 +2,11 @@
 using My_Schedule.Shared.Interfaces.Interfaces;
 using My_Schedule.Shared.Models.Users;
 
-namespace My_Schedule.UserService.Services.Users
+namespace My_Schedule.Shared.Services.Users
 {
-    public class UserCreatedEventUser : IUserCreatedEvent
+    public class UserCreatedEventShared : IUserCreatedEvent
     {
-        public UserCreatedEventUser()
+        public UserCreatedEventShared()
         {
         }
 

@@ -6,7 +6,7 @@ using My_Schedule.Shared.Services.Users.Interfaces;
 
 namespace My_Schedule.Shared.RabbitMQ.Consumers
 {
-    public class UserActivityConsumer<T> : IHostedService where T : DbContext, IUserContext, IUserSecurityContext?
+    public class UserActivityConsumer<T> : IHostedService where T : DbContext, IUserContext
     {
         private readonly IMessageConsumer _messageConsumer;
         private readonly IUserActivityService _userActivityService;

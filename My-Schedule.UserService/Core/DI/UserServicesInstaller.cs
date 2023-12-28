@@ -40,7 +40,6 @@ namespace My_Schedule.UserService.Core.DI
             services.AddScoped<UserRoleService>();
             services.AddScoped<UserAdminFetchingService>();
             services.AddScoped<UserAdminService>();
-            services.AddScoped<IUserCreatedEvent, UserCreatedEventUser>();
 
             // UserCreatedEvent
             services.AddTransient<IUserCreatedEvent, UserCreatedEventUser>();

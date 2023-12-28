@@ -19,7 +19,7 @@ namespace My_Schedule.Shared.Services.Users.Users
         public async Task<User> UpdateOnLoginSuccess(
             Guid userId,
             User? user,
-            IUserSecurityContext context,
+            IUserContext context,
             bool sendMessage = true)
         {
             if (user == null)
@@ -55,7 +55,7 @@ namespace My_Schedule.Shared.Services.Users.Users
             Guid userId,
             User? user,
             bool isUserBlocked,
-            IUserSecurityContext context,
+            IUserContext context,
             bool sendMessage = true)
         {
             if (user == null)

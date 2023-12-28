@@ -3,6 +3,7 @@
     public class ContextConfig
     {
         public bool CustomTokenSessionValidator = false;
-        public bool ContainsUserAuthDetails = false;
+        public bool CustomUserCreatedEvent = false;
+        public bool HasClientDetailService = true;
     }
 }
