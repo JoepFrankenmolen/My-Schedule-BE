@@ -29,9 +29,9 @@ namespace My_Schedule.NotificationService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "AuthService API",
+                    Title = "NotificationService API",
                     Version = "v1",
-                    Description = "Service used for Authentication"
+                    Description = "Service used for Notifications"
                 });
             });
 

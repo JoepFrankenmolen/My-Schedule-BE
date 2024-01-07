@@ -71,5 +71,19 @@ namespace My_Schedule.UserService.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            try
+            {
+                await _userAdminService.DeleteUser(userId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

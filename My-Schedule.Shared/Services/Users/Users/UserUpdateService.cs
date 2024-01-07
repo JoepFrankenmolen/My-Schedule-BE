@@ -1,4 +1,6 @@
 ﻿using My_Schedule.Shared.DTO.Users;
+using My_Schedule.Shared.Helpers;
+using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.Context;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.RabbitMQ.Producers;
@@ -88,6 +90,11 @@ namespace My_Schedule.Shared.Services.Users.Users
 
         public async Task<User> IdentityUpdate(Guid userId, UserIdentityDTO userIdentity, IUserContext context, bool sendMessage = true)
         {
+            if (!InputValidator.IsValidInput(userIdentity.UserName, 255))
+            {
+                throw new ArgumentException();
+            }
+
             var user = await UserFetcherService.GetUserById(userId, context);
 
             user.UserName = userIdentity.UserName;

@@ -3,7 +3,6 @@ using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.DTO.Tokens;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Services.Auth.Tokens;
-using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.Shared.Models.Users;
 
 namespace My_Schedule.AuthService.Services.Confirmations
@@ -24,7 +23,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
         public async Task<Guid> CreateLoginVerification(User user)
         {
             var confirmationDTO = await _confirmationService.CreateConfirmation(user.Id, ConfirmationCodeType.INT, ConfirmationType.LoginVerification);
-            _notificationTriggerService.SendLoginVerification(user.Email, confirmationDTO.Code);
+            _notificationTriggerService.SendLoginVerification(user.Id, confirmationDTO.Code);
 
             return confirmationDTO.Confirmation.Id;
         }

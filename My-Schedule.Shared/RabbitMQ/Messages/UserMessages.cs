@@ -42,6 +42,11 @@ namespace My_Schedule.Shared.RabbitMQ.Messages
         public List<UserRole> Roles { get; set; }
     }
 
+    public class UserDeletedMessage : UserMessages
+    {
+        public long TokenRevocationTimestamp { get; set; }
+    }
+
     public class UserIdentityMessage : UserMessages
     {
         public string UserName { get; set; }

@@ -33,19 +33,5 @@ namespace My_Schedule.UserService.Services.Users
 
             return userDTOs;
         }
-
-        public async Task<UserDTO> GetCurrentLoggedInUser()
-        {
-            try
-            {
-                var user = await UserFetcherService.GetUserById(_userAuthenticationContext.UserId, _dbContext);
-
-                return UserDTO.MapUserToDTO(user);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
     }
 }

@@ -58,7 +58,7 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
                 TokenRevocationTimestamp = timestamp
             };
 
-            await _messageProducer.SendMessage(message, QueueNames.Users.UserEmailConfirmation);
+            await _messageProducer.SendFanMessage(message, QueueNames.Users.UserEmailConfirmation);
         }
 
         public async Task SendIdentityUpdateMessage(Guid userId, UserIdentityDTO userIdentity)
@@ -99,6 +99,17 @@ namespace My_Schedule.Shared.RabbitMQ.Producers
             };
 
             await _messageProducer.SendFanMessage(message, QueueNames.Users.UserCreated);
+        }
+
+        public async Task SendUserDeletedMessage(Guid userId, long timestamp)
+        {
+            var message = new UserDeletedMessage
+            {
+                UserId = userId,
+                TokenRevocationTimestamp = timestamp,
+            };
+
+            await _messageProducer.SendFanMessage(message, QueueNames.Users.UserDeleted);
         }
     }
 }

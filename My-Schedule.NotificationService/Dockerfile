@@ -1,7 +1,7 @@
 # build: 
 # dir: parent
 # cmd: docker build -t my-schedule-notificationservice:1.0 -f My-Schedule.NotificationService/Dockerfile .
-# run: docker run -p 8081:80 --network my-schedule-network --name my-schedule-notificationservice -e MessageQueueHostName="rabbitmq" my-schedule-notificationservice:1.0
+# run: docker run -p 8083:80 --network my-schedule-network --name my-schedule-notificationservice -e MessageQueueHostName="rabbitmq" my-schedule-notificationservice:1.0
 
 # network: docker network create my-schedule-network
 # rabbitmq: docker run -it --network my-schedule-network --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
-EXPOSE 8081
+EXPOSE 8083
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src

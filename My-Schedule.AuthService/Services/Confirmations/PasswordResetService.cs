@@ -5,7 +5,6 @@ using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models.Confirmations;
 using My_Schedule.AuthService.Models.PasswordReset;
 using My_Schedule.AuthService.Services.Auth;
-using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.Shared.Helpers.Validators;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Services.Users.Interfaces;
@@ -46,7 +45,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
                     if (confirmationDTO != null)
                     {
                         // send email
-                        _notificationTriggerService.SendPasswordReset(userAuth.User.Email, confirmationDTO.Confirmation.Id, confirmationDTO.Code);
+                        _notificationTriggerService.SendPasswordReset(userAuth.User.Id, confirmationDTO.Confirmation.Id, confirmationDTO.Code);
 
                         var hashDTO = await _hashService.GenerateSaltAndHash(credentialsDTO.Password);
 

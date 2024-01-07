@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.AuthService.Services;
 using My_Schedule.AuthService.Services.Auth;
 using My_Schedule.AuthService.Services.Auth.Authentication;
 using My_Schedule.AuthService.Services.Auth.Tokens;
 using My_Schedule.AuthService.Services.Authentication;
 using My_Schedule.AuthService.Services.Confirmations;
 using My_Schedule.AuthService.Services.Logs;
-using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.AuthService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
@@ -79,7 +79,6 @@ namespace My_Schedule.AuthService.Core.DI
 
             // Notifications
             services.AddScoped<NotificationTriggerService>();
-            services.AddScoped<NotificationSender>();
 
             // UserCreatedEvent
             services.AddTransient<IUserCreatedEvent, UserCreatedEventAuth>();
@@ -88,6 +87,10 @@ namespace My_Schedule.AuthService.Core.DI
             services.AddTransient<IUserSecurityUpdateService, UserSecurityUpdateService>();
             services.AddTransient<IUserSecurityCreateService, UserSecurityCreateService>();
             services.AddTransient<UserSettingsProducer>();
+
+            // Producers
+            services.AddTransient<NotificationProducer>();
+
 
             // Consumers
             services.AddSingleton<IHostedService, UserConsumer<AuthServiceContext>>();

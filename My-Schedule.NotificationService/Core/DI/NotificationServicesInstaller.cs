@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using My_Schedule.NotificationService.RabbitMQ;
+using My_Schedule.NotificationService.Services;
+using My_Schedule.NotificationService.Services.Notifications;
+using My_Schedule.NotificationService.Services.Users;
 using My_Schedule.Shared.Core;
 using My_Schedule.Shared.Interfaces.AppSettings;
 using My_Schedule.Shared.Interfaces.Context;
@@ -33,11 +37,22 @@ namespace My_Schedule.NotificationService.Core.DI
             // Context builder
             services.AddTransient<IDefaultContextBuilder, DefaultContextBuilder>();
 
+            // Notifications
+            services.AddScoped<NotificationUpdateService>();
+            services.AddScoped<NotificationUserPreferencesService>();
+
+            // Senders
+            services.AddTransient<NotificationDispatcher>();
+            services.AddTransient<NotificationSender>();
+
             // Consumers
             services.AddSingleton<IHostedService, TokenConsumer<NotificationServiceContext>>();
             services.AddSingleton<IHostedService, UserConsumer<NotificationServiceContext>>();
             services.AddSingleton<IHostedService, UserSettingsConsumer<NotificationServiceContext>>();
             services.AddSingleton<IHostedService, UserActivityConsumer<NotificationServiceContext>>();
+
+            // Custom Consumer
+            services.AddSingleton<IHostedService, NotificationConsumer>();
         }
     }
 }

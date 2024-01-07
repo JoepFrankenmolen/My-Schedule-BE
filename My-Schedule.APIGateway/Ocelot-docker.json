@@ -25,6 +25,19 @@
       "UpstreamPathTemplate": "/api/user/{everything}",
       "UpstreamHttpMethod": [],
       "SwaggerKey": "My-Schedule-UserService"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "my-schedule-notificationservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/user/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "My-Schedule-NotificationService"
     }
   ],
   "SwaggerEndPoints": [
@@ -45,6 +58,16 @@
           "Name": "UserService API",
           "Version": "v1",
           "Url": "http://my-schedule-userservice:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "My-Schedule-NotificationService",
+      "Config": [
+        {
+          "Name": "NotificationService API",
+          "Version": "v1",
+          "Url": "http://my-schedule-notificationservice:80/swagger/v1/swagger.json"
         }
       ]
     }

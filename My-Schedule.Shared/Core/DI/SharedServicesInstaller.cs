@@ -55,6 +55,7 @@ namespace My_Schedule.Shared.Core.DI
             // User helpers
             services.AddTransient<IUserCreateService, UserCreateService>();
             services.AddTransient<IUserUpdateService, UserUpdateService>();
+            services.AddTransient<IUserDeleteService, UserDeleteService>();
             services.AddTransient<IUserActivityService, UserActivityService>();
 
             if (contextConfig.HasClientDetailService)

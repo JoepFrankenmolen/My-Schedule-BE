@@ -7,8 +7,8 @@ namespace My_Schedule.Shared.Middleware
         private readonly IAntiforgery _antiforgery;
         private readonly string accessToken;
 
-        // broken for now
-        /*public DevelopmentMiddleware(IAntiforgery antiforgery, TokenDevelopmentGenerator tokenDevelopmentGenerator)
+/*        // broken for now
+        public DevelopmentMiddleware(IAntiforgery antiforgery, TokenDevelopmentGenerator tokenDevelopmentGenerator)
         {
             _antiforgery = antiforgery ?? throw new ArgumentNullException(nameof(antiforgery));
             accessToken = tokenDevelopmentGenerator.GenerateToken().Result; // .result used bc of async not availbe in constructor.

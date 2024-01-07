@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace My_Schedule.AuthService.Services.Notifications
+namespace My_Schedule.NotificationService.Services.Notifications
 {
     public class NotificationSender
     {

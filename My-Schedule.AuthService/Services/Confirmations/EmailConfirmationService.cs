@@ -2,7 +2,6 @@
 using My_Schedule.AuthService.DTO.Authentication;
 using My_Schedule.AuthService.DTO.Confirmations;
 using My_Schedule.AuthService.Models.Confirmations;
-using My_Schedule.AuthService.Services.Notifications;
 using My_Schedule.Shared.Models.Users;
 using My_Schedule.Shared.Services.Users.Interfaces;
 
@@ -30,7 +29,7 @@ namespace My_Schedule.AuthService.Services.Confirmations
         public async Task<Guid> CreateEmailConfirmation(User user)
         {
             var confirmationDTO = await _confirmationService.CreateConfirmation(user.Id, ConfirmationCodeType.INT, ConfirmationType.EmailConfirmation);
-            _notificationTriggerService.SendEmailConfirmation(user.Email, confirmationDTO.Code);
+            _notificationTriggerService.SendEmailConfirmation(user.Id, confirmationDTO.Code);
 
             return confirmationDTO.Confirmation.Id;
         }

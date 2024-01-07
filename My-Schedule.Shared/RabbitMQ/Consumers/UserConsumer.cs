@@ -12,7 +12,7 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
     {
         private readonly IMessageConsumer _messageConsumer;
         private readonly IUserUpdateService _userUpdateService;
-        private readonly IUserActivityService _userActivityService;
+        private readonly IUserDeleteService _userDeleteService;
         private readonly IUserCreateService _userCreateService;
         private readonly IDefaultContextBuilder _defaultContextBuilder;
         private readonly ILogger<UserConsumer<T>> _logger;
@@ -20,14 +20,14 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
         public UserConsumer(
             IMessageConsumer messageConsumer,
             IUserUpdateService userUpdateService,
-            IUserActivityService userActivityService,
+            IUserDeleteService userDeleteService,
             IUserCreateService userCreateService,
             IDefaultContextBuilder defaultContextBuilder,
             ILogger<UserConsumer<T>> logger)
         {
             _messageConsumer = messageConsumer ?? throw new ArgumentNullException(nameof(messageConsumer));
             _userUpdateService = userUpdateService ?? throw new ArgumentNullException(nameof(userUpdateService));
-            _userActivityService = userActivityService ?? throw new ArgumentNullException(nameof(userActivityService));
+            _userDeleteService = userDeleteService ?? throw new ArgumentNullException(nameof(userDeleteService));
             _userCreateService = userCreateService ?? throw new ArgumentNullException(nameof(userCreateService));
             _defaultContextBuilder = defaultContextBuilder ?? throw new ArgumentNullException(nameof(defaultContextBuilder));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,7 +42,10 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             _messageConsumer.StartConsuming<UserEmailConfirmationMessage>(ProcessUserEmailConfirmationMessage, QueueNames.Users.UserEmailConfirmation, true);
             _messageConsumer.StartConsuming<UserIdentityMessage>(ProcessUserIdentityMessage, QueueNames.Users.UserIdentityUpdate, true);
             _messageConsumer.StartConsuming<UserRoleUpdateMessage>(ProcessUserRoleUpdateMessage, QueueNames.Users.UserRoleUpdate, true);
+           
             _messageConsumer.StartConsuming<UserCreatedMessage>(ProcessUserCreateMessage, QueueNames.Users.UserCreated, true);
+
+            _messageConsumer.StartConsuming<UserDeletedMessage>(ProcessUserDeleteMessage, QueueNames.Users.UserDeleted, true);
 
             return Task.CompletedTask;
         }
@@ -191,6 +194,23 @@ namespace My_Schedule.Shared.RabbitMQ.Consumers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing User Create Message");
+            }
+        }
+
+        private async Task ProcessUserDeleteMessage(UserDeletedMessage message)
+        {
+            try
+            {
+                using (var context = _defaultContextBuilder.CreateContext<T>())
+                {
+                    await _userDeleteService.DeleteUser(message.UserId, message.TokenRevocationTimestamp, context, false);
+                }
+
+                _logger.LogInformation($"User Delete Message processed for UserId: {message.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing User Delete Message");
             }
         }
     }

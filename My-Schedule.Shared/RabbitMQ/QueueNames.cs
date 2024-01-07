@@ -11,6 +11,7 @@
             public const string UserIdentityUpdate = "user.identity_update";
             public const string UserRoleUpdate = "user.role_update";
             public const string UserCreated = "user.created";
+            public const string UserDeleted = "user.deleted";
         }
 
         public static class UserActivity
@@ -27,6 +28,11 @@
         public static class Tokens
         {
             public const string TokenStatusCreated = "tokenStatus.created";
+        }
+
+        public static class Notifications
+        {
+            public const string Notificationtriggered = "notification.triggered";
         }
     }
 }

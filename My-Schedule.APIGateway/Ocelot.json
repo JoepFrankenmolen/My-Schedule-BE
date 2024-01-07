@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8081
+          "Port": 44308
         }
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
@@ -15,16 +15,29 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 8082
+          "Port": 44322
         }
       ],
       "UpstreamPathTemplate": "/api/user/{everything}",
       "UpstreamHttpMethod": [],
       "SwaggerKey": "My-Schedule-UserService"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44323
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notification/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "My-Schedule-NotificationService"
     }
   ],
   "SwaggerEndPoints": [
@@ -34,7 +47,7 @@
         {
           "Name": "AuthService API",
           "Version": "v1",
-          "Url": "http://localhost:8081/swagger/v1/swagger.json"
+          "Url": "https://localhost:44308/swagger/v1/swagger.json"
         }
       ]
     },
@@ -44,7 +57,17 @@
         {
           "Name": "UserService API",
           "Version": "v1",
-          "Url": "http://localhost:8082/swagger/v1/swagger.json"
+          "Url": "https://localhost:44322/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "My-Schedule-NotificationService",
+      "Config": [
+        {
+          "Name": "NotificationService API",
+          "Version": "v1",
+          "Url": "https://localhost:44323/swagger/v1/swagger.json"
         }
       ]
     }
